@@ -1,4 +1,4 @@
-# GenericCollections
+# Generic Collections In C
 A library to make dynamic memory management easier in C
 
 As stated above, this is a library and does nothing usefull on its own. Its main purpose is for easy creation of collections in C. The following collections are provided by this library:
@@ -14,7 +14,7 @@ Built ontop of each of these generic structres are the below non-generic collect
 * StrStrDictionary - Built ontop of the generic dictionary for storing key/value pairs that are both strings.
 * XMLFile - Built ontop of the GenericTree, for parsing and writing an XML file.
 
-# Building The Library
+## Building The Library
 Building the program is easy, just run the below command in the same directory as all of the source files.
 
 ```shell
@@ -37,7 +37,7 @@ When run the only thing executed is the debug operations. The output of the debu
 [Ok   ]: 'XMLTag' class
 [Ok   ]: 'XMLFile' class
 ```
-# Todo/Fix
+## Todo/Fix
 * Add a reference counter to the object system along with getReference/deleteReference methods so an object can be deleted with its last reference
 * The file class needs some major work. It works as it is, but barely
 * Look into using templates to define classes. [This link](https://stackoverflow.com/questions/10950828/simulation-of-templates-in-c-for-a-queue-data-type) may be usefull
