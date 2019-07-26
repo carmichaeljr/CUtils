@@ -1,2 +1,44 @@
 # GenericCollections
 A library to make dynamic memory management easier in C
+
+As stated above, this is a library and does nothing usefull on its own. Its main purpose is for easy creation of collections in C. The following collections are provided by this library:
+* GenericList - represented by an array in memory, this is intended for small items like characters and integers.
+* GenericLinkedList - represented by a series of linked nodes in memory, this is for larger items like structres.
+* GenericDictionary - represented by two linked lists, this is for storing key value pairs.
+* GenericTree - represented by a hierarchy of nodes, this is for storing hierarchical information
+
+Built ontop of each of these generic structres are the below non-generic collections. These are an example of how to extend the above generic representations. You can create more non-generic collections as necessary.
+* IntList - Build ontop of the GenericList for storing lists of integers.
+* String - Built ontop of the GenericList for storing character arrays, and supports dynamic operations such as concat
+* StringList - Built ontop of the GenericLinkedList, for storing a list of strings
+* StrStrDictionary - Built ontop of the generic dictionary for storing key/value pairs that are both strings.
+* XMLFile - Built ontop of the GenericTree, for parsing and writing an XML file.
+
+# Building The Library
+Building the program is easy, just run the below command in the same directory as all of the source files.
+
+```shell
+gcc -Wpointer-arith -Wall -o main.exe *.h *.c
+```
+
+When run the only thing executed is the debug operations. The output of the debug operations is shown below. If there are any errors, the text in the bracket will say 'Error' not 'Ok'
+
+```
+./main
+[Ok   ]: 'File' class
+[Ok   ]: 'GenericList' class
+[Ok   ]: 'GenericLinkedList' class
+[Ok   ]: 'GenericDictionary' class
+[Ok   ]: 'GenericTree' class
+[Ok   ]: 'IntList' class
+[Ok   ]: 'String' class
+[Ok   ]: 'StringList' class
+[Ok   ]: 'StrStrDictionary' class
+[Ok   ]: 'XMLTag' class
+[Ok   ]: 'XMLFile' class
+```
+# Todo/Fix
+* Add a reference counter to the object system along with getReference/deleteReference methods so an object can be deleted with its last reference
+* The file class needs some major work. It works as it is, but barely
+* Look into using templates to define classes. [This link](https://stackoverflow.com/questions/10950828/simulation-of-templates-in-c-for-a-queue-data-type) may be usefull
+* The GenericDictionary allows the addition of multiple keys with the same value
