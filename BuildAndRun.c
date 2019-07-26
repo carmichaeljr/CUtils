@@ -1,11 +1,8 @@
-#include <stdio.h>
-//#include "Math.h"
 #include "File.h"
 #include "GenericList.h"
 #include "GenericLinkedList.h"
 #include "GenericDictionary.h"
 #include "GenericTree.h"
-//#include "Arguments.h"
 #include "IntList.h"
 #include "String.h"
 #include "StringList.h"
@@ -26,8 +23,5 @@ int main(int argc, char **argv){
 	StrStrDictionaryClass.debug();
 	XMLTagClass.debug();
 	XMLFileClass.debug();
-
-	//MathClass.debug();
-	//ArgumentsClass.debug();
 	return 0;
 }
