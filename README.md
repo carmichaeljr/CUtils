@@ -9,7 +9,7 @@ As stated above, this is a library and does nothing usefull on its own. Its main
 
 Built ontop of each of these generic structres are the below non-generic collections. These are an example of how to extend the above generic representations. You can create more non-generic collections as necessary.
 * IntList - Build ontop of the GenericList for storing lists of integers.
-* String - Built ontop of the GenericList for storing character arrays, and supports dynamic operations such as concat
+* String - Built ontop of the GenericList for storing character arrays, and supports dynamic operations such as concat, trimSubstring, etc.
 * StringList - Built ontop of the GenericLinkedList, for storing a list of strings
 * StrStrDictionary - Built ontop of the generic dictionary for storing key/value pairs that are both strings.
 * XMLFile - Built ontop of the GenericTree, for parsing and writing an XML file.
