@@ -15,7 +15,7 @@ Built ontop of each of these generic structres are the below non-generic collect
 * XMLFile - Built ontop of the GenericTree, for parsing and writing an XML file.
 
 ### Sudo OOP
-The code in this repository is orginized in a sudo OOP way. A class structre is defined in tandem with an object structre to form the basis of the OO model. There is a very clear template for defining a class and its associated object structure that is shown in every source file.
+The code in this repository is orginized in a sudo OOP way. A class structure is defined in tandem with an object structure to form the basis of the OO model. There is a very clear template for defining a class and its associated object structure that is shown in every source file.
 This is not a full OO system, advanced features like inheritance and method overloading are not supported. (Do note that composition is supported)
 
 ### Building The Library
