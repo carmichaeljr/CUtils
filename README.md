@@ -14,7 +14,11 @@ Built ontop of each of these generic structres are the below non-generic collect
 * StrStrDictionary - Built ontop of the generic dictionary for storing key/value pairs that are both strings.
 * XMLFile - Built ontop of the GenericTree, for parsing and writing an XML file.
 
-## Building The Library
+### Sudo OOP
+The code in this repository is orginized in a sudo OOP way. A class structre is defined in tandem with an object structre to form the basis of the OO model. There is a very clear template for defining a class and its associated object structure that is shown in every source file.
+This is not a full OO system, advanced features like inheritance and method overloading are not supported. (Do note that composition is supported)
+
+### Building The Library
 Building the program is easy, just run the below command in the same directory as all of the source files.
 
 ```shell
@@ -37,8 +41,8 @@ When run the only thing executed is the debug operations. The output of the debu
 [Ok   ]: 'XMLTag' class
 [Ok   ]: 'XMLFile' class
 ```
-## Todo/Fix
+### Todo/Fix
 * Add a reference counter to the object system along with getReference/deleteReference methods so an object can be deleted with its last reference
 * The file class needs some major work. It works as it is, but barely
 * Look into using templates to define classes. [This link](https://stackoverflow.com/questions/10950828/simulation-of-templates-in-c-for-a-queue-data-type) may be usefull
-* The GenericDictionary allows the addition of multiple keys with the same value
+* The GenericDictionary class allows the addition of multiple keys with the same value
