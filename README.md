@@ -27,7 +27,7 @@ gcc -Wpointer-arith -Wall -o main.exe *.h *.c
 
 When run the only thing executed is the debug operations. The output of the debug operations is shown below. If there are any errors, the text in the bracket will say 'Error' not 'Ok'
 
-```
+```shell
 ./main
 [Ok   ]: 'File' class
 [Ok   ]: 'GenericList' class
@@ -46,3 +46,4 @@ When run the only thing executed is the debug operations. The output of the debu
 * The file class needs some major work. It works as it is, but barely
 * Look into using templates to define classes. [This link](https://stackoverflow.com/questions/10950828/simulation-of-templates-in-c-for-a-queue-data-type) may be usefull
 * The GenericDictionary class allows the addition of multiple keys with the same value
+* Add copyBetween methods to GenericTree and XMLFile
