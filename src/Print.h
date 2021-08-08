@@ -3,14 +3,15 @@
 
 #include <stdbool.h>
 
-struct PrintClass_t {
+struct PrintClass {
 	void (*incrementIndentLevel)(const int increment);
 	void (*setSpacesPerIndent)(const int numSpaces);
-	void (*objectDebug)(const char *className, const bool success);
+	void (*objectDebug)(const char *className, const char *methodName, const bool success);
 	void (*print)(const char *format, ...);
+	void (*println)(const char *format, ...);
 	void (*printWithoutIndent)(const char *format, ...);
 };
 
-extern const struct PrintClass_t PrintClass;
+extern const struct PrintClass Print_t;
 
 #endif
