@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("con",["Function"],[["concat",,[["String_t",,,,0,"File:String.h:String_t.concat","CClass:String_t:concat"]]],["concatChar",,[["String_t",,,,0,"File:String.h:String_t.concatChar","CClass:String_t:concatChar"]]],["contains",,[["GenericList_t",,,,0,"File:GenericList.h:GenericList_t.contains","CClass:GenericList_t:contains"]]]]);

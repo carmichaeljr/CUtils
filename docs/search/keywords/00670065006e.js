@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("gen",["Class","Variable"],[["GenericList",,[[,,,,0,"File:GenericList.h:GenericList","CClass:GenericList"],["String","genericList",,,1,"File:String.h:String.genericList","CClass:String:genericList"]]],["GenericList_t",,[[,,,,0,"File:GenericList.h:GenericList_t","CClass:GenericList_t"]]]]);

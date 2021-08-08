@@ -32,7 +32,7 @@ static bool newMemoryBlock(GenericList *self, const int newLen);
 static void* getPointerToLocation(const GenericList *self, const int index);
 static bool areListsCompatible(const GenericList *self, const GenericList *other);
 
-const struct GenericListClass GenericList_t={
+const struct GenericList_t GenericList_t={
 	.new=constructor,
 	.delete=destructor,
 	.print=print,
@@ -68,8 +68,8 @@ static void setElementSize(GenericList *self, const size_t newSize){
 }
 
 static void setListSize(GenericList *self, const int numElements){
-	if (isInit(self)){
-		if (newMemoryBlock(self,numElements)){
+	if (isInit(self) && numElements>=0){
+		if (resizeMemoryBlock(self,numElements)){
 			self->numElements=numElements;
 		}
 	}
@@ -96,7 +96,7 @@ static void setAt(GenericList *self, const void * const newElements, const int n
 }
 
 static void add(GenericList *self, const void * const newElements, const int numElements){
-	if (isInit(self) && 
+	if (isInit(self) && numElements>0 &&
 	    resizeMemoryBlock(self,self->numElements+numElements)){
 		self->numElements+=numElements;
 		void *temp=getPointerToLocation(self,self->numElements-numElements);
@@ -301,7 +301,7 @@ static GenericList* constructor(void){
 }
 
 static void print(const GenericList * const obj){
-	Print_t.print("<GenericList Obj[Addr: %p]: NumElements: %d  ElementSize: %d>\n",
+	Print_t.print("<GenericList Obj[Addr: %p]: NumElements: %d  ElementSize: %d>",
 			obj,obj->numElements,obj->elementSize);
 }
 

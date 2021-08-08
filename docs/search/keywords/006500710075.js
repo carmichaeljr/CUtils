@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("equ",["Function"],[["equals",,[["GenericList_t",,,,0,"File:GenericList.h:GenericList_t.equals","CClass:GenericList_t:equals"]]]]);

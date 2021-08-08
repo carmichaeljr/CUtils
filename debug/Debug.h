@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 
-bool GenericListDebug(void);
+bool genericListDebug(void);
+bool stringDebug(void);
 
 #endif

@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("ise",["Function"],[["isEmpty",,[["GenericList_t",,,,0,"File:GenericList.h:GenericList_t.isEmpty","CClass:GenericList_t:isEmpty"]]]]);
