@@ -6,6 +6,20 @@
 
 //Class: GenericList
 //The struct that represents a GenericList.
+//
+//This class is for storing continuous data in an array. This is perfect for standard
+//data types and other small data types.
+//General usage is as follows:
+//--- Code
+//GenericList *list=GenericList_t.new();
+//GenericList_t.<func to call>(list, <params>);
+//...
+//GenericList_t.delete(&list);
+//---
+//
+//See Also:
+//
+//  <GenericList_t>
 typedef struct GenericListObj {
 	//Variable: list
 	void *list;
@@ -17,16 +31,11 @@ typedef struct GenericListObj {
 } GenericList;
 
 //Class: GenericList_t
-//The struct that creates and perform operations on objects of type GenericList.
-//This class is for storing continuous data in an array. This is perfect for standard
-//data types and other small data types.
-//General usage is as follows:
-//--- Code
-//GenericList *list=GenericList_t.new();
-//GenericList_t.<func to call>(list, <params>);
-//...
-//GenericList_t.delete(&list);
-//---
+//The struct that creates and performs operations on objects of type GenericList.
+//
+//See Also:
+//
+//  <GenericList>
 extern const struct GenericList_t {
 	//Constructor: new
 	//Creates and initializes a GenericList object.
@@ -59,7 +68,7 @@ extern const struct GenericList_t {
 	//
 	//Returns:
 	//
-	//Nothing
+	//  Nothing
 	void (*print)(const GenericList * const obj);
 	//Function: setElementSize
 	//Sets the size of the elements stored in the list.

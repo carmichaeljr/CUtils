@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("tol",["Function"],[["toLower",,[["String_t",,,,0,"File:String.h:String_t.toLower","CClass:String_t:toLower"]]]]);

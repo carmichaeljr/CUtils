@@ -8,86 +8,98 @@
 
 <body onload="NDLoader.OnLoad('Content');" class="NDPage NDContentPage">
 
-<a name="Topic32"></a><div class="CTopic TClass LC first">
+<a name="Topic2"></a><div class="CTopic TClass LC first">
  <div class="CTitle">String_t</div>
- <div class="NDClassPrototype" id="NDClassPrototype32"><div class="CPEntry TClass Current"><div class="CPModifiers"><span class="SHKeyword">extern const</span> <span class="SHKeyword">struct</span></div><div class="CPName">String_t</div></div></div>
- <div class="CBody"><p>The struct that creates and perform operations on objects of type: String This class is for storing and manipulating Strings.&nbsp; General usage is as follows:</p><pre>String *list=String_t.<span class="SHKeyword">new</span>();<br />String_t.&lt;func to call&gt;(list, &lt;params&gt;);<br />...<br />String_t.<span class="SHKeyword">delete</span>(&amp;list);</pre></div>
+ <div class="NDClassPrototype" id="NDClassPrototype2"><div class="CPEntry TClass Current"><div class="CPModifiers"><span class="SHKeyword">extern const</span> <span class="SHKeyword">struct</span></div><div class="CPName">String_t</div></div></div>
+ <div class="CBody"><p>The struct that creates and performs operations on objects of type String.</p><div class="CHeading">See Also</div><p><a href="../../index.html#CClass:String" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,1);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >String</a></p></div>
 </div>
 
 <a name="Functions"></a><a name="Topic34"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="new"></a><a name="Topic39"></a><div class="CTopic TFunction LC">
+<a name="new"></a><a name="Topic3"></a><div class="CTopic TFunction LC">
  <div class="CTitle">new</div>
- <div id="NDPrototype39" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters">String* (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">new</td></tr></table></td><td class="PAfterParameters">)(<span class="SHKeyword">void</span>)</td></tr></table></div></div>
- <div class="CBody"><p>Creates and initializes a String object.</p></div>
+ <div id="NDPrototype3" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters">String* (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">new</td></tr></table></td><td class="PAfterParameters">)(<span class="SHKeyword">void</span>)</td></tr></table></div></div>
+ <div class="CBody"><p>Creates and initializes a String object.</p><div class="CHeading">Parameters</div><p>None</p><div class="CHeading">Returns</div><p>A pointer to a string object.</p></div>
 </div>
 
-<a name="delete"></a><a name="Topic40"></a><div class="CTopic TFunction LC">
+<a name="delete"></a><a name="Topic20"></a><div class="CTopic TFunction LC">
  <div class="CTitle">delete</div>
- <div id="NDPrototype40" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">delete</td></tr></table></td><td class="PAfterParameters">)(String **obj)</td></tr></table></div></div>
- <div class="CBody"><p>Deletes a String object.</p></div>
+ <div id="NDPrototype20" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">delete</td></tr></table></td><td class="PAfterParameters">)(String **obj)</td></tr></table></div></div>
+ <div class="CBody"><p>Deletes a String object and sets its pointer to NULL.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">obj</td><td class="CDLDefinition"><p>The object to delete.</p></td></tr></table><div class="CHeading">Returns</div><p>Nothing</p></div>
 </div>
 
-<a name="print"></a><a name="Topic41"></a><div class="CTopic TFunction LC">
+<a name="print"></a><a name="Topic23"></a><div class="CTopic TFunction LC">
  <div class="CTitle">print</div>
- <div id="NDPrototype41" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">print</td></tr></table></td><td class="PAfterParameters">)(<span class="SHKeyword">const</span> String * <span class="SHKeyword">const</span> obj)</td></tr></table></div></div>
- <div class="CBody"><p>Prints the contents of a String object.</p></div>
+ <div id="NDPrototype23" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">print</td></tr></table></td><td class="PAfterParameters">)(<span class="SHKeyword">const</span> String * <span class="SHKeyword">const</span> obj)</td></tr></table></div></div>
+ <div class="CBody"><p>Prints the contents of a String object.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">obj</td><td class="CDLDefinition"><p>The string to print.</p></td></tr></table><div class="CHeading">Returns</div><p>Nothing</p></div>
 </div>
 
-<a name="setSize"></a><a name="Topic42"></a><div class="CTopic TFunction LC">
+<a name="setSize"></a><a name="Topic29"></a><div class="CTopic TFunction LC">
  <div class="CTitle">setSize</div>
- <div id="NDPrototype42" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">setSize</td></tr></table></td><td class="PAfterParameters">)(String *self, <span class="SHKeyword">const int</span> len)</td></tr></table></div></div>
- <div class="CBody"><p>Allocates enough space for a string of length len+1. (for NULL terminator) If len==0 then clear will be called.</p><p>Memory contents are not initialized besides the terminating '\0'.</p><p>Useful for reducing reallocations when you know the final size of the string.</p></div>
+ <div id="NDPrototype29" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">bool</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">setSize</td></tr></table></td><td class="PAfterParameters">)(String *self, <span class="SHKeyword">const int</span> len)</td></tr></table></div></div>
+ <div class="CBody"><p>Allocates enough space for a string of length len+1. (for NULL terminator) If len==0 then clear will be called.</p><p>Memory contents are not initialized besides the terminating '\0'.</p><p>Useful for reducing reallocations when you know the final size of the string.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">self</td><td class="CDLDefinition"><p>The string object to perform the operation on.</p></td></tr><tr><td class="CDLEntry">len</td><td class="CDLDefinition"><p>The number of characters to allocate space for (excluding the terminating null).</p></td></tr></table><div class="CHeading">Returns</div><p>Returns true if the operation was successful and changes were made to the object.&nbsp; A return value of false guarantees no changes were made to the object.</p></div>
 </div>
 
-<a name="set"></a><a name="Topic43"></a><div class="CTopic TFunction LC">
+<a name="set"></a><a name="Topic39"></a><div class="CTopic TFunction LC">
  <div class="CTitle">set</div>
- <div id="NDPrototype43" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">set</td></tr></table></td><td class="PAfterParameters">)(String *self, <span class="SHKeyword">const char</span> * <span class="SHKeyword">const</span> newStr)</td></tr></table></div></div>
- <div class="CBody"><p>Copies the contents of a NULL terminated string.</p><p>If newStr is empty then clear will be called.</p></div>
+ <div id="NDPrototype39" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">bool</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">set</td></tr></table></td><td class="PAfterParameters">)(String *self, <span class="SHKeyword">const char</span> * <span class="SHKeyword">const</span> newStr)</td></tr></table></div></div>
+ <div class="CBody"><p>Copies the contents of a NULL terminated string.</p><p>If newStr is empty then clear will be called.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">self</td><td class="CDLDefinition"><p>The string object to perform the operation on.</p></td></tr><tr><td class="CDLEntry">newStr</td><td class="CDLDefinition"><p>A NULL terminated string to copy.</p></td></tr></table><div class="CHeading">Returns</div><p>Returns true if the operation was successful and changes were made to the object.&nbsp; A return value of false guarantees no changes were made to the object.</p></div>
 </div>
 
-<a name="concat"></a><a name="Topic44"></a><div class="CTopic TFunction LC">
+<a name="concat"></a><a name="Topic40"></a><div class="CTopic TFunction LC">
  <div class="CTitle">concat</div>
- <div id="NDPrototype44" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">concat</td></tr></table></td><td class="PAfterParameters">)(String *self, <span class="SHKeyword">const char</span> * <span class="SHKeyword">const</span> newStr)</td></tr></table></div></div>
- <div class="CBody"><p>Appends a NULL terminated string to the current string.</p><p>Only one reallocation is performed.</p></div>
+ <div id="NDPrototype40" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">bool</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">concat</td></tr></table></td><td class="PAfterParameters">)(String *self, <span class="SHKeyword">const char</span> * <span class="SHKeyword">const</span> newStr)</td></tr></table></div></div>
+ <div class="CBody"><p>Appends a NULL terminated string to the current string.</p><p>Only one reallocation is performed.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">self</td><td class="CDLDefinition"><p>The string object to perform the operation on.</p></td></tr><tr><td class="CDLEntry">newStr</td><td class="CDLDefinition"><p>A NULL terminated string to append to the current string.</p></td></tr></table><div class="CHeading">Returns</div><p>Returns true if the operation was successful and changes were made to the object.&nbsp; A return value of false guarantees no changes were made to the object.</p></div>
 </div>
 
-<a name="concatChar"></a><a name="Topic45"></a><div class="CTopic TFunction LC">
+<a name="concatChar"></a><a name="Topic41"></a><div class="CTopic TFunction LC">
  <div class="CTitle">concatChar</div>
- <div id="NDPrototype45" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">concatChar</td></tr></table></td><td class="PAfterParameters">)(String *self, <span class="SHKeyword">const char</span> newChar)</td></tr></table></div></div>
- <div class="CBody"><p>Appends a character to the current string.</p><p>If the string is currently empty, the NULL terminating character is added.</p><p>Only one reallocation is performed.</p></div>
+ <div id="NDPrototype41" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">bool</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">concatChar</td></tr></table></td><td class="PAfterParameters">)(String *self, <span class="SHKeyword">const char</span> newChar)</td></tr></table></div></div>
+ <div class="CBody"><p>Appends a character to the current string.</p><p>If the string is currently empty, the NULL terminating character is added.</p><p>Only one reallocation is performed.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">self</td><td class="CDLDefinition"><p>The string to perform the operation on.</p></td></tr><tr><td class="CDLEntry">newChar</td><td class="CDLDefinition"><p>The character to append.</p></td></tr></table><div class="CHeading">Returns</div><p>Returns true if the operation was successful and changes were made to the object.&nbsp; A return value of false guarantees no changes were made to the object.</p></div>
 </div>
 
-<a name="copyOtherBetween"></a><a name="Topic46"></a><div class="CTopic TFunction LC">
+<a name="copyOtherBetween"></a><a name="Topic42"></a><div class="CTopic TFunction LC">
  <div class="CTitle">copyOtherBetween</div>
- <div id="NDPrototype46" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">copyOtherBetween</td></tr></table></td><td class="PAfterParameters">)(String *self, <span class="SHKeyword">const</span> String * <span class="SHKeyword">const</span> other, <span class="SHKeyword">const int</span> startIndex, <span class="SHKeyword">const int</span> endIndex)</td></tr></table></div></div>
- <div class="CBody"><p>Copies another string given the supplied indexes.</p><p>If startIndex is less than 0 then it is bounded to 0.&nbsp; If endIndex is greater than the number of elements in the string being copied then it is bounded to the length of the string being copied.</p></div>
+ <div id="NDPrototype42" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">bool</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">copyOtherBetween</td></tr></table></td><td class="PAfterParameters">)(String *self, <span class="SHKeyword">const</span> String * <span class="SHKeyword">const</span> other, <span class="SHKeyword">const int</span> startIndex, <span class="SHKeyword">const int</span> endIndex)</td></tr></table></div></div>
+ <div class="CBody"><p>Copies another string given the supplied indexes.</p><p>If startIndex is less than 0 then it is bounded to 0.&nbsp; If endIndex is greater than the number of elements in the string being copied then it is bounded to the length of the string being copied.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">self</td><td class="CDLDefinition"><p>The string object to perform the operation on.</p></td></tr><tr><td class="CDLEntry">other</td><td class="CDLDefinition"><p>The string object to copy from.</p></td></tr><tr><td class="CDLEntry">startIndex</td><td class="CDLDefinition"><p>The starting index to copy from in other (inclusive).</p></td></tr><tr><td class="CDLEntry">endIndex</td><td class="CDLDefinition"><p>The last index to copy from in other (exclusive).</p></td></tr></table><div class="CHeading">Returns</div><p>Returns true if the operation was successful and changes were made to the object.&nbsp; A return value of false DOES NOT guarantee no changes were made to the object.</p></div>
 </div>
 
-<a name="getFirstIndexOf"></a><a name="Topic8"></a><div class="CTopic TFunction LC">
+<a name="toUpper"></a><a name="Topic8"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">toUpper</div>
+ <div id="NDPrototype8" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">toUpper</td></tr></table></td><td class="PAfterParameters">)(String *self)</td></tr></table></div></div>
+ <div class="CBody"><p>Makes a string uppercase.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">self</td><td class="CDLDefinition"><p>The string object to perform the operation on.</p></td></tr></table><div class="CHeading">Returns</div><p>Nothing</p></div>
+</div>
+
+<a name="toLower"></a><a name="Topic32"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">toLower</div>
+ <div id="NDPrototype32" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">toLower</td></tr></table></td><td class="PAfterParameters">)(String *self)</td></tr></table></div></div>
+ <div class="CBody"><p>Makes a string lowercase.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">self</td><td class="CDLDefinition"><p>The string object to perform the operation on.</p></td></tr></table><div class="CHeading">Returns</div><p>Nothing</p></div>
+</div>
+
+<a name="getFirstIndexOf"></a><a name="Topic47"></a><div class="CTopic TFunction LC">
  <div class="CTitle">getFirstIndexOf</div>
- <div id="NDPrototype8" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">int</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">getFirstIndexOf</td></tr></table></td><td class="PAfterParameters">)(<span class="SHKeyword">const</span> String * <span class="SHKeyword">const</span> self, <span class="SHKeyword">const char</span> searchChar)</td></tr></table></div></div>
- <div class="CBody"><p>Finds the first instance of the given char in the string.</p><p>Searching stops when the first char is found.</p><p>TODO: see bug noted in debug func. Need to update GenericList to return value based on success of operation.</p></div>
+ <div id="NDPrototype47" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">int</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">getFirstIndexOf</td></tr></table></td><td class="PAfterParameters">)(<span class="SHKeyword">const</span> String * <span class="SHKeyword">const</span> self, <span class="SHKeyword">const char</span> searchChar)</td></tr></table></div></div>
+ <div class="CBody"><p>Finds the first instance of the given char in the string.</p><p>Searching stops when the first char is found.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">self</td><td class="CDLDefinition"><p>The string object to perform the operation on.</p></td></tr><tr><td class="CDLEntry">searchChar</td><td class="CDLDefinition"><p>The character to search for in the string.</p></td></tr></table><div class="CHeading">Returns</div><p>The index of the first instance of searchChar in the string, or -1 if it was not found.</p></div>
 </div>
 
-<a name="getLastIndexOf"></a><a name="Topic48"></a><div class="CTopic TFunction LC">
+<a name="getLastIndexOf"></a><a name="Topic50"></a><div class="CTopic TFunction LC">
  <div class="CTitle">getLastIndexOf</div>
- <div id="NDPrototype48" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">int</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">getLastIndexOf</td></tr></table></td><td class="PAfterParameters">)(<span class="SHKeyword">const</span> String * <span class="SHKeyword">const</span> self, <span class="SHKeyword">const char</span> searchChar)</td></tr></table></div></div>
- <div class="CBody"><p>Finds the last instance of the given char in the string.</p><p>Searching stops when the last char is found.</p></div>
+ <div id="NDPrototype50" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">int</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">getLastIndexOf</td></tr></table></td><td class="PAfterParameters">)(<span class="SHKeyword">const</span> String * <span class="SHKeyword">const</span> self, <span class="SHKeyword">const char</span> searchChar)</td></tr></table></div></div>
+ <div class="CBody"><p>Finds the last instance of the given char in the string.</p><p>Searching stops when the last char is found.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">self</td><td class="CDLDefinition"><p>The string object to perform the operation on.</p></td></tr><tr><td class="CDLEntry">searchChar</td><td class="CDLDefinition"><p>The character to search for in the string.</p></td></tr></table><div class="CHeading">Returns</div><p>The index of the last instance of searchChar in the string, or -1 is it was not found.</p></div>
 </div>
 
-<a name="getCharOccurrences"></a><a name="Topic49"></a><div class="CTopic TFunction LC">
+<a name="getCharOccurrences"></a><a name="Topic51"></a><div class="CTopic TFunction LC">
  <div class="CTitle">getCharOccurrences</div>
- <div id="NDPrototype49" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">int</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">getCharOccurrences</td></tr></table></td><td class="PAfterParameters">)(<span class="SHKeyword">const</span> String *self, <span class="SHKeyword">const char</span> *searchChars)</td></tr></table></div></div>
- <div class="CBody"><p>Counts the number of occurrences of the characters in searchChars in the current string.</p><p>Duplicate characters in searchChars are ignored, only the first instance of a char will be used when searching.</p></div>
+ <div id="NDPrototype51" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">int</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">getCharOccurrences</td></tr></table></td><td class="PAfterParameters">)(<span class="SHKeyword">const</span> String *self, <span class="SHKeyword">const char</span> *searchChars)</td></tr></table></div></div>
+ <div class="CBody"><p>Counts the number of occurrences of the characters in searchChars in the current string.</p><p>Duplicate characters in searchChars are ignored, only the first instance of a char will be used when searching.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">self</td><td class="CDLDefinition"><p>The string object to perform the operation on.</p></td></tr><tr><td class="CDLEntry">searchChars</td><td class="CDLDefinition"><p>The characters to search for in the string.</p></td></tr></table><div class="CHeading">Returns</div><p>The number of characters in the string that are found in searchChars.</p></div>
 </div>
 
-<a name="clear"></a><a name="Topic50"></a><div class="CTopic TFunction LC last">
+<a name="clear"></a><a name="Topic43"></a><div class="CTopic TFunction LC last">
  <div class="CTitle">clear</div>
- <div id="NDPrototype50" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">clear</td></tr></table></td><td class="PAfterParameters">)(String *self)</td></tr></table></div></div>
- <div class="CBody"><p>Clears the contents of the string, sets length to 0.</p></div>
+ <div id="NDPrototype43" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">bool</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">clear</td></tr></table></td><td class="PAfterParameters">)(String *self)</td></tr></table></div></div>
+ <div class="CBody"><p>Clears the contents of the string, sets length to 0.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">self</td><td class="CDLDefinition"><p>The string object to perform the operation on.</p></td></tr></table><div class="CHeading">Returns</div><p>Returns true if the operation was successful and changes were made to the object.&nbsp; A return value of false guarantees no changes were made to the object.</p></div>
 </div>
 
 </body></html>
