@@ -22,7 +22,7 @@ This is not a full OO system, advanced features like inheritance and method over
 Building the program is easy, just run the below command in the same directory as all of the source files.
 
 ```shell
-gcc -Wpointer-arith -Wall -o bin/main.exe src/*.h src/*.c
+gcc -Wpointer-arith -Wall -o bin/main.exe debug/*.h debug/*.c src/*
 ```
 
 When run the only thing executed is the debug operations. The output of the debug operations is shown below. If there are any errors, the text in the bracket will say 'Error' not 'Ok'
