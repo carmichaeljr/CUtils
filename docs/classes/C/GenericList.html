@@ -8,30 +8,44 @@
 
 <body onload="NDLoader.OnLoad('Content');" class="NDPage NDContentPage">
 
-<a name="Topic31"></a><div class="CTopic TClass LC first">
+<a name="Topic5"></a><div class="CTopic TClass LC first">
  <div class="CTitle">GenericList</div>
- <div class="NDClassPrototype" id="NDClassPrototype31"><div class="CPEntry TClass Current"><div class="CPModifiers"><span class="SHKeyword">typedef</span> <span class="SHKeyword">struct</span></div><div class="CPName">GenericList</div></div></div>
- <div class="CBody"><p>The struct that represents a GenericList.</p><p>This class is for storing continuous data in an array. This is perfect for standard data types and other small data types.&nbsp; General usage is as follows:</p><pre>GenericList *list=GenericList_t.<span class="SHKeyword">new</span>();<br />GenericList_t.&lt;func to call&gt;(list, &lt;params&gt;);<br />...<br />GenericList_t.<span class="SHKeyword">delete</span>(&amp;list);</pre><div class="CHeading">See Also</div><p><a href="../../index.html#CClass:GenericList_t" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,33);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >GenericList_t</a></p></div>
+ <div class="NDClassPrototype" id="NDClassPrototype5"><div class="CPEntry TClass Current"><div class="CPModifiers"><span class="SHKeyword">typedef</span> <span class="SHKeyword">struct</span></div><div class="CPName">GenericList</div></div></div>
+ <div class="CBody"><p>The struct that represents a GenericList.</p><p>This class is for storing continuous data in an array. This is perfect for standard data types and other small data types.</p><p>The memory allocated by the object follows the below rules, in the following order, unless strictAlloc is true.&nbsp; If strictAlloc is true, then the listSize and numElement variables will coincide.</p><table class="CDefinitionList"><tr><td class="CDLEntry">Rule 1</td><td class="CDLDefinition"><p>If reserved memory is &gt; newLen*2 reallocate (shrink to actual size)</p></td></tr><tr><td class="CDLEntry">Rule 2</td><td class="CDLDefinition"><p>If reserved memory is &lt; newLen, reallocate (grow to actual size)</p></td></tr><tr><td class="CDLEntry">Rule 3</td><td class="CDLDefinition"><p>If newLen is 0, free memory</p></td></tr><tr><td class="CDLEntry">Rule 4</td><td class="CDLDefinition"><p>If reserved memory is &gt;= newLen, don't reallocate</p></td></tr></table><p>General usage is as follows:</p><pre>GenericList *list=GenericList_t.<span class="SHKeyword">new</span>();<br />GenericList_t.&lt;func to call&gt;(list, &lt;params&gt;);<br />...<br />GenericList_t.<span class="SHKeyword">delete</span>(&amp;list);</pre><div class="CHeading">See Also</div><p><a href="../../index.html#CClass:GenericList_t" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,33);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >GenericList_t</a></p></div>
 </div>
 
 <a name="Variables"></a><a name="Topic35"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Variables</div>
 </div>
 
-<a name="list"></a><a name="Topic36"></a><div class="CTopic TVariable LC">
+<a name="list"></a><a name="Topic18"></a><div class="CTopic TVariable LC">
  <div class="CTitle">list</div>
- <div id="NDPrototype36" class="NDPrototype"><div class="PSection PPlainSection"><span class="SHKeyword">void</span> *list</div></div>
+ <div id="NDPrototype18" class="NDPrototype"><div class="PSection PPlainSection"><span class="SHKeyword">void</span> *list</div></div>
+ <div class="CBody"><ul><li><p>Default: NULL</p></li></ul></div>
 </div>
 
-<a name="numElements"></a><a name="Topic37"></a><div class="CTopic TVariable LC">
+<a name="listSize"></a><a name="Topic30"></a><div class="CTopic TVariable LC">
+ <div class="CTitle">listSize</div>
+ <div id="NDPrototype30" class="NDPrototype"><div class="PSection PPlainSection"><span class="SHKeyword">int</span> listSize</div></div>
+ <div class="CBody"><p>Holds the actual size of the internal list.</p><ul><li><p>Default: 0</p></li></ul></div>
+</div>
+
+<a name="strictAlloc"></a><a name="Topic31"></a><div class="CTopic TVariable LC">
+ <div class="CTitle">strictAlloc</div>
+ <div id="NDPrototype31" class="NDPrototype"><div class="PSection PPlainSection"><span class="SHKeyword">bool</span> strictAlloc</div></div>
+ <div class="CBody"><p>Determines how memory is allocated.</p><ul><li><p>Default: false</p></li></ul></div>
+</div>
+
+<a name="numElements"></a><a name="Topic36"></a><div class="CTopic TVariable LC">
  <div class="CTitle">numElements</div>
- <div id="NDPrototype37" class="NDPrototype"><div class="PSection PPlainSection"><span class="SHKeyword">int</span> numElements</div></div>
+ <div id="NDPrototype36" class="NDPrototype"><div class="PSection PPlainSection"><span class="SHKeyword">int</span> numElements</div></div>
+ <div class="CBody"><p>Holds how many elements are in the list, may or may not the same as the internal lists actual size.</p><ul><li><p>Default: 0</p></li></ul></div>
 </div>
 
 <a name="elementSize"></a><a name="Topic38"></a><div class="CTopic TVariable LC last">
  <div class="CTitle">elementSize</div>
  <div id="NDPrototype38" class="NDPrototype"><div class="PSection PPlainSection">size_t elementSize</div></div>
- <div class="CBody"><p>Holds the element size so that pointer arithmetic can be performed with the void pointer.</p></div>
+ <div class="CBody"><p>Holds the element size so that pointer arithmetic can be performed with the void pointer.</p><ul><li><p>Default: 0</p></li></ul></div>
 </div>
 
 </body></html>

@@ -9,6 +9,18 @@
 //
 //This class is for storing continuous data in an array. This is perfect for standard
 //data types and other small data types.
+//
+//The memory allocated by the object follows the below rules, in the following order, unless strictAlloc is true.
+//If strictAlloc is true, then the listSize and numElement variables will coincide.
+//
+//  Rule 1 - If reserved memory is > newLen*2 reallocate (shrink to actual size)
+//
+//  Rule 2 - If reserved memory is < newLen, reallocate (grow to actual size)
+//
+//  Rule 3 - If newLen is 0, free memory
+//
+//  Rule 4 - If reserved memory is >= newLen, don't reallocate
+//
 //General usage is as follows:
 //--- Code
 //GenericList *list=GenericList_t.new();
@@ -20,13 +32,30 @@
 //See Also:
 //
 //  <GenericList_t>
-typedef struct GenericListObj {
+typedef struct GenericList {
 	//Variable: list
+	//
+	// - Default: NULL
 	void *list;
+	//Variable: listSize
+	//Holds the actual size of the internal list.
+	//
+	// - Default: 0
+	int listSize;
+	//Variable: strictAlloc
+	//Determines how memory is allocated.
+	//
+	// - Default: false
+	bool strictAlloc;
 	//Variable: numElements
+	//Holds how many elements are in the list, may or may not the same as the internal lists actual size.
+	//
+	// - Default: 0
 	int numElements;
 	//Variable: elementSize
 	//Holds the element size so that pointer arithmetic can be performed with the void pointer.
+	//
+	// - Default: 0
 	size_t elementSize;
 } GenericList;
 
@@ -90,6 +119,7 @@ extern const struct GenericList_t {
 	void (*setElementSize)(GenericList *self, const size_t newSize);
 	//Function: setListSize
 	//Useful for reducing the number of memory reallocations if you know the final size of the list.
+	//Contents of the list will not be changed unless the new size is less than the current size.
 	//
 	//Parameters:
 	//
@@ -250,7 +280,7 @@ extern const struct GenericList_t {
 	//Returns:
 	//
 	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false DOES NOT guarantee no changes were made to the object.
+	//  A return value of false guarantees no changes were made to the object, unless strictAlloc is true.
 	bool (*remove)(GenericList *self, const void * const token);
 	//Function: removeAt
 	//Removes the item at the supplied index from the list.
@@ -263,7 +293,7 @@ extern const struct GenericList_t {
 	//Returns:
 	//
 	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false DOES NOT guarantee no changes were made to the object.
+	//  A return value of false guarantees no changes were made to the object, unless strictAlloc is true.
 	bool (*removeAt)(GenericList *self, const int index);
 	//Function: removeBetween
 	//Removes the items between the supplied indexes.
@@ -283,25 +313,22 @@ extern const struct GenericList_t {
 	//Returns:
 	//
 	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false DOES NOT guarantee no changes were made to the object.
+	//  A return value of false guarantees no changes were made to the object, unless strictAlloc is true.
 	bool (*removeBetween)(GenericList *self, const int startIndex, const int endIndex);
 	//Function: trimToSize
-	//Removes elements from the end of the list until the list size equals numElements.
-	//
-	//If numElements is greater than the lists size then no action occurs.
-	//
-	//If numElements is 0 clear will be called.
+	//Reallocates the internal memory so that numElements==listSize.
+	//If strictAlloc is true then this function has no purpose, as numElements and listSize
+	//are always the same when strictAlloc is true.
 	//
 	//Parameters:
 	//
 	//  self - The generic list to perform the operation on.
-	//  numElements - The number of elements to keep in the list.
 	//
 	//Returns:
 	//
 	//  Returns true if the operation was successful and changes were made to the object.
 	//  A return value of false guarantees no changes were made to the object.
-	bool (*trimToSize)(GenericList *self, const int numElements);
+	bool (*trimToSize)(GenericList *self);
 	//Function: clear
 	//Removes all elements from the list.
 	//

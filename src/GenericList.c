@@ -22,13 +22,13 @@ static int getLastIndexOf(const GenericList * const self, const void * const tok
 static bool _remove(GenericList *self, const void * const token);
 static bool removeAt(GenericList *self, const int index);
 static bool removeBetween(GenericList *self, const int startIndex, const int endIndex);
-static bool trimToSize(GenericList *self, const int numElements);
+static bool trimToSize(GenericList *self);
 static bool clear(GenericList *self);
 static bool isEmpty(const GenericList * const self);
 static bool equals(const GenericList * const self, const GenericList * const other);
 static bool isInit(const GenericList * const self);
 static bool resizeMemoryBlock(GenericList *self, const int newLen);
-static bool newMemoryBlock(GenericList *self, const int newLen);
+static bool resizeMemoryBlockStrict(GenericList *self, const int newLen);
 static void* getPointerToLocation(const GenericList *self, const int index);
 static bool areListsCompatible(const GenericList *self, const GenericList *other);
 
@@ -76,7 +76,7 @@ static bool setListSize(GenericList *self, const int numElements){
 }
 
 static bool set(GenericList *self, const void * const newElements, const int numElements){
-	if (isInit(self) && newMemoryBlock(self,numElements)){
+	if (isInit(self) && resizeMemoryBlock(self,numElements)){
 	       	memcpy(self->list,newElements,self->elementSize*numElements);
 	       	self->numElements=numElements;
 		return true;
@@ -123,11 +123,13 @@ static bool addAt(GenericList *self, const void * const newElements, const int n
 	return false;
 }
 
+//	 Add removeAll
+//	 Make false return mean no changes were made on all functions.
 static bool copyOtherBetween(GenericList *self, const GenericList * const other, const int startIndex, const int endIndex){
 	if (areListsCompatible(self,other) && !GenericList_t.isEmpty(other)){
 		int start=(startIndex<0)? 0: startIndex;
 		int end=(endIndex>other->numElements)? other->numElements: endIndex;
-		if (end>start && newMemoryBlock(self,end-start)){
+		if (end>start && resizeMemoryBlock(self,end-start)){
 			void *source=getPointerToLocation(other,start);
 			if (source!=NULL){
 				memcpy(self->list,source,self->elementSize*(end-start));
@@ -191,10 +193,8 @@ static bool _remove(GenericList *self, const void * const token){
 				offset++;
 			}
 		}
-		if (resizeMemoryBlock(self,self->numElements-offset)){
-			self->numElements-=offset;
-			return true;
-		}
+		self->numElements-=offset;
+		return resizeMemoryBlock(self,self->numElements);
 	}
 	return false;
 }
@@ -212,23 +212,16 @@ static bool removeBetween(GenericList *self, const int startIndex, const int end
 		if (destination!=NULL && source!=NULL){
 			memmove(destination,source,size);
 		}
-		if (resizeMemoryBlock(self,self->numElements-(endIndex-startIndex))){
-			self->numElements-=(endIndex-startIndex);
-			return true;
-		}
+		self->numElements-=(endIndex-startIndex);
+		return resizeMemoryBlock(self,self->numElements);
 	}
 	return false;
 }
 
-static bool trimToSize(GenericList *self, const int numElements){
+static bool trimToSize(GenericList *self){
 	if (!GenericList_t.isEmpty(self) && isInit(self) && 
-	    numElements<self->numElements){
-		if (numElements>0 && resizeMemoryBlock(self,numElements)){
-			self->numElements=numElements;
-			return true;
-		} else if (numElements==0){
-			return clear(self);
-		}
+	    !self->strictAlloc && self->numElements!=self->listSize){
+		return resizeMemoryBlockStrict(self,self->numElements);
 	}
 	return false;
 }
@@ -270,27 +263,40 @@ static bool isInit(const GenericList * const self){
 }
 
 static bool resizeMemoryBlock(GenericList *self, const int newLen){
+	if (!self->strictAlloc){
+		if (newLen>0 && (self->listSize>newLen*2 || self->listSize<newLen)){
+			void *reallocPntr=realloc(self->list,self->elementSize*newLen);
+			if (reallocPntr!=NULL){
+				self->list=reallocPntr;
+				self->listSize=newLen;
+				return true;
+			}
+		} else if (newLen==0){
+			free(self->list);
+			self->list=NULL;
+			self->listSize=0;
+			return true;
+		} else if (self->listSize>=newLen){
+			return true;
+		}
+		return false;
+	} else {
+		return resizeMemoryBlockStrict(self,newLen);
+	}
+}
+
+static bool resizeMemoryBlockStrict(GenericList *self, const int newLen){
 	if (newLen>0){
 		void *reallocPntr=realloc(self->list,self->elementSize*newLen);
 		if (reallocPntr!=NULL){
 			self->list=reallocPntr;
+			self->listSize=newLen;
 			return true;
 		}
-	} else if (newLen==0) {
+	} else if (newLen==0){
 		free(self->list);
 		self->list=NULL;
-		return true;
-	}
-	return false;
-}
-
-static bool newMemoryBlock(GenericList *self, const int newLen){
-	void *mallocPntr=malloc(self->elementSize*newLen);
-	if (mallocPntr!=NULL){
-		if (self->list!=NULL){
-			free(self->list);
-		}
-		self->list=mallocPntr;
+		self->listSize=0;
 		return true;
 	}
 	return false;
@@ -315,8 +321,10 @@ static bool areListsCompatible(const GenericList *self, const GenericList *other
 static GenericList* constructor(void){
 	GenericList *rv=createObject(sizeof(GenericList));
 	rv->list=NULL;
-	rv->elementSize=0;
+	rv->listSize=0;
+	rv->strictAlloc=false;
 	rv->numElements=0;
+	rv->elementSize=0;
 	return rv;
 }
 

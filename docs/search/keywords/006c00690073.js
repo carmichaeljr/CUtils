@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("lis",["Variable"],[["list",,[["GenericList",,,,0,"File:GenericList.h:GenericList.list","CClass:GenericList:list"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("lis",["Variable"],[["list",,[["GenericList",,,,0,"File:GenericList.h:GenericList.list","CClass:GenericList:list"]]],["listSize",,[["GenericList",,,,0,"File:GenericList.h:GenericList.listSize","CClass:GenericList:listSize"]]]]);
