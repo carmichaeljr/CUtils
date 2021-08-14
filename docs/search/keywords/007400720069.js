@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("tri",["Function"],[["trimToSize",,[["GenericList_t",,,,0,"File:GenericList.h:GenericList_t.trimToSize","CClass:GenericList_t:trimToSize"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("tri",["Function"],[["trimSubstring",,[["String_t",,,,0,"File:String.h:String_t.trimSubstring","CClass:String_t:trimSubstring"]]],["trimToSize",,[["GenericList_t",,,,0,"File:GenericList.h:GenericList_t.trimToSize","CClass:GenericList_t:trimToSize"]]]]);

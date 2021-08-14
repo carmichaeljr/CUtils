@@ -26,6 +26,7 @@ typedef struct StringObj {
 	//Variable: str
 	char *str;
 	//Variable: length
+	//The length of the string excluding the NULL terminator.
 	int length;
 } String;
 
@@ -71,9 +72,11 @@ extern const struct String_t {
 	void (*print)(const String * const obj);
 	//Function: setSize
 	//Allocates enough space for a string of length len+1. (for NULL terminator)
-	//If len==0 then clear will be called.
+	//Contents of the string will not be changed unless the new size is less than the current size.
+	//No terminating NULL character is added, this is purely just to set the size of the underlying array.
+	//If len==0 then <String_t.clear> will be called.
 	//
-	//Memory contents are not initialized besides the terminating '\0'.
+	//Memory contents are not initialized.
 	//
 	//Useful for reducing reallocations when you know the final size of the string.
 	//
@@ -90,7 +93,7 @@ extern const struct String_t {
 	//Function: set
 	//Copies the contents of a NULL terminated string.
 	//
-	//If newStr is empty then clear will be called.
+	//If newStr is empty or NULL then <String_t.clear> will be called.
 	//
 	//Parameters:
 	//
@@ -137,9 +140,8 @@ extern const struct String_t {
 	//Function: copyOtherBetween
 	//Copies another string given the supplied indexes.
 	//
-	//If startIndex is less than 0 then it is bounded to 0.
-	//If endIndex is greater than the number of elements in the string being copied
-	//then it is bounded to the length of the string being copied.
+	//If startIndex is less than 0, endIndex is greater than the length of the string being copied,
+	//or startIndex>endIndex, no operation occurs.
 	//
 	//Parameters:
 	//
@@ -151,7 +153,7 @@ extern const struct String_t {
 	//Returns:
 	//
 	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false DOES NOT guarantee no changes were made to the object.
+	//  A return value of false guarantees no changes were made to the object.
 	bool (*copyOtherBetween)(String *self, const String * const other, const int startIndex, const int endIndex);
 	//Function: toUpper
 	//Makes a string uppercase.
@@ -218,6 +220,27 @@ extern const struct String_t {
 	//
 	//  The number of characters in the string that are found in searchChars.
 	int (*getCharOccurrences)(const String *self, const char *searchChars);
+	//Function: trimSubstring
+	//Removes the substring defined by the given indexes.
+	//
+	//If the indexes specify the whole string then <String_t.clear> will be called.
+	//
+	//Parameters:
+	//
+	//  self - The string object to perform the operation on.
+	//  startIndex - The start index of the substring to remove (inclusive).
+	//  endIndex - The end index of the substring to remove (exclusive).
+	//
+	//Returns:
+	//
+	//  Returns true if the operation was successful and changes were made to the object.
+	//  A return value of false guarantees no changes were made to the object, 
+	//  unless strictAlloc is true for the underlying GenericList data structure (defaults to false).
+	//
+	//See Also:
+	//
+	//  - <GenericList.strictAlloc>
+	bool (*trimSubstring)(String *self, const int startIndex, const int endIndex);
 	//Function: clear
 	//Clears the contents of the string, sets length to 0.
 	//
@@ -236,7 +259,6 @@ extern const struct String_t {
 	bool (*contains)(const String *self, const char *token);
 	//IntList* (*getIndexesOf)(const String *self, const char token);
 	void (*removeChars)(String *self, const char *unwantedChars);
-	void (*trimSubString)(String *self, const int startIndex, const int endIndex);
 } String_t;
 
 #endif

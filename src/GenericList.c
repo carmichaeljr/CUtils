@@ -68,11 +68,7 @@ static void setElementSize(GenericList *self, const size_t newSize){
 }
 
 static bool setListSize(GenericList *self, const int numElements){
-	if (isInit(self) && numElements>=0 && resizeMemoryBlock(self,numElements)){
-		self->numElements=numElements;
-		return true;
-	}
-	return false;
+	return (isInit(self) && numElements>=0 && resizeMemoryBlock(self,numElements));
 }
 
 static bool set(GenericList *self, const void * const newElements, const int numElements){
@@ -123,17 +119,17 @@ static bool addAt(GenericList *self, const void * const newElements, const int n
 	return false;
 }
 
-//	 Add removeAll
-//	 Make false return mean no changes were made on all functions.
+//TODO - just throw away invalid inputs rather than constraining them
 static bool copyOtherBetween(GenericList *self, const GenericList * const other, const int startIndex, const int endIndex){
-	if (areListsCompatible(self,other) && !GenericList_t.isEmpty(other)){
-		int start=(startIndex<0)? 0: startIndex;
-		int end=(endIndex>other->numElements)? other->numElements: endIndex;
-		if (end>start && resizeMemoryBlock(self,end-start)){
-			void *source=getPointerToLocation(other,start);
+	if (areListsCompatible(self,other) && !GenericList_t.isEmpty(other) &&
+	    startIndex>=0 && startIndex<endIndex && endIndex<=other->numElements){
+		//int start=(startIndex<0)? 0: startIndex;
+		//int end=(endIndex>other->numElements)? other->numElements: endIndex;
+		if (resizeMemoryBlock(self,endIndex-startIndex)){
+			void *source=getPointerToLocation(other,startIndex);
 			if (source!=NULL){
-				memcpy(self->list,source,self->elementSize*(end-start));
-				self->numElements=end-start;
+				memcpy(self->list,source,self->elementSize*(endIndex-startIndex));
+				self->numElements=endIndex-startIndex;
 				return true;
 			}
 		}
@@ -198,6 +194,7 @@ static bool _remove(GenericList *self, const void * const token){
 	}
 	return false;
 }
+//	 Add removeAll
 
 static bool removeAt(GenericList *self, const int index){
 	return removeBetween(self,index,index+1);

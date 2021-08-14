@@ -20,7 +20,6 @@ static bool String_Contains(const String *self, const char *token);
 static void String_ConvertFromGenericListToStr(String *self);
 //static IntList* String_GetIndexesOf(const String *self, const char token);
 static void String_RemoveChars(String *self, const char *unwantedChars);
-static void String_TrimSubstring(String *self, const int startIndex, const int endIndex);
 //Public
 static bool setSize(String *self, const int len);
 static bool set(String *self, const char * const newStr);
@@ -32,6 +31,7 @@ static void toLower(String *self);
 static int getFirstIndexOf(const String * const self, const char searchChar);
 static int getLastIndexOf(const String * const self, const char searchChar);
 static int getCharOccurrences(const String * const self, const char * const searchChars);
+static bool trimSubstring(String *self, const int startIndex, const int endIndex);
 static bool clear(String *self);
 //Private
 static void String_SetLength(String *self);
@@ -50,12 +50,12 @@ const struct String_t String_t={
 	.getFirstIndexOf=getFirstIndexOf,
 	.getLastIndexOf=getLastIndexOf,
 	.getCharOccurrences=getCharOccurrences,
+	.trimSubstring=trimSubstring,
 	.clear=clear,
 
 	//occurrences 
 	.equals=String_Equals,
 	.removeChars=String_RemoveChars,
-	.trimSubString=String_TrimSubstring,
 	.trimWhitespace=String_TrimWhitespace,
 	.contains=String_Contains,
 	//.getIndexesOf=String_GetIndexesOf,
@@ -66,10 +66,9 @@ const struct String_t String_t={
 static bool setSize(String *self, const int len){
 	GenericList *temp=self->genericList;
 	if (len>0 && 
-	    GenericList_t.setListSize(self->genericList,len+1) && 
-	    GenericList_t.setAt(temp,"\0",1,temp->numElements-1)){
+	    GenericList_t.setListSize(self->genericList,len+1)){
 		self->str=(char*)temp->list;
-		self->length=temp->numElements-1;
+		self->length=(temp->numElements>0)? temp->numElements-1: temp->numElements;
 		return true;
 	} else if (len==0) {
 		return clear(self);
@@ -77,8 +76,9 @@ static bool setSize(String *self, const int len){
 	return false;
 }
 
+//TODO - add set non-null string
 static bool set(String *self, const char * const newStr){
-	int lenNewStr=strlen(newStr);
+	int lenNewStr=(newStr!=NULL)? strlen(newStr): 0;
 	GenericList *temp=self->genericList;
 	if (lenNewStr>0 && GenericList_t.set(temp,newStr,lenNewStr+1)){
 		self->str=(char*)temp->list;
@@ -109,8 +109,8 @@ static bool concatChar(String *self, const char newChar){
 		self->length=temp->numElements-1;
 		return true;
 	} else if (GenericList_t.setListSize(temp,2)){
-		GenericList_t.setAt(temp,&newChar,1,0);
-		GenericList_t.setAt(temp,"\0",1,1);
+		GenericList_t.add(temp,&newChar,1);
+		GenericList_t.add(temp,"\0",1);
 		self->str=(char*)temp->list;
 		self->length=temp->numElements-1;
 		return true;
@@ -121,15 +121,15 @@ static bool concatChar(String *self, const char newChar){
 static bool copyOtherBetween(String *self, const String * const other, const int startIndex, const int endIndex){
 	GenericList *selfTemp=self->genericList;
 	GenericList *otherTemp=other->genericList;
-	bool rv=GenericList_t.copyOtherBetween(selfTemp,otherTemp,startIndex,endIndex);
-	if (rv && *(char*)GenericList_t.get(selfTemp,selfTemp->numElements-1)!='\0'){
-		rv=GenericList_t.add(selfTemp,"\0",1);
-	}
-	if (rv){
+	if (startIndex>=0 && startIndex<endIndex && endIndex<=other->length &&
+	    GenericList_t.setListSize(selfTemp,endIndex-startIndex+1)){
+		GenericList_t.copyOtherBetween(selfTemp,otherTemp,startIndex,endIndex);
+		GenericList_t.add(selfTemp,"\0",1);
 		self->str=(char*)selfTemp->list;
 		self->length=selfTemp->numElements-1;
+		return true;
 	}
-	return rv;
+	return false;
 }
 
 static void toUpper(String *self){
@@ -168,6 +168,19 @@ static int getCharOccurrences(const String * const self, const char * const sear
 	return rv;
 }
 
+//TODO - just throw away invalid inputs rather than constraining them
+static bool trimSubstring(String *self, const int startIndex, const int endIndex){
+	GenericList *temp=self->genericList;
+	if (startIndex==0 && endIndex==self->length){
+		return String_t.clear(self);
+	} else if (GenericList_t.removeBetween(temp,startIndex,endIndex)){
+		self->str=(char*)temp->list;
+		self->length=temp->numElements-1;
+		return true;
+	}
+	return false;
+}
+
 static bool clear(String *self){
 	if (GenericList_t.clear(self->genericList)){
 		self->str=(char*)self->genericList->list;
@@ -177,6 +190,7 @@ static bool clear(String *self){
 	return false;
 }
 
+//make remove all
 static void String_RemoveChars(String *self, const char *unwantedChars){
 	GenericList *temp=self->genericList;
 	for (int i=0; i<strlen(unwantedChars); i++){
@@ -185,25 +199,19 @@ static void String_RemoveChars(String *self, const char *unwantedChars){
 	String_ConvertFromGenericListToStr(self);
 }
 
-static void String_TrimSubstring(String *self, const int startIndex, const int endIndex){
-	GenericList *temp=self->genericList;
-	GenericList_t.removeBetween(temp,startIndex,endIndex);
-	String_ConvertFromGenericListToStr(self);
-}
-
 static void String_TrimWhitespace(String *self){
 	bool exit=false;
 	if (self->str!=NULL){
 		for (int i=0; i<self->length && !exit; i++){
 			if (self->str[i]!=' ' && self->str[i]!='\t'){
-				String_t.trimSubString(self,0,i);
+				String_t.trimSubstring(self,0,i);
 				exit=true;
 			}
 		}
 		exit=false;
 		for (int i=self->length-1; i>0 && !exit; i--){
 			if (self->str[i]!=' ' && self->str[i]!='\t'){
-				String_t.trimSubString(self,i+1,self->length);
+				String_t.trimSubstring(self,i+1,self->length);
 				exit=true;
 			}
 		}

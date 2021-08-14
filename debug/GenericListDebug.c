@@ -3,13 +3,15 @@
 #include "../src/GenericList.h"
 #include "../src/Print.h"
 
-static bool setElementSize(void);
-static bool setListSize(void);
-static bool set(void);
-static bool setAt(void);
-static bool add(void);
-static bool addAt(void);
-static bool copyOtherBetween(void);
+#define genericListTest(result) test(result,"GenericList",__FUNCTION__,__LINE__)
+
+static void setElementSize(void);
+static void setListSize(void);
+static void set(void);
+static void setAt(void);
+static void add(void);
+static void addAt(void);
+static void copyOtherBetween(void);
 static bool get(void);
 static bool contains(void);
 static bool getFirstIndexOf(void);
@@ -23,14 +25,14 @@ static bool isEmpty(void);
 static bool equals(void);
 
 bool genericListDebug(void){
+	setElementSize();
+	setListSize();
+	set();
+	setAt();
+	add();
+	addAt();
+	copyOtherBetween();
 	return (
-		setElementSize() &
-		setListSize() &
-		set() &
-		setAt() &
-		add() &
-		addAt() &
-		copyOtherBetween() &
 		get() &
 		contains() &
 		getFirstIndexOf() &
@@ -45,182 +47,167 @@ bool genericListDebug(void){
 	       );
 }
 
-static bool setElementSize(void){
-	bool rv=true;
+static void setElementSize(void){
 	GenericList *test=GenericList_t.new();
-	if (test->elementSize!=0) rv=false;
+	genericListTest(test->elementSize==0);
 	GenericList_t.setElementSize(test,sizeof(char));
-	if (test->elementSize!=sizeof(char)) rv=false;
+	genericListTest(test->elementSize==sizeof(char));
 	GenericList_t.add(test,&("hello"[0]),1);
 	GenericList_t.setElementSize(test,sizeof(float));
-	if (test->elementSize!=sizeof(float)) rv=false;
-	if (test->numElements!=0) rv=false;
+	genericListTest(test->elementSize==sizeof(float));
+	genericListTest(test->numElements==0);
 	GenericList_t.delete(&test);
-	Print_t.objectDebug("GenericList","setElementSize",rv);
-	return rv;
 }
 
-static bool setListSize(void){
-	bool rv=true;
+static void setListSize(void){
 	GenericList *test=GenericList_t.new();
-	if (GenericList_t.setListSize(test,10)) rv=false;
-	if (test->numElements!=0) rv=false;
+	genericListTest(!GenericList_t.setListSize(test,10));
+	genericListTest(test->listSize==0);
+	genericListTest(test->numElements==0);
 	GenericList_t.setElementSize(test,sizeof(char));
-	if (GenericList_t.setListSize(test,-1)) rv=false;
-	if (test->numElements!=0) rv=false;
-	if (!GenericList_t.setListSize(test,10)) rv=false;
-	if (test->numElements!=10) rv=false;
+	genericListTest(!GenericList_t.setListSize(test,-1));
+	genericListTest(test->listSize==0);
+	genericListTest(test->numElements==0);
+	genericListTest(GenericList_t.setListSize(test,10));
+	genericListTest(test->listSize==10);
+	genericListTest(test->numElements==0);
 	GenericList_t.delete(&test);
-	Print_t.objectDebug("GenericList","setListSize",rv);
-	return rv;
 }
 
-static bool set(void){
-	bool rv=true;
+static void set(void){
 	GenericList *test=GenericList_t.new();
-	if (GenericList_t.set(test,"hello",5)) rv=false;
-	if (test->numElements!=0) rv=false;
+	genericListTest(!GenericList_t.set(test,"hello",5));
+	genericListTest(test->numElements==0);
 	GenericList_t.setElementSize(test,sizeof(char));
-	if (!GenericList_t.set(test,"hello",5)) rv=false;
-	if (test->numElements!=5) rv=false;
-	if (*((char*)test->list+sizeof(char)*0)!='h') rv=false;
-	if (*((char*)test->list+sizeof(char)*1)!='e') rv=false;
-	if (*((char*)test->list+sizeof(char)*2)!='l') rv=false;
-	if (*((char*)test->list+sizeof(char)*3)!='l') rv=false;
-	if (*((char*)test->list+sizeof(char)*4)!='o') rv=false;
-	if (!GenericList_t.set(test,"hi",2)) rv=false;
-	if (test->numElements!=2) rv=false;
-	if (*((char*)test->list+sizeof(char)*0)!='h') rv=false;
-	if (*((char*)test->list+sizeof(char)*1)!='i') rv=false;
+	genericListTest(GenericList_t.set(test,"hello",5));
+	genericListTest(test->numElements==5);
+	genericListTest(*((char*)test->list+sizeof(char)*0)=='h');
+	genericListTest(*((char*)test->list+sizeof(char)*1)=='e');
+	genericListTest(*((char*)test->list+sizeof(char)*2)=='l');
+	genericListTest(*((char*)test->list+sizeof(char)*3)=='l');
+	genericListTest(*((char*)test->list+sizeof(char)*4)=='o');
+	genericListTest(GenericList_t.set(test,"hi",2));
+	genericListTest(test->numElements==2);
+	genericListTest(*((char*)test->list+sizeof(char)*0)=='h');
+	genericListTest(*((char*)test->list+sizeof(char)*1)=='i');
 	GenericList_t.delete(&test);
-	Print_t.objectDebug("GenericList","set",rv);
-	return rv;
 }
 
-static bool setAt(void){
-	bool rv=true;
+static void setAt(void){
 	GenericList *test=GenericList_t.new();
-	if (GenericList_t.setAt(test,"hello",5,0)) rv=false;
-	if (test->numElements!=0) rv=false;
+	genericListTest(!GenericList_t.setAt(test,"hello",5,0));
+	genericListTest(test->numElements==0);
 	GenericList_t.setElementSize(test,sizeof(char));
-	if (!GenericList_t.setAt(test,"hello",5,1)) rv=false;
-	if (test->numElements!=5) rv=false;
-	if (*((char*)test->list+sizeof(char)*0)!='h') rv=false;
-	if (*((char*)test->list+sizeof(char)*1)!='e') rv=false;
-	if (*((char*)test->list+sizeof(char)*2)!='l') rv=false;
-	if (*((char*)test->list+sizeof(char)*3)!='l') rv=false;
-	if (*((char*)test->list+sizeof(char)*4)!='o') rv=false;
-	if (!GenericList_t.setAt(test,"bye",3,2)) rv=false;
-	if (test->numElements!=5) rv=false;
-	if (*((char*)test->list+sizeof(char)*0)!='h') rv=false;
-	if (*((char*)test->list+sizeof(char)*1)!='e') rv=false;
-	if (*((char*)test->list+sizeof(char)*2)!='b') rv=false;
-	if (*((char*)test->list+sizeof(char)*3)!='y') rv=false;
-	if (*((char*)test->list+sizeof(char)*4)!='e') rv=false;
-	if (!GenericList_t.setAt(test,"bye",3,3)) rv=false;
-	if (test->numElements!=5) rv=false;
-	if (*((char*)test->list+sizeof(char)*0)!='h') rv=false;
-	if (*((char*)test->list+sizeof(char)*1)!='e') rv=false;
-	if (*((char*)test->list+sizeof(char)*2)!='b') rv=false;
-	if (*((char*)test->list+sizeof(char)*3)!='b') rv=false;
-	if (*((char*)test->list+sizeof(char)*4)!='y') rv=false;
-	if (GenericList_t.setAt(test,"bye",3,6)) rv=false;
-	if (test->numElements!=5) rv=false;
-	if (*((char*)test->list+sizeof(char)*0)!='h') rv=false;
-	if (*((char*)test->list+sizeof(char)*1)!='e') rv=false;
-	if (*((char*)test->list+sizeof(char)*2)!='b') rv=false;
-	if (*((char*)test->list+sizeof(char)*3)!='b') rv=false;
-	if (*((char*)test->list+sizeof(char)*4)!='y') rv=false;
+	genericListTest(GenericList_t.setAt(test,"hello",5,1));
+	genericListTest(test->numElements==5);
+	genericListTest(*((char*)test->list+sizeof(char)*0)=='h');
+	genericListTest(*((char*)test->list+sizeof(char)*1)=='e');
+	genericListTest(*((char*)test->list+sizeof(char)*2)=='l');
+	genericListTest(*((char*)test->list+sizeof(char)*3)=='l');
+	genericListTest(*((char*)test->list+sizeof(char)*4)=='o');
+	genericListTest(GenericList_t.setAt(test,"bye",3,2));
+	genericListTest(test->numElements==5);
+	genericListTest(*((char*)test->list+sizeof(char)*0)=='h');
+	genericListTest(*((char*)test->list+sizeof(char)*1)=='e');
+	genericListTest(*((char*)test->list+sizeof(char)*2)=='b');
+	genericListTest(*((char*)test->list+sizeof(char)*3)=='y');
+	genericListTest(*((char*)test->list+sizeof(char)*4)=='e');
+	genericListTest(GenericList_t.setAt(test,"bye",3,3));
+	genericListTest(test->numElements==5);
+	genericListTest(*((char*)test->list+sizeof(char)*0)=='h');
+	genericListTest(*((char*)test->list+sizeof(char)*1)=='e');
+	genericListTest(*((char*)test->list+sizeof(char)*2)=='b');
+	genericListTest(*((char*)test->list+sizeof(char)*3)=='b');
+	genericListTest(*((char*)test->list+sizeof(char)*4)=='y');
+	genericListTest(!GenericList_t.setAt(test,"bye",3,6));
+	genericListTest(test->numElements==5);
+	genericListTest(*((char*)test->list+sizeof(char)*0)=='h');
+	genericListTest(*((char*)test->list+sizeof(char)*1)=='e');
+	genericListTest(*((char*)test->list+sizeof(char)*2)=='b');
+	genericListTest(*((char*)test->list+sizeof(char)*3)=='b');
+	genericListTest(*((char*)test->list+sizeof(char)*4)=='y');
 	GenericList_t.delete(&test);
-	Print_t.objectDebug("GenericList","setAt",rv);
-	return rv;
 }
 
-static bool add(void){
-	bool rv=true;
+static void add(void){
 	GenericList *test=GenericList_t.new();
-	if (GenericList_t.add(test,"hello",5)) rv=false;
-	if (test->numElements!=0) rv=false;
+	genericListTest(!GenericList_t.add(test,"hello",5));
+	genericListTest(test->numElements==0);
 	GenericList_t.setElementSize(test,sizeof(char));
-	if (!GenericList_t.add(test,"hello",5)) rv=false;
-	if (test->numElements!=5) rv=false;
-	if (*((char*)test->list+sizeof(char)*0)!='h') rv=false;
-	if (*((char*)test->list+sizeof(char)*1)!='e') rv=false;
-	if (*((char*)test->list+sizeof(char)*2)!='l') rv=false;
-	if (*((char*)test->list+sizeof(char)*3)!='l') rv=false;
-	if (*((char*)test->list+sizeof(char)*4)!='o') rv=false;
-	if (!GenericList_t.add(test,"bye",3)) rv=false;
-	if (test->numElements!=8) rv=false;
-	if (*((char*)test->list+sizeof(char)*0)!='h') rv=false;
-	if (*((char*)test->list+sizeof(char)*1)!='e') rv=false;
-	if (*((char*)test->list+sizeof(char)*2)!='l') rv=false;
-	if (*((char*)test->list+sizeof(char)*3)!='l') rv=false;
-	if (*((char*)test->list+sizeof(char)*4)!='o') rv=false;
-	if (*((char*)test->list+sizeof(char)*5)!='b') rv=false;
-	if (*((char*)test->list+sizeof(char)*6)!='y') rv=false;
-	if (*((char*)test->list+sizeof(char)*7)!='e') rv=false;
+	genericListTest(GenericList_t.add(test,"hello",5));
+	genericListTest(test->numElements==5);
+	genericListTest(*((char*)test->list+sizeof(char)*0)=='h');
+	genericListTest(*((char*)test->list+sizeof(char)*1)=='e');
+	genericListTest(*((char*)test->list+sizeof(char)*2)=='l');
+	genericListTest(*((char*)test->list+sizeof(char)*3)=='l');
+	genericListTest(*((char*)test->list+sizeof(char)*4)=='o');
+	genericListTest(GenericList_t.add(test,"bye",3));
+	genericListTest(test->numElements==8);
+	genericListTest(*((char*)test->list+sizeof(char)*0)=='h');
+	genericListTest(*((char*)test->list+sizeof(char)*1)=='e');
+	genericListTest(*((char*)test->list+sizeof(char)*2)=='l');
+	genericListTest(*((char*)test->list+sizeof(char)*3)=='l');
+	genericListTest(*((char*)test->list+sizeof(char)*4)=='o');
+	genericListTest(*((char*)test->list+sizeof(char)*5)=='b');
+	genericListTest(*((char*)test->list+sizeof(char)*6)=='y');
+	genericListTest(*((char*)test->list+sizeof(char)*7)=='e');
 	GenericList_t.delete(&test);
-	Print_t.objectDebug("GenericList","add",rv);
-	return rv;
 }
 
-static bool addAt(void){
-	bool rv=true;
+static void addAt(void){
 	GenericList *test=GenericList_t.new();
-	if (GenericList_t.addAt(test,"hello",5,0)) rv=false;
-	if (test->numElements!=0) rv=false;
+	genericListTest(!GenericList_t.addAt(test,"hello",5,0));
+	genericListTest(test->numElements==0);
 	GenericList_t.setElementSize(test,sizeof(char));
-	if (!GenericList_t.addAt(test,"hello",5,1)) rv=false;
-	if (test->numElements!=5) rv=false;
-	if (*((char*)test->list+sizeof(char)*0)!='h') rv=false;
-	if (*((char*)test->list+sizeof(char)*1)!='e') rv=false;
-	if (*((char*)test->list+sizeof(char)*2)!='l') rv=false;
-	if (*((char*)test->list+sizeof(char)*3)!='l') rv=false;
-	if (*((char*)test->list+sizeof(char)*4)!='o') rv=false;
-	if (!GenericList_t.addAt(test,"1",1,0)) rv=false;
-	if (!GenericList_t.addAt(test,"1",1,3)) rv=false;
-	if (!GenericList_t.addAt(test,"1",1,7)) rv=false;
-	if(test->numElements!=8) rv=false;
-	if (*((char*)test->list+sizeof(char)*0)!='1') rv=false;
-	if (*((char*)test->list+sizeof(char)*1)!='h') rv=false;
-	if (*((char*)test->list+sizeof(char)*2)!='e') rv=false;
-	if (*((char*)test->list+sizeof(char)*3)!='1') rv=false;
-	if (*((char*)test->list+sizeof(char)*4)!='l') rv=false;
-	if (*((char*)test->list+sizeof(char)*5)!='l') rv=false;
-	if (*((char*)test->list+sizeof(char)*6)!='o') rv=false;
-	if (*((char*)test->list+sizeof(char)*7)!='1') rv=false;
+	genericListTest(GenericList_t.addAt(test,"hello",5,1));
+	genericListTest(test->numElements==5);
+	genericListTest(*((char*)test->list+sizeof(char)*0)=='h');
+	genericListTest(*((char*)test->list+sizeof(char)*1)=='e');
+	genericListTest(*((char*)test->list+sizeof(char)*2)=='l');
+	genericListTest(*((char*)test->list+sizeof(char)*3)=='l');
+	genericListTest(*((char*)test->list+sizeof(char)*4)=='o');
+	genericListTest(GenericList_t.addAt(test,"1",1,0));
+	genericListTest(GenericList_t.addAt(test,"1",1,3));
+	genericListTest(GenericList_t.addAt(test,"1",1,7));
+	genericListTest(test->numElements==8);
+	genericListTest(*((char*)test->list+sizeof(char)*0)=='1');
+	genericListTest(*((char*)test->list+sizeof(char)*1)=='h');
+	genericListTest(*((char*)test->list+sizeof(char)*2)=='e');
+	genericListTest(*((char*)test->list+sizeof(char)*3)=='1');
+	genericListTest(*((char*)test->list+sizeof(char)*4)=='l');
+	genericListTest(*((char*)test->list+sizeof(char)*5)=='l');
+	genericListTest(*((char*)test->list+sizeof(char)*6)=='o');
+	genericListTest(*((char*)test->list+sizeof(char)*7)=='1');
 	GenericList_t.delete(&test);
-	Print_t.objectDebug("GenericList","addAt",rv);
-	return rv;
 }
 
-static bool copyOtherBetween(void){
-	bool rv=true;
+static void copyOtherBetween(void){
 	GenericList *test1=GenericList_t.new();
 	GenericList *test2=GenericList_t.new();
 	GenericList_t.setElementSize(test1,sizeof(float));
 	GenericList_t.setElementSize(test2,sizeof(char));
 	GenericList_t.add(test2,"hello",5);
-	if (GenericList_t.copyOtherBetween(test1,test2,1,3)) rv=false;
-	if (test1->numElements!=0) rv=false;
+	genericListTest(!GenericList_t.copyOtherBetween(test1,test2,1,3));
+	genericListTest(test1->numElements==0);
 	GenericList_t.setElementSize(test1,sizeof(char));
-	if (!GenericList_t.copyOtherBetween(test1,test2,1,3)) rv=false;
-	if (test1->numElements!=2) rv=false;
-	if (*((char*)test1->list+sizeof(char)*0)!='e') rv=false;
-	if (*((char*)test1->list+sizeof(char)*1)!='l') rv=false;
-	if (!GenericList_t.copyOtherBetween(test1,test2,0,3)) rv=false;
-	if (test1->numElements!=3) rv=false;
-	if (*((char*)test1->list+sizeof(char)*0)!='h') rv=false;
-	if (*((char*)test1->list+sizeof(char)*1)!='e') rv=false;
-	if (*((char*)test1->list+sizeof(char)*2)!='l') rv=false;
-	if (!GenericList_t.copyOtherBetween(test1,test2,3,5)) rv=false;
-	if (test1->numElements!=2) rv=false;
-	if (*((char*)test1->list+sizeof(char)*0)!='l') rv=false;
-	if (*((char*)test1->list+sizeof(char)*1)!='o') rv=false;
+	genericListTest(!GenericList_t.copyOtherBetween(test1,test2,-1,3));
+	genericListTest(!GenericList_t.copyOtherBetween(test1,test2,3,6));
+	genericListTest(!GenericList_t.copyOtherBetween(test1,test2,3,2));
+	genericListTest(GenericList_t.copyOtherBetween(test1,test2,1,3));
+	genericListTest(test1->numElements==2);
+	genericListTest(*((char*)test1->list+sizeof(char)*0)=='e');
+	genericListTest(*((char*)test1->list+sizeof(char)*1)=='l');
+	genericListTest(GenericList_t.copyOtherBetween(test1,test2,0,3));
+	genericListTest(test1->numElements==3);
+	genericListTest(*((char*)test1->list+sizeof(char)*0)=='h');
+	genericListTest(*((char*)test1->list+sizeof(char)*1)=='e');
+	genericListTest(*((char*)test1->list+sizeof(char)*2)=='l');
+	genericListTest(GenericList_t.copyOtherBetween(test1,test2,3,5));
+	genericListTest(test1->numElements==2);
+	genericListTest(*((char*)test1->list+sizeof(char)*0)=='l');
+	genericListTest(*((char*)test1->list+sizeof(char)*1)=='o');
 	GenericList_t.delete(&test1);
 	GenericList_t.delete(&test2);
-	Print_t.objectDebug("GenericList","copyOtherBetween",rv);
-	return rv;
 }
 
 static bool get(void){

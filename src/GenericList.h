@@ -10,8 +10,7 @@
 //This class is for storing continuous data in an array. This is perfect for standard
 //data types and other small data types.
 //
-//The memory allocated by the object follows the below rules, in the following order, unless strictAlloc is true.
-//If strictAlloc is true, then the listSize and numElement variables will coincide.
+//The memory allocated by the object follows the below rules, in the below order, unless strictAlloc is true.
 //
 //  Rule 1 - If reserved memory is > newLen*2 reallocate (shrink to actual size)
 //
@@ -106,7 +105,7 @@ extern const struct GenericList_t {
 	//functions will perform any action.
 	//
 	//When setting the element size, if the new element size is different from the current element size
-	//then the list will be cleared.
+	//then <GenericList_t.clear> will be called.
 	//
 	//Parameters:
 	//
@@ -120,6 +119,9 @@ extern const struct GenericList_t {
 	//Function: setListSize
 	//Useful for reducing the number of memory reallocations if you know the final size of the list.
 	//Contents of the list will not be changed unless the new size is less than the current size.
+	//numElements will not be updated, and future calls should assume that the list is 'empty' or
+	//contains what was previously held in the array.
+	//This is purely just to set the size of the underlying array.
 	//
 	//Parameters:
 	//
@@ -197,9 +199,8 @@ extern const struct GenericList_t {
 	//Function: copyOtherBetween
 	//Copies the selected data from another GenericList.
 	//
-	//If startIndex is less than 0 then it is bounded to 0.
-	//If endIndex is greater than the number of elements in the list being copied
-	//then it is bounded to the length of the list being copied.
+	//If startIndex is less than 0, endIndex is greater than the number of elements in the list being copied,
+	//or startIndex>endIndex, no operation occurs.
 	//
 	//Parameters:
 	//

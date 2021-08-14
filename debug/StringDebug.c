@@ -4,231 +4,207 @@
 #include "../src/String.h"
 #include "../src/Print.h"
 
-static bool setSize(void);
-static bool set(void);
-static bool concat(void);
-static bool concatChar(void);
-static bool copyOtherBetween(void);
-static bool toUpper(void);
-static bool toLower(void);
-static bool getFirstIndexOf(void);
-static bool getLastIndexOf(void);
-static bool getCharOccurrences(void);
-static bool clear(void);
+#define stringTest(result) test(result,"String",__FUNCTION__,__LINE__)
 
-bool stringDebug(void){
-	return (
-		setSize() &
-		set() &
-		concat() &
-		concatChar() &
-		copyOtherBetween() &
-		toUpper() &
-		toLower() &
-		getFirstIndexOf() &
-		getLastIndexOf() &
-		getCharOccurrences() &
-		clear()
-	       );
+static void setSize(void);
+static void set(void);
+static void concat(void);
+static void concatChar(void);
+static void copyOtherBetween(void);
+static void toUpper(void);
+static void toLower(void);
+static void getFirstIndexOf(void);
+static void getLastIndexOf(void);
+static void getCharOccurrences(void);
+static void trimSubstring(void);
+static void clear(void);
+
+void stringDebug(void){
+	setSize();
+	set();
+	concat();
+	concatChar();
+	copyOtherBetween();
+	toUpper();
+	toLower();
+	getFirstIndexOf();
+	getLastIndexOf();
+	getCharOccurrences();
+	trimSubstring();
+	clear();
 }
 
-static bool setSize(void){
-	bool rv=true;
+static void setSize(void){
 	String *test=String_t.new();
-	if (String_t.setSize(test,-1)) rv=false;
-	if (test->length!=0) rv=false;
-	if (test->str!=NULL) rv=false;
-	if (String_t.setSize(test,0)) rv=false;
-	if (test->length!=0) rv=false;
-	if (test->str!=NULL) rv=false;
-	if (!String_t.setSize(test,10)) rv=false;
-	if (test->genericList->numElements!=11) rv=false;
-	if (test->length!=10) rv=false;
-	if (test->str[10]!='\0') rv=false;
+	stringTest(!String_t.setSize(test,-1));
+	stringTest(test->length==0);
+	stringTest(test->str==NULL);
+	stringTest(!String_t.setSize(test,0));
+	stringTest(test->length==0);
+	stringTest(test->str==NULL);
+	stringTest(String_t.setSize(test,10));
+	stringTest(test->genericList->listSize==11);
+	stringTest(test->length==0);
 	String_t.set(test,"hello");
-	if (!String_t.setSize(test,10)) rv=false;
-	if (test->genericList->numElements!=11) rv=false;
-	if (test->length!=10) rv=false;
-	if (test->str[0]!='h') rv=false;
-	if (test->str[4]!='o') rv=false;
-	if (test->str[5]!='\0') rv=false;
-	if (test->str[10]!='\0') rv=false;
+	stringTest(String_t.setSize(test,20));
+	stringTest(test->genericList->listSize==21);
+	stringTest(test->length==5);
+	stringTest(test->str[0]=='h');
+	stringTest(test->str[4]=='o');
+	stringTest(test->str[5]=='\0');
 	String_t.delete(&test);
-	Print_t.objectDebug("String","setSize",rv);
-	return rv;
 }
 
-static bool set(void){
-	bool rv=true;
+static void set(void){
 	String *test=String_t.new();
-	if (!String_t.set(test,"hello")) rv=false;
-	if (test->genericList->numElements!=6) rv=false;
-	if (test->length!=5) rv=false;
-	if (strcmp(test->str,"hello")!=0) rv=false;
-	if (test->str[test->length]!='\0') rv=false;
-	if (!String_t.set(test,"bye")) rv=false;
-	if (test->genericList->numElements!=4) rv=false;
-	if (test->length!=3) rv=false;
-	if (strcmp(test->str,"bye")!=0) rv=false;
-	if (test->str[test->length]!='\0') rv=false;
-	if (!String_t.set(test,"")) rv=false;
-	if (test->genericList->numElements!=0) rv=false;
-	if (test->length!=0) rv=false;
-	if (test->str!=NULL) rv=false;
+	stringTest(String_t.set(test,"hello"));
+	stringTest(test->genericList->numElements>=6);
+	stringTest(test->length==5);
+	stringTest(strcmp(test->str,"hello")==0);
+	stringTest(test->str[test->length]=='\0');
+	stringTest(String_t.set(test,"bye"));
+	stringTest(test->genericList->numElements>=4);
+	stringTest(test->length==3);
+	stringTest(strcmp(test->str,"bye")==0);
+	stringTest(test->str[test->length]=='\0');
+	stringTest(String_t.set(test,""));
+	stringTest(test->genericList->numElements>=0);
+	stringTest(test->length==0);
+	stringTest(test->str==NULL);
 	String_t.delete(&test);
-	Print_t.objectDebug("String","set",rv);
-	return rv;
 }
 
-static bool concat(void){
-	bool rv=true;
+static void concat(void){
 	String *test=String_t.new();
-	if (!String_t.concat(test,"hello")) rv=false;
-	if (test->length!=5) rv=false;
-	if (strcmp(test->str,"hello")!=0) rv=false;
-	if (test->str[test->length]!='\0') rv=false;
-	if (!String_t.concat(test,"bye")) rv=false;
-	if (test->length!=8) rv=false;
-	if (strcmp(test->str,"hellobye")!=0) rv=false;
-	if (test->str[test->length]!='\0') rv=false;
+	stringTest(String_t.concat(test,"hello"));
+	stringTest(test->length==5);
+	stringTest(strcmp(test->str,"hello")==0);
+	stringTest(test->str[test->length]=='\0');
+	stringTest(String_t.concat(test,"bye"));
+	stringTest(test->length==8);
+	stringTest(strcmp(test->str,"hellobye")==0);
+	stringTest(test->str[test->length]=='\0');
 	String_t.delete(&test);
-	Print_t.objectDebug("String","concat",rv);
-	return rv;
 }
 
-static bool concatChar(void){
-	bool rv=true;
+static void concatChar(void){
 	String *test=String_t.new();
-	if (!String_t.concatChar(test,'h')) rv=false;
-	if (test->genericList->numElements!=2) rv=false;
-	if (test->length!=1) rv=false;
-	if (test->str[0]!='h') rv=false;
-	if (test->str[test->length]!='\0') rv=false;
-	if (!String_t.concatChar(test,'e')) rv=false;
-	if (test->genericList->numElements!=3) rv=false;
-	if (test->length!=2) rv=false;
-	if (test->str[0]!='h') rv=false;
-	if (test->str[1]!='e') rv=false;
-	if (test->str[test->length]!='\0') rv=false;
+	stringTest(String_t.concatChar(test,'h'));
+	stringTest(test->genericList->numElements==2);
+	stringTest(test->length==1);
+	stringTest(test->str[0]=='h');
+	stringTest(test->str[test->length]=='\0');
+	stringTest(String_t.concatChar(test,'e'));
+	stringTest(test->genericList->numElements==3);
+	stringTest(test->length==2);
+	stringTest(test->str[0]=='h');
+	stringTest(test->str[1]=='e');
+	stringTest(test->str[test->length]=='\0');
 	String_t.delete(&test);
-	Print_t.objectDebug("String","concatChar",rv);
-	return rv;
 }
 
-static bool copyOtherBetween(void){
-	bool rv=true;
+static void copyOtherBetween(void){
 	String *test1=String_t.new();
 	String *test2=String_t.new();
 	String_t.set(test2,"hello");
-	if (String_t.copyOtherBetween(test1,test2,1,0)) rv=false;
-	if (test1->genericList->numElements!=0) rv=false;
-	if (test1->length!=0) rv=false;
-	if (test1->str!=NULL) rv=false;
-	if (!String_t.copyOtherBetween(test1,test2,-1,6)) rv=false;
-	if (test1->genericList->numElements!=6) rv=false;
-	if (test1->str[test1->length]!='\0') rv=false;
-	if (test1->length!=5) rv=false;
-	if (strcmp(test1->str,"hello")!=0) rv=false;
-	if (!String_t.copyOtherBetween(test1,test2,0,1)) rv=false;
-	if (test1->genericList->numElements!=2) rv=false;
-	if (test1->str[test1->length]!='\0') rv=false;
-	if (test1->length!=1) rv=false;
-	if (strcmp(test1->str,"h")!=0) rv=false;
-	if (!String_t.copyOtherBetween(test1,test2,4,5)) rv=false;
-	if (test1->genericList->numElements!=2) rv=false;
-	if (test1->str[test1->length]!='\0') rv=false;
-	if (test1->length!=1) rv=false;
-	if (strcmp(test1->str,"o")!=0) rv=false;
-	if (!String_t.copyOtherBetween(test1,test2,1,3)) rv=false;
-	if (test1->genericList->numElements!=3) rv=false;
-	if (test1->str[test1->length]!='\0') rv=false;
-	if (test1->length!=2) rv=false;
-	if (strcmp(test1->str,"el")!=0) rv=false;
+	stringTest(!String_t.copyOtherBetween(test1,test2,1,0));
+	stringTest(test1->genericList->numElements==0);
+	stringTest(test1->length==0);
+	stringTest(test1->str==NULL);
+	stringTest(!String_t.copyOtherBetween(test1,test2,-1,3));
+	stringTest(test1->genericList->numElements==0);
+	stringTest(test1->length==0);
+	stringTest(!String_t.copyOtherBetween(test1,test2,2,6));
+	stringTest(test1->genericList->numElements==0);
+	stringTest(test1->length==0);
+	stringTest(!String_t.copyOtherBetween(test1,test2,6,2));
+	stringTest(test1->genericList->numElements==0);
+	stringTest(test1->length==0);
+	stringTest(String_t.copyOtherBetween(test1,test2,0,1));
+	stringTest(test1->genericList->numElements==2);
+	stringTest(test1->str[test1->length]=='\0');
+	stringTest(test1->length==1);
+	stringTest(strcmp(test1->str,"h")==0);
+	stringTest(String_t.copyOtherBetween(test1,test2,4,5));
+	stringTest(test1->genericList->numElements==2);
+	stringTest(test1->str[test1->length]=='\0');
+	stringTest(test1->length==1);
+	stringTest(strcmp(test1->str,"o")==0);
+	stringTest(String_t.copyOtherBetween(test1,test2,1,3));
+	stringTest(test1->genericList->numElements==3);
+	stringTest(test1->str[test1->length]=='\0');
+	stringTest(test1->length==2);
+	stringTest(strcmp(test1->str,"el")==0);
 	String_t.delete(&test1);
 	String_t.delete(&test2);
-	Print_t.objectDebug("String","copyOtherBetween",rv);
-	return rv;
 }
 
-static bool toUpper(void){
-	bool rv=true;
+static void toUpper(void){
 	String *test=String_t.new();
 	String_t.set(test,"HELLO");
 	String_t.toUpper(test);
-	if (strcmp(test->str,"HELLO")!=0) rv=false;
+	stringTest(strcmp(test->str,"HELLO")==0);
 	String_t.set(test,"hello");
 	String_t.toUpper(test);
-	if (strcmp(test->str,"HELLO")!=0) rv=false;
+	stringTest(strcmp(test->str,"HELLO")==0);
 	String_t.delete(&test);
-	Print_t.objectDebug("String","toUpper",rv);
-	return rv;
 }
 
-static bool toLower(void){
-	bool rv=true;
+static void toLower(void){
 	String *test=String_t.new();
 	String_t.set(test,"hello");
 	String_t.toLower(test);
-	if (strcmp(test->str,"hello")!=0) rv=false;
+	stringTest(strcmp(test->str,"hello")==0);
 	String_t.set(test,"HELLO");
 	String_t.toLower(test);
-	if (strcmp(test->str,"hello")!=0) rv=false;
+	stringTest(strcmp(test->str,"hello")==0);
 	String_t.delete(&test);
-	Print_t.objectDebug("String","toLower",rv);
-	return rv;
 }
 
-static bool getFirstIndexOf(void){
-	bool rv=true;
+static void getFirstIndexOf(void){
 	String *test=String_t.new();
 	String_t.set(test,"hello");
-	if (String_t.getFirstIndexOf(test,'h')!=0) rv=false;
-	if (String_t.getFirstIndexOf(test,'e')!=1) rv=false;
-	if (String_t.getFirstIndexOf(test,'l')!=2) rv=false;
-	if (String_t.getFirstIndexOf(test,'o')!=4) rv=false;
-	if (String_t.getFirstIndexOf(test,'b')!=-1) rv=false;
+	stringTest(String_t.getFirstIndexOf(test,'h')==0);
+	stringTest(String_t.getFirstIndexOf(test,'e')==1);
+	stringTest(String_t.getFirstIndexOf(test,'l')==2);
+	stringTest(String_t.getFirstIndexOf(test,'o')==4);
+	stringTest(String_t.getFirstIndexOf(test,'b')==-1);
 	String_t.delete(&test);
-	Print_t.objectDebug("String","getFirstIndexOf",rv);
-	return rv;
 }
 
-static bool getLastIndexOf(void){
-	bool rv=true;
+static void getLastIndexOf(void){
 	String *test=String_t.new();
 	String_t.set(test,"hello");
-	if (String_t.getLastIndexOf(test,'h')!=0) rv=false;
-	if (String_t.getLastIndexOf(test,'e')!=1) rv=false;
-	if (String_t.getLastIndexOf(test,'l')!=3) rv=false;
-	if (String_t.getLastIndexOf(test,'o')!=4) rv=false;
-	if (String_t.getLastIndexOf(test,'b')!=-1) rv=false;
+	stringTest(String_t.getLastIndexOf(test,'h')==0);
+	stringTest(String_t.getLastIndexOf(test,'e')==1);
+	stringTest(String_t.getLastIndexOf(test,'l')==3);
+	stringTest(String_t.getLastIndexOf(test,'o')==4);
+	stringTest(String_t.getLastIndexOf(test,'b')==-1);
 	String_t.delete(&test);
-	Print_t.objectDebug("String","getLastIndexOf",rv);
-	return rv;
 }
 
-static bool getCharOccurrences(void){
-	bool rv=true;
+static void getCharOccurrences(void){
 	String *test=String_t.new();
 	String_t.set(test,"hello");
-	if (String_t.getCharOccurrences(test,"b")!=0) rv=false;
-	if (String_t.getCharOccurrences(test,"h")!=1) rv=false;
-	if (String_t.getCharOccurrences(test,"l")!=2) rv=false;
-	if (String_t.getCharOccurrences(test,"hl")!=3) rv=false;
-	if (String_t.getCharOccurrences(test,"hello")!=5) rv=false;
+	stringTest(String_t.getCharOccurrences(test,"b")==0);
+	stringTest(String_t.getCharOccurrences(test,"h")==1);
+	stringTest(String_t.getCharOccurrences(test,"l")==2);
+	stringTest(String_t.getCharOccurrences(test,"hl")==3);
+	stringTest(String_t.getCharOccurrences(test,"hello")==5);
 	String_t.delete(&test);
-	Print_t.objectDebug("String","getCharOccurrences",rv);
-	return rv;
 }
 
-static bool clear(void){
-	bool rv=true;
+static void trimSubstring(void){
+	String *test=String_t.new();
+	//if (String_t.trimSubstring(test,
+}
+
+static void clear(void){
 	String *test=String_t.new();
 	String_t.set(test,"hello");
 	String_t.clear(test);
-	if (test->genericList->numElements!=0) rv=false;
-	if (test->length!=0) rv=false;
-	if (test->str!=NULL) rv=false;
+	stringTest(test->genericList->numElements==0);
+	stringTest(test->length==0);
+	stringTest(test->str==NULL);
 	String_t.delete(&test);
-	Print_t.objectDebug("String","clear",rv);
-	return rv;
 }

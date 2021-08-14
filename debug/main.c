@@ -3,8 +3,10 @@
 #include "Debug.h"
 
 int main(int argc, char **argv){
-	Print_t.objectDebug("GenericList",NULL,genericListDebug());
-	Print_t.objectDebug("String",NULL,stringDebug());
+	resetTestResults();
+	genericListDebug();
+	stringDebug();
+	printTestResults();
 	//FileClass.debug();
 	//GenericListClass.debug();
 	//GenericLinkedListClass.debug();
