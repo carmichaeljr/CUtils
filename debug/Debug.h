@@ -11,7 +11,7 @@ bool incrementTestCount(bool testResult);
 void printTestResults(void);
 
 //Defined in various debug files
-bool genericListDebug(void);
+void genericListDebug(void);
 void stringDebug(void);
 
 #endif
