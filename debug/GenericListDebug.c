@@ -17,10 +17,12 @@ static void contains(void);
 static void getFirstIndexOf(void);
 static void getLastIndexOf(void);
 static void _remove(void);
+static void removeAll(void);
 static void removeAt(void);
 static void removeBetween(void);
 static void trimToSize(void);
 static void clear(void);
+static void clearElements(void);
 static void isEmpty(void);
 static void equals(void);
 
@@ -37,10 +39,12 @@ void genericListDebug(void){
 	getFirstIndexOf();
 	getLastIndexOf();
 	_remove();
+	removeAll();
 	removeAt();
 	removeBetween();
 	trimToSize();
 	clear();
+	clearElements();
 	isEmpty();
 	equals();
 }
@@ -279,6 +283,26 @@ static void _remove(void){
 	GenericList_t.delete(&test);
 }
 
+static void removeAll(void){
+	GenericList *test=GenericList_t.new();
+	GenericList_t.setElementSize(test,sizeof(char));
+	genericListTest(!GenericList_t.removeAll(test,"hello",5));
+	GenericList_t.add(test,"hello",5);
+	genericListTest(GenericList_t.removeAll(test,"bye",3));
+	genericListTest(test->numElements==4);
+	genericListTest(*((char*)test->list+sizeof(char)*0)=='h');
+	genericListTest(*((char*)test->list+sizeof(char)*1)=='l');
+	genericListTest(*((char*)test->list+sizeof(char)*2)=='l');
+	genericListTest(*((char*)test->list+sizeof(char)*3)=='o');
+	genericListTest(GenericList_t.removeAll(test,"hl",2));
+	genericListTest(test->numElements==1);
+	genericListTest(*((char*)test->list+sizeof(char)*0)=='o');
+	genericListTest(GenericList_t.removeAll(test,"o",1));
+	genericListTest(test->numElements==0);
+	genericListTest(test->list==NULL);
+	GenericList_t.delete(&test);
+}
+
 static void removeAt(void){
 	GenericList *test=GenericList_t.new();
 	GenericList_t.setElementSize(test,sizeof(char));
@@ -363,6 +387,18 @@ static void clear(void){
 	genericListTest(GenericList_t.clear(test));
 	genericListTest(test->numElements==0);
 	genericListTest(test->list==NULL);
+	GenericList_t.delete(&test);
+}
+
+static void clearElements(void){
+	GenericList *test=GenericList_t.new();
+	GenericList_t.setElementSize(test,sizeof(char));
+	GenericList_t.set(test,"hello",5);
+	genericListTest(GenericList_t.clearElements(test));
+	genericListTest(test->numElements==0);
+	genericListTest(test->listSize==5);
+	genericListTest(*((char*)test->list+sizeof(char)*0)=='h');
+	genericListTest(*((char*)test->list+sizeof(char)*4)=='o');
 	GenericList_t.delete(&test);
 }
 

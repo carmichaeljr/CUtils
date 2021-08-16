@@ -20,10 +20,12 @@ static bool contains(const GenericList * const self, const void * const token);
 static int getFirstIndexOf(const GenericList *self, const void *token);
 static int getLastIndexOf(const GenericList * const self, const void * const token);
 static bool _remove(GenericList *self, const void * const token);
+static bool removeAll(GenericList *self, const void * const tokens, const int numTokens);
 static bool removeAt(GenericList *self, const int index);
 static bool removeBetween(GenericList *self, const int startIndex, const int endIndex);
 static bool trimToSize(GenericList *self);
 static bool clear(GenericList *self);
+static bool clearElements(GenericList *self);
 static bool isEmpty(const GenericList * const self);
 static bool equals(const GenericList * const self, const GenericList * const other);
 static bool isInit(const GenericList * const self);
@@ -48,10 +50,12 @@ const struct GenericList_t GenericList_t={
 	.getFirstIndexOf=getFirstIndexOf,
 	.getLastIndexOf=getLastIndexOf,
 	.remove=_remove,
+	.removeAll=removeAll,
 	.removeAt=removeAt,
 	.removeBetween=removeBetween,
 	.trimToSize=trimToSize,
 	.clear=clear,
+	.clearElements=clearElements,
 	.isEmpty=isEmpty,
 	.equals=equals
 };
@@ -119,12 +123,9 @@ static bool addAt(GenericList *self, const void * const newElements, const int n
 	return false;
 }
 
-//TODO - just throw away invalid inputs rather than constraining them
 static bool copyOtherBetween(GenericList *self, const GenericList * const other, const int startIndex, const int endIndex){
 	if (areListsCompatible(self,other) && !GenericList_t.isEmpty(other) &&
 	    startIndex>=0 && startIndex<endIndex && endIndex<=other->numElements){
-		//int start=(startIndex<0)? 0: startIndex;
-		//int end=(endIndex>other->numElements)? other->numElements: endIndex;
 		if (resizeMemoryBlock(self,endIndex-startIndex)){
 			void *source=getPointerToLocation(other,startIndex);
 			if (source!=NULL){
@@ -178,23 +179,30 @@ static int getLastIndexOf(const GenericList * const self, const void * const tok
 }
 
 static bool _remove(GenericList *self, const void * const token){
+	return removeAll(self,token,1);
+}
+
+static bool removeAll(GenericList *self, const void * const tokens, const int numTokens){
 	int offset=0;
 	if (isInit(self) && !GenericList_t.isEmpty(self)){
-		for (int i=0; i<self->numElements; i++){
-			void *iterElement=getPointerToLocation(self,i);
-			if (memcmp(iterElement,token,self->elementSize)!=0){
-				void *destination=getPointerToLocation(self,i-offset);
-				memmove(destination,iterElement,self->elementSize);
-			} else {
-				offset++;
+		for (int j=0; j<numTokens; j++){
+			void *iterToken=(void*)((char*)tokens+self->elementSize*j);
+			for (int i=0; i<self->numElements; i++){
+				void *iterElement=getPointerToLocation(self,i);
+				if (memcmp(iterElement,iterToken,self->elementSize)!=0){
+					void *destination=getPointerToLocation(self,i-offset);
+					memmove(destination,iterElement,self->elementSize);
+				} else {
+					offset++;
+				}
 			}
+			self->numElements-=offset;
+			offset=0;
 		}
-		self->numElements-=offset;
 		return resizeMemoryBlock(self,self->numElements);
 	}
 	return false;
 }
-//	 Add removeAll
 
 static bool removeAt(GenericList *self, const int index){
 	return removeBetween(self,index,index+1);
@@ -224,15 +232,16 @@ static bool trimToSize(GenericList *self){
 }
 
 static bool clear(GenericList *self){
-	if (!GenericList_t.isEmpty(self)){
-		if (self->list!=NULL){
-			free(self->list);
-			self->list=NULL;
-		}
+	if (!GenericList_t.isEmpty(self) && resizeMemoryBlock(self,0)){
 		self->numElements=0;
 		return true;
 	}
 	return false;
+}
+
+static bool clearElements(GenericList *self){
+	self->numElements=0;
+	return true;
 }
 
 static bool isEmpty(const GenericList * const self){

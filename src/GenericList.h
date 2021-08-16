@@ -283,6 +283,22 @@ extern const struct GenericList_t {
 	//  Returns true if the operation was successful and changes were made to the object.
 	//  A return value of false guarantees no changes were made to the object, unless strictAlloc is true.
 	bool (*remove)(GenericList *self, const void * const token);
+	//Function: removeAll
+	//Removes all instances of the supplied tokens from the list.
+	//
+	//Only one memory reallocation is performed.
+	//
+	//Parameters:
+	//
+	//  self - The generic list to perform the operation on.
+	//  tokens - The tokens to remove from the list.
+	//  numTokens - The number of tokens in the tokens list.
+	//
+	//Returns:
+	//
+	//  Returns true if the operation was successful and changes were made to the object.
+	//  A return value of false guarantees no changes were made to the object, unless strictAlloc is true.
+	bool (*removeAll)(GenericList *self, const void *const tokens, const int numTokens);
 	//Function: removeAt
 	//Removes the item at the supplied index from the list.
 	//
@@ -331,7 +347,7 @@ extern const struct GenericList_t {
 	//  A return value of false guarantees no changes were made to the object.
 	bool (*trimToSize)(GenericList *self);
 	//Function: clear
-	//Removes all elements from the list.
+	//Removes all elements from the list and frees the underlying memory.
 	//
 	//Parameters:
 	//
@@ -342,6 +358,24 @@ extern const struct GenericList_t {
 	//  Returns true if the operation was successful and changes were made to the object.
 	//  A return value of false guarantees no changes were made to the object.
 	bool (*clear)(GenericList *self);
+	//Function: clearElements
+	//Removes all elements from the list but does not free the underlying memory.
+	//Nothing about the list is changed except setting <GenericList.numElements> to 0.
+	//The previous data will still be stored in memory, but will be inaccessible to other
+	//method calls. This does not create a memory leak because the actual list size is
+	//tracked by <GenericList.listSize>.
+	//
+	//This is useful for avoiding the memory reallocation associated with <GenericList_t.clear>.
+	//
+	//Parameters:
+	//
+	//  self - The generic list to perform the operation on.
+	//
+	//Returns:
+	//
+	//  Returns true if the operation was successful and changes were made to the object.
+	//  A return value of false guarantees no changes were made to the object.
+	bool (*clearElements)(GenericList *self);
 	//Function: isEmpty
 	//Returns true or false depending on weather the list is empty or not.
 	//

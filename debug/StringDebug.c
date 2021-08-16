@@ -8,30 +8,40 @@
 
 static void setSize(void);
 static void set(void);
+static void setNonNullString(void);
 static void concat(void);
 static void concatChar(void);
 static void copyOtherBetween(void);
 static void toUpper(void);
 static void toLower(void);
+static void contains(void);
 static void getFirstIndexOf(void);
 static void getLastIndexOf(void);
 static void getCharOccurrences(void);
 static void trimSubstring(void);
+static void trimWhitespace(void);
+static void removeChars(void);
 static void clear(void);
+static void equals(void);
 
 void stringDebug(void){
 	setSize();
 	set();
+	setNonNullString();
 	concat();
 	concatChar();
 	copyOtherBetween();
 	toUpper();
 	toLower();
+	contains();
 	getFirstIndexOf();
 	getLastIndexOf();
 	getCharOccurrences();
 	trimSubstring();
+	trimWhitespace();
+	removeChars();
 	clear();
+	equals();
 }
 
 static void setSize(void){
@@ -69,6 +79,25 @@ static void set(void){
 	stringTest(test->str[test->length]=='\0');
 	stringTest(String_t.set(test,""));
 	stringTest(test->genericList->numElements>=0);
+	stringTest(test->length==0);
+	stringTest(test->str==NULL);
+	String_t.set(test,"hello");
+	stringTest(String_t.set(test,NULL));
+	stringTest(test->genericList->numElements>=0);
+	stringTest(test->length==0);
+	stringTest(test->str==NULL);
+	String_t.delete(&test);
+}
+
+static void setNonNullString(void){
+	char str[5]={ 'h','e','l','l','o' };
+	String *test=String_t.new();
+	stringTest(String_t.setNonNullString(test,str,5));
+	stringTest(test->genericList->numElements==6);
+	stringTest(test->length==5);
+	stringTest(strcmp(test->str,"hello")==0);
+	stringTest(test->str[test->length]=='\0');
+	stringTest(String_t.setNonNullString(test,NULL,0));
 	stringTest(test->length==0);
 	stringTest(test->str==NULL);
 	String_t.delete(&test);
@@ -161,6 +190,28 @@ static void toLower(void){
 	String_t.delete(&test);
 }
 
+static void contains(void){
+	String *test=String_t.new();
+	stringTest(String_t.contains(test,"h")==-1);
+	String_t.set(test,"hello");
+	stringTest(String_t.contains(test,"h")==0);
+	stringTest(String_t.contains(test,"e")==1);
+	stringTest(String_t.contains(test,"l")==2);
+	stringTest(String_t.contains(test,"o")==4);
+	stringTest(String_t.contains(test,"he")==0);
+	stringTest(String_t.contains(test,"el")==1);
+	stringTest(String_t.contains(test,"ll")==2);
+	stringTest(String_t.contains(test,"lo")==3);
+	stringTest(String_t.contains(test,"hel")==0);
+	stringTest(String_t.contains(test,"ell")==1);
+	stringTest(String_t.contains(test,"llo")==2);
+	stringTest(String_t.contains(test,"hell")==0);
+	stringTest(String_t.contains(test,"ello")==1);
+	stringTest(String_t.contains(test,"hello")==0);
+	stringTest(String_t.contains(test,"bye")==-1);
+	String_t.delete(&test);
+}
+
 static void getFirstIndexOf(void){
 	String *test=String_t.new();
 	String_t.set(test,"hello");
@@ -196,7 +247,63 @@ static void getCharOccurrences(void){
 
 static void trimSubstring(void){
 	String *test=String_t.new();
-	//if (String_t.trimSubstring(test,
+	stringTest(!String_t.trimSubstring(test,2,3));
+	String_t.set(test,"hello");
+	stringTest(!String_t.trimSubstring(test,-1,3));
+	stringTest(!String_t.trimSubstring(test,1,6));
+	stringTest(!String_t.trimSubstring(test,3,2));
+	stringTest(String_t.trimSubstring(test,1,2));
+	stringTest(test->length==4);
+	stringTest(test->str[0]=='h');
+	stringTest(test->str[1]=='l');
+	stringTest(test->str[3]=='o');
+	stringTest(test->str[4]=='\0');
+	stringTest(String_t.trimSubstring(test,0,1));
+	stringTest(test->length==3);
+	stringTest(test->str[0]=='l');
+	stringTest(test->str[2]=='o');
+	stringTest(test->str[3]=='\0');
+	stringTest(String_t.trimSubstring(test,2,3));
+	stringTest(test->length==2);
+	stringTest(test->str[0]=='l');
+	stringTest(test->str[1]=='l');
+	stringTest(test->str[2]=='\0');
+	stringTest(String_t.trimSubstring(test,0,2));
+	stringTest(test->length==0);
+	stringTest(test->str==NULL);
+	String_t.delete(&test);
+}
+
+static void trimWhitespace(void){
+	String *test=String_t.new();
+	stringTest(!String_t.trimWhitespace(test));
+	String_t.set(test,"   hello   ");
+	stringTest(String_t.trimWhitespace(test));
+	stringTest(test->length==5);
+	stringTest(test->str[0]=='h');
+	stringTest(test->str[4]=='o');
+	stringTest(test->str[5]=='\0');
+	stringTest(String_t.trimWhitespace(test));
+	stringTest(test->length==5);
+	stringTest(test->str[0]=='h');
+	stringTest(test->str[4]=='o');
+	stringTest(test->str[5]=='\0');
+	String_t.delete(&test);
+}
+
+static void removeChars(void){
+	String *test=String_t.new();
+	stringTest(!String_t.removeChars(test,"hello"));
+	String_t.set(test,"hello");
+	stringTest(String_t.removeChars(test,"lo"));
+	stringTest(test->length==2);
+	stringTest(test->str[0]=='h');
+	stringTest(test->str[1]=='e');
+	stringTest(test->str[2]=='\0');
+	stringTest(String_t.removeChars(test,"he"));
+	stringTest(test->length==0);
+	stringTest(test->str==NULL);
+	String_t.delete(&test);
 }
 
 static void clear(void){
@@ -207,4 +314,24 @@ static void clear(void){
 	stringTest(test->length==0);
 	stringTest(test->str==NULL);
 	String_t.delete(&test);
+}
+
+static void equals(void){
+	String *test1=String_t.new();
+	String *test2=String_t.new();
+	stringTest(String_t.equals(test1,test2->str));
+	stringTest(String_t.equals(test2,test1->str));
+	String_t.set(test1,"");
+	String_t.set(test2,"");
+	stringTest(String_t.equals(test1,test2->str));
+	stringTest(String_t.equals(test2,test1->str));
+	String_t.set(test1,"hello");
+	String_t.set(test2,"hello");
+	stringTest(String_t.equals(test1,test2->str));
+	stringTest(String_t.equals(test2,test1->str));
+	String_t.set(test2,"bye");
+	stringTest(!String_t.equals(test1,test2->str));
+	stringTest(!String_t.equals(test2,test1->str));
+	String_t.delete(&test1);
+	String_t.delete(&test2);
 }

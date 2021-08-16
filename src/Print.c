@@ -8,22 +8,22 @@ static int lineLength=120;
 static int spacesPerIndent=4;
 static void incrementIndentLevel(const int increment);
 static void setSpacesPerIndent(const int numSpaces);
+static void setLineLength(const int newLineLength);
 static void print(const char* format, ...);
 static void println(const char* format, ...);
 static void printWithoutIndent(const char *format, ...);
-static void objectDebug(const char *className, const char *methodName, const bool success);
-static void objectDebugWithLine(const char *className, const char *methodName, const int line, const bool success);
+static void objectDebug(const char *className, const char *methodName, const int line, const bool success);
 static int printIndent(void);
 static void printLineFiller(int charsPrinted);
 
-const struct PrintClass Print_t={
+const struct Print_t Print_t={
 	.incrementIndentLevel=incrementIndentLevel,
 	.setSpacesPerIndent=setSpacesPerIndent,
-	.objectDebug=objectDebug,
-	.objectDebugWithLine=objectDebugWithLine,
+	.setLineLength=setLineLength,
 	.print=print,
 	.println=println,
-	.printWithoutIndent=printWithoutIndent
+	.printWithoutIndent=printWithoutIndent,
+	.objectDebug=objectDebug,
 };
 
 //Class Methods================================================================
@@ -36,6 +36,12 @@ static void incrementIndentLevel(const int increment){
 static void setSpacesPerIndent(const int numSpaces){
 	if (numSpaces>0){
 		spacesPerIndent=numSpaces;
+	}
+}
+
+static void setLineLength(const int newLineLength){
+	if (newLineLength>0){
+		lineLength=newLineLength;
 	}
 }
 
@@ -61,20 +67,11 @@ static void printWithoutIndent(const char *format, ...){
 	va_end(argp);
 }
 
-static void objectDebug(const char *className, const char *methodName, const bool success){
-	if (methodName!=NULL){
-		Print_t.print("[%-5s]: Class '%s': Method '%s'",(success)? "Ok": "Error",className, methodName);	
+static void objectDebug(const char * const structName, const char * const funcName, const int line, const bool success){
+	if (funcName!=NULL){
+		Print_t.print("[%-5s]: Class '%s': Method '%s': Test Line %d",(success)? "Ok": "Error",structName, funcName,line);
 	} else {
-		Print_t.print("[%-5s]: Class '%s'",(success)? "Ok": "Error",className);	
-	}
-	printf("%c",(success)? '\r': '\n');
-}
-
-static void objectDebugWithLine(const char *className, const char *methodName, const int line, const bool success){
-	if (methodName!=NULL){
-		Print_t.print("[%-5s]: Class '%s': Method '%s': Test Line %d",(success)? "Ok": "Error",className, methodName,line);	
-	} else {
-		Print_t.print("[%-5s]: Class '%s': Test Line %d",(success)? "Ok": "Error",className,line);	
+		Print_t.print("[%-5s]: Class '%s': Test Line %d",(success)? "Ok": "Error",structName,line);
 	}
 	printf("%c",(success)? '\r': '\n');
 }

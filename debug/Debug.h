@@ -1,7 +1,7 @@
 #ifndef DEBUG
 #define DEBUG
 
-#define test(result,object,func,line) Print_t.objectDebugWithLine(object,func,line,incrementTestCount(result))
+#define test(result,object,func,line) Print_t.objectDebug(object,func,line,incrementTestCount(result))
 
 #include <stdbool.h>
 

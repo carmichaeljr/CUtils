@@ -105,6 +105,22 @@ extern const struct String_t {
 	//  Returns true if the operation was successful and changes were made to the object.
 	//  A return value of false guarantees no changes were made to the object.
 	bool (*set)(String *self, const char * const newStr);
+	//Function: setNonNullString
+	//Copies the contents of a non-NULL terminated string.
+	//
+	//If newStr is empty or NULL then <String_t.clear> will be called.
+	//
+	//Parameters:
+	//
+	//  self - The string object to perform the operation on.
+	//  newStr - The string to copy.
+	//  strLen - The length of the string being copied.
+	//
+	//Returns:
+	//
+	//  Returns true if the operation was successful and changes were made to the object.
+	//  A return value of false guarantees no changes were made to the object.
+	bool (*setNonNullString)(String *self, const char * const newStr, const int strLen);
 	//Function: concat
 	//Appends a NULL terminated string to the current string.
 	//
@@ -177,6 +193,18 @@ extern const struct String_t {
 	//
 	//  Nothing
 	void (*toLower)(String *self);
+	//Function: contains
+	//Returns the index of where the substring starts in the current string, or -1 if not present.
+	//
+	//Parameters:
+	//
+	//  self - The string object to perform the operaion on.
+	//  token - The substring to look for in the string.
+	//
+	//Returns:
+	//
+	//  True or fa
+	int (*contains)(const String *self, const char * const token);
 	//Function: getFirstIndexOf
 	//Finds the first instance of the given char in the string.
 	//
@@ -220,6 +248,7 @@ extern const struct String_t {
 	//
 	//  The number of characters in the string that are found in searchChars.
 	int (*getCharOccurrences)(const String *self, const char *searchChars);
+	//IntList* (*getIndexesOf)(const String *self, const char token);
 	//Function: trimSubstring
 	//Removes the substring defined by the given indexes.
 	//
@@ -241,6 +270,38 @@ extern const struct String_t {
 	//
 	//  - <GenericList.strictAlloc>
 	bool (*trimSubstring)(String *self, const int startIndex, const int endIndex);
+	//Function: trimWhitespace
+	//Removes whitespace characters (' ','\t') from the beginning and end of the string.
+	//
+	//Parameters:
+	//
+	//  self - The string object to perform the operation on.
+	//
+	//Returns:
+	//
+	//  Returns true if the operation was successful and changes were made to the object.
+	//  A return value of false guarantees no changes were made to the object, 
+	//  unless strictAlloc is true for the underlying GenericList data structure (defaults to false).
+	bool (*trimWhitespace)(String *self);
+	//Function: removeChars
+	//Removes the supplied chars from the string.
+	//If all of the characters are removed from the string then the string is cleared.
+	//
+	//Parameters:
+	//
+	//  self - The string object to perform the operation on.
+	//  unwantedChars - A NULL terminated string containing the chars to remove.
+	//
+	//Returns:
+	//
+	//  Returns true if the operation was successful and changes were made to the object.
+	//  A return value of false guarantees no changes were made to the object, 
+	//  unless strictAlloc is true for the underlying GenericList data structure (defaults to false).
+	//
+	//See Also:
+	//
+	//  - <GenericList.strictAlloc>
+	bool (*removeChars)(String *self, const char * const unwantedChars);
 	//Function: clear
 	//Clears the contents of the string, sets length to 0.
 	//
@@ -253,12 +314,19 @@ extern const struct String_t {
 	//  Returns true if the operation was successful and changes were made to the object.
 	//  A return value of false guarantees no changes were made to the object.
 	bool (*clear)(String *self);
-
-	void (*trimWhitespace)(String *self);
-	bool (*equals)(const String *self, const char *other);
-	bool (*contains)(const String *self, const char *token);
-	//IntList* (*getIndexesOf)(const String *self, const char token);
-	void (*removeChars)(String *self, const char *unwantedChars);
+	//Function: equals
+	//Returns true/false depending if the strings are equal or not.
+	//Two NULL strings are considered equal. Two empty strings are considered equal.
+	//
+	//Parameters:
+	//
+	//  self - The string object to perform the operation on.
+	//  other - The string to compare to.
+	//
+	//Returns:
+	//
+	//  True if the strings are equal, false if they aren't.
+	bool (*equals)(const String * const self, const char * const other);
 } String_t;
 
 #endif
