@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("del",["Function"],[["delete",,[["GenericList_t",,,,0,"File:GenericList.h:GenericList_t.delete","CClass:GenericList_t:delete"],["String_t",,,,0,"File:String.h:String_t.delete","CClass:String_t:delete"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("del",["Macro"],[["delete",,[[,,,,0,"File:Object.h:delete"]]]]);

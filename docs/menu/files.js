@@ -1,1 +1,1 @@
-﻿NDMenu.OnSectionLoaded("files.js",[[1,"GenericList.h"],[1,"Print.h"],[1,"String.h"]]);
+﻿NDMenu.OnSectionLoaded("files.js",[[1,"GenericList.h"],[1,"Object.h"],[1,"Print.h"],[1,"String.h"]]);

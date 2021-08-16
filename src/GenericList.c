@@ -5,9 +5,11 @@
 #include "Object.h"
 #include "Print.h"
 
-static GenericList* constructor(void);
-static void destructor(GenericList **obj);
-static void print(const GenericList * const obj);
+static void constructor(void *obj);
+static void* copyConstructor(void *obj, const void * const other, size_t size);
+//static void print(const GenericList * const obj);
+static int comparator(const void *self, const void *other, size_t size);
+static void destructor(void *obj);
 static void setElementSize(GenericList *self, const size_t newSize);
 static bool setListSize(GenericList *self, const int numElements);
 static bool set(GenericList *self, const void * const newELements, const int numElements);
@@ -27,7 +29,6 @@ static bool trimToSize(GenericList *self);
 static bool clear(GenericList *self);
 static bool clearElements(GenericList *self);
 static bool isEmpty(const GenericList * const self);
-static bool equals(const GenericList * const self, const GenericList * const other);
 static bool isInit(const GenericList * const self);
 static bool resizeMemoryBlock(GenericList *self, const int newLen);
 static bool resizeMemoryBlockStrict(GenericList *self, const int newLen);
@@ -35,9 +36,13 @@ static void* getPointerToLocation(const GenericList *self, const int index);
 static bool areListsCompatible(const GenericList *self, const GenericList *other);
 
 const struct GenericList_t GenericList_t={
-	.new=constructor,
-	.delete=destructor,
-	.print=print,
+	.class={
+		.allocator=malloc,
+		.constructor=constructor,
+		.copyConstructor=copyConstructor,
+		.comparator=comparator,
+		.destructor=destructor,
+	},
 	.setElementSize=setElementSize,
 	.setListSize=setListSize,
 	.set=set,
@@ -57,8 +62,52 @@ const struct GenericList_t GenericList_t={
 	.clear=clear,
 	.clearElements=clearElements,
 	.isEmpty=isEmpty,
-	.equals=equals
 };
+
+//Class Methods=================================================================
+static void constructor(void *obj){
+	GenericList *glObj=(GenericList*)obj;
+	glObj->list=NULL;
+	glObj->listSize=0;
+	glObj->strictAlloc=false;
+	glObj->numElements=0;
+	glObj->elementSize=0;
+}
+
+static void* copyConstructor(void *obj, const void * const other, size_t size){
+	GenericList *newObj=(GenericList*)obj;
+	GenericList *copyObj=(GenericList*)other;
+	newObj->list=NULL;
+	newObj->listSize=0;
+	newObj->numElements=0;
+	newObj->elementSize=copyObj->elementSize;
+	newObj->strictAlloc=copyObj->strictAlloc;
+	GenericList_t.copyOtherBetween(newObj,copyObj,0,copyObj->numElements);
+	return (void*)newObj;
+}
+
+//static void print(const GenericList * const obj){
+//	Print_t.print("<GenericList Obj[Addr: %p]: NumElements: %d  ElementSize: %d>",
+//			obj,obj->numElements,obj->elementSize);
+//}
+
+static int comparator(const void *first, const void *second, size_t size){
+	bool rv=false;
+	GenericList *self=(GenericList*)first;
+	GenericList *other=(GenericList*)second;
+	if (areListsCompatible(self,other) && self->numElements==other->numElements &&
+	    self->list!=NULL && other->list!=NULL){
+		int size=self->numElements*self->elementSize;
+		if (memcmp(self->list,other->list,size)==0){
+			rv=true;
+		}
+	}
+	return rv;
+}
+
+static void destructor(void *obj){
+	free(((GenericList*)obj)->list);
+}
 
 //Object Methods================================================================
 //Public methods
@@ -251,18 +300,6 @@ static bool isEmpty(const GenericList * const self){
 	return false;
 }
 
-static bool equals(const GenericList * const self, const GenericList * const other){
-	bool rv=false;
-	if (areListsCompatible(self,other) && self->numElements==other->numElements &&
-	    self->list!=NULL && other->list!=NULL){
-		int size=self->numElements*self->elementSize;
-		if (memcmp(self->list,other->list,size)==0){
-			rv=true;
-		}
-	}
-	return rv;
-}
-
 //Private Methods
 static bool isInit(const GenericList * const self){
 	return (self->elementSize>0);
@@ -321,25 +358,4 @@ static bool areListsCompatible(const GenericList *self, const GenericList *other
 		isInit(other) &&
 		self->elementSize==other->elementSize
 	       );
-}
-
-//Class Methods=================================================================
-static GenericList* constructor(void){
-	GenericList *rv=createObject(sizeof(GenericList));
-	rv->list=NULL;
-	rv->listSize=0;
-	rv->strictAlloc=false;
-	rv->numElements=0;
-	rv->elementSize=0;
-	return rv;
-}
-
-static void print(const GenericList * const obj){
-	Print_t.print("<GenericList Obj[Addr: %p]: NumElements: %d  ElementSize: %d>",
-			obj,obj->numElements,obj->elementSize);
-}
-
-static void destructor(GenericList **obj){
-	free((*obj)->list);
-	deleteObject((void**)obj);
 }

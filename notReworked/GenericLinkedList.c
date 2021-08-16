@@ -8,12 +8,12 @@
 static GenericLinkedList* _GenericLinkedListConstructor(void);
 static void _GenericLinkedListDestructor(GenericLinkedList **obj);
 static void _GenericLinkedListPrint(const GenericLinkedList *obj);
-static bool _GenericLinkedListDebug(void);
-static bool _GenericLinkedListDebug_Add(double *heapFloat);
-static bool _GenericLinkedListDebug_Remove(double *heapFloat);
-static bool _GenericLinkedListDebug_Set(double *heapFloat);
-static bool _GenericLinkedListDebug_Search(double *heapFloat);
-static bool _GenericLinkedListDebug_Misc(double *heapFloat);
+//static bool _GenericLinkedListDebug(void);
+//static bool _GenericLinkedListDebug_Add(double *heapFloat);
+//static bool _GenericLinkedListDebug_Remove(double *heapFloat);
+//static bool _GenericLinkedListDebug_Set(double *heapFloat);
+//static bool _GenericLinkedListDebug_Search(double *heapFloat);
+//static bool _GenericLinkedListDebug_Misc(double *heapFloat);
 static void GLL_SetElementSize(GenericLinkedList *self, const size_t newSize);
 static void GLL_Set(GenericLinkedList *self, const void *newElements, const int numElements);
 static void GLL_SetAt(GenericLinkedList *self, const void *newElements, const int numElements, const int index);
@@ -37,7 +37,11 @@ static struct GenericLinkedListNode* GLL_CreateNode(const void *element);
 static struct GenericLinkedListNode* GLL_GetNode(const GenericLinkedList *self, const int index);
 static bool GLL_AreListsCompatible(const GenericLinkedList *self, const GenericLinkedList *other);
 
-static const struct GenericLinkedListMethods genericLinkedListMethods={
+const struct GenericLinkedList_t GenericLinkedList_t={
+	.new=_GenericLinkedListConstructor,
+	.delete=_GenericLinkedListDestructor,
+	.print=_GenericLinkedListPrint,
+	//.debug=_GenericLinkedListDebug,
 	.setElementSize=&GLL_SetElementSize,
 	.set=&GLL_Set,
 	.setAt=&GLL_SetAt,
@@ -57,35 +61,27 @@ static const struct GenericLinkedListMethods genericLinkedListMethods={
 	.equals=&GLL_Equals,
 };
 
-const struct GenericLinkedList_t GenericLinkedListClass={
-	.new=_GenericLinkedListConstructor,
-	.delete=_GenericLinkedListDestructor,
-	.print=_GenericLinkedListPrint,
-	.debug=_GenericLinkedListDebug,
-	.objSize=sizeof(GenericLinkedList)
-};
-
 //Object Methods================================================================
 //Public Methods
 static void GLL_SetElementSize(GenericLinkedList *self, const size_t newSize){
 	if (newSize!=self->elementSize){
-		if (!self->methods->isEmpty(self)){
-			self->methods->clear(self);
+		if (!GenericLinkedList_t.isEmpty(self)){
+			GenericLinkedList_t.clear(self);
 		}
 		self->elementSize=newSize;
 	}
 }
 
 static void GLL_Set(GenericLinkedList *self, const void *newElements, const int numElements){
-	if (GLL_IsInitalized(self) && !self->methods->isEmpty(self)){
-		self->methods->setAt(self,newElements,numElements,0);
-	} else if (GLL_IsInitalized(self) && self->methods->isEmpty(self)){
-		self->methods->add(self,newElements,numElements);
+	if (GLL_IsInitalized(self) && !GenericLinkedList_t.isEmpty(self)){
+		GenericLinkedList_t.setAt(self,newElements,numElements,0);
+	} else if (GLL_IsInitalized(self) && GenericLinkedList_t.isEmpty(self)){
+		GenericLinkedList_t.add(self,newElements,numElements);
 	}
 }
 
 static void GLL_SetAt(GenericLinkedList *self, const void *newElements, const int numElements, const int index){
-	if (GLL_IsInitalized(self) && !self->methods->isEmpty(self) && 
+	if (GLL_IsInitalized(self) && !GenericLinkedList_t.isEmpty(self) && 
 	    index>=0 && index<self->numElements){
 		int minLen=(numElements<self->numElements-index)? numElements: self->numElements-index;
 		for (int i=0; i<minLen; i++){
@@ -95,7 +91,7 @@ static void GLL_SetAt(GenericLinkedList *self, const void *newElements, const in
 		}
 		if (numElements+index>self->numElements){
 			void *tempElements=GLL_GetPointerToElement(self,newElements,minLen);
-			self->methods->add(self,tempElements,numElements-minLen);
+			GenericLinkedList_t.add(self,tempElements,numElements-minLen);
 		} 
 	}
 }
@@ -138,7 +134,7 @@ static void GLL_AddAt(GenericLinkedList *self, const void *newElements, const in
 			self->numElements++;
 		}
 	} else if (GLL_IsInitalized(self) && index==self->numElements){
-		self->methods->add(self,newElements,numElements);
+		GenericLinkedList_t.add(self,newElements,numElements);
 	}
 }
 
@@ -148,9 +144,9 @@ static void GLL_CopyOtherBetween(GenericLinkedList *self, const GenericLinkedLis
 		int start=(startIndex<0)? 0: startIndex;
 		int end=(endIndex>other->numElements)? other->numElements: endIndex;
 		if (end>start){
-			self->methods->clear(self);
+			GenericLinkedList_t.clear(self);
 			for (int i=start; i<end; i++){
-				self->methods->add(self,other->methods->get(other,i),1);
+				GenericLinkedList_t.add(self,GenericLinkedList_t.get(other,i),1);
 			}
 		}
 	}
@@ -195,12 +191,12 @@ static int GLL_GetLastIndexOf(const GenericLinkedList *self, const void *token){
 }
 
 static void GLL_Remove(GenericLinkedList *self, const void *token){
-	if (GLL_IsInitalized(self) && !self->methods->isEmpty(self)){
+	if (GLL_IsInitalized(self) && !GenericLinkedList_t.isEmpty(self)){
 		//The number of elements is updated in the call to removeAt
 		for (int i=0; i<self->numElements; i++){
 			struct GenericLinkedListNode *node=GLL_GetNode(self,i);
 			if (memcmp(node->element,token,self->elementSize)==0){
-				self->methods->removeAt(self,i);
+				GenericLinkedList_t.removeAt(self,i);
 				i--;
 			}
 		}
@@ -209,7 +205,7 @@ static void GLL_Remove(GenericLinkedList *self, const void *token){
 
 static void GLL_RemoveAt(GenericLinkedList *self, const int index){
 	if (GLL_IsInitalized(self) && index>=0 && index<self->numElements){
-		self->methods->removeBetween(self,index,index+1);
+		GenericLinkedList_t.removeBetween(self,index,index+1);
 	}
 }
 
@@ -232,10 +228,10 @@ static void GLL_RemoveBetween(GenericLinkedList *self, const int startIndex, con
 }
 
 static void GLL_TrimToSize(GenericLinkedList *self, const int  numElements){
-	if (GLL_IsInitalized(self) && !self->methods->isEmpty(self)){
+	if (GLL_IsInitalized(self) && !GenericLinkedList_t.isEmpty(self)){
 		int newSize=(numElements<self->numElements)? numElements: self->numElements;
 		if (newSize!=self->numElements){
-			self->methods->removeBetween(self,newSize,self->numElements);
+			GenericLinkedList_t.removeBetween(self,newSize,self->numElements);
 		}
 	}
 }
@@ -316,8 +312,8 @@ static bool GLL_AreListsCompatible(const GenericLinkedList *self, const GenericL
 
 //Class Methods=================================================================
 static GenericLinkedList* _GenericLinkedListConstructor(void){
-	GenericLinkedList *rv=createObject(GenericLinkedListClass.objSize);
-	rv->methods=&genericLinkedListMethods;
+	GenericLinkedList *rv=createObject(sizeof(GenericLinkedList));
+	//rv->methods=&genericLinkedListMethods;
 	rv->elementSize=0;
 	rv->numElements=0;
 	rv->head=NULL;
@@ -326,155 +322,156 @@ static GenericLinkedList* _GenericLinkedListConstructor(void){
 }
 
 static void _GenericLinkedListPrint(const GenericLinkedList *obj){
-	PrintClass.print("<GenericLinkedList Obj[Addr: %p]: NumElements: %d  ElementSize: %d>\n",
+	Print_t.print("<GenericLinkedList Obj[Addr: %p]: NumElements: %d  ElementSize: %d>\n",
 			obj,obj->numElements,obj->elementSize);
-	PrintClass.incrementIndentLevel(1);
+	Print_t.incrementIndentLevel(1);
 	for (int i=0; i<obj->numElements; i++){
-		PrintClass.print(". [%d] Element[Addr: %p]  Data[Addr: %p]\n",
-				i,GLL_GetNode(obj,i),obj->methods->get(obj,i));
+		Print_t.print(". [%d] Element[Addr: %p]  Data[Addr: %p]\n",
+				i,GLL_GetNode(obj,i),GenericLinkedList_t.get(obj,i));
 	}
-	PrintClass.incrementIndentLevel(-1);
+	Print_t.incrementIndentLevel(-1);
 }
 
-static bool _GenericLinkedListDebug(void){
-	bool successfull=true;
-	double heapFloat[]={
-		3.141595,1234.0,9999.99,0.00001,6.66
-	};
-	successfull&=_GenericLinkedListDebug_Add(heapFloat);
-	successfull&=_GenericLinkedListDebug_Remove(heapFloat);
-	successfull&=_GenericLinkedListDebug_Set(heapFloat);
-	successfull&=_GenericLinkedListDebug_Search(heapFloat);
-	successfull&=_GenericLinkedListDebug_Misc(heapFloat);
-	PrintClass.objectDebug("GenericLinkedList",successfull);
-	return successfull;
-}
-
-static bool _GenericLinkedListDebug_Add(double *heapFloat){
-	bool rv=true;
-	GenericLinkedList *test=GenericLinkedListClass.new();
-	test->methods->setElementSize(test,sizeof(double));
-	for (int i=0; i<5; i++){
-		test->methods->add(test,heapFloat+i,1);
-	}
-	test->methods->addAt(test,heapFloat,1,1);
-	test->methods->addAt(test,heapFloat,1,5);
-	test->methods->addAt(test,heapFloat+4,1,0);
-	(test->elementSize!=sizeof(double))? rv=false: 0;
-	(test->numElements!=8)? rv=false: 0;
-	(*(double*)test->methods->get(test,1)!=*heapFloat)? rv=false: 0;
-	(*(double*)test->methods->get(test,2)!=*heapFloat)? rv=false: 0;
-	(*(double*)test->methods->get(test,0)!=*(heapFloat+4))? rv=false: 0;
-	(*(double*)test->methods->get(test,6)!=*heapFloat)? rv=false: 0;
-	GenericLinkedListClass.delete(&test);
-	return rv;
-}
-
-static bool _GenericLinkedListDebug_Remove(double *heapFloat){
-	bool rv=true;
-	GenericLinkedList *test=GenericLinkedListClass.new();
-	test->methods->setElementSize(test,sizeof(double));
-	for (int i=0; i<5; i++){
-		test->methods->add(test,heapFloat+i,1);
-		test->methods->add(test,heapFloat+i,1);
-	}
-	test->methods->removeAt(test,0);
-	test->methods->removeAt(test,5);
-	(test->numElements!=8)? rv=false: 0;
-	(*(double*)test->methods->get(test,0)!=*heapFloat)? rv=false: 0;
-	(*(double*)test->methods->get(test,5)!=*(heapFloat+3))? rv=false: 0;
-	test->methods->removeBetween(test,3,5);
-	(test->numElements!=6)? rv=false: 0;
-	(*(double*)test->methods->get(test,3)!=*(heapFloat+3))? rv=false: 0;
-	test->methods->removeBetween(test,test->numElements-1,test->numElements);
-	(test->numElements!=5)? rv=false: 0;
-	(*(double*)test->methods->get(test,test->numElements-1)!=*(heapFloat+4))? rv=false: 0;
-	test->methods->remove(test,(void*)(heapFloat+1));
-	(test->numElements!=3)? rv=false: 0;
-	(*(double*)test->methods->get(test,0)!=*heapFloat)? rv=false: 0;
-	(*(double*)test->methods->get(test,2)!=*(heapFloat+4))? rv=false: 0;
-	(*(double*)test->methods->get(test,1)!=*(heapFloat+3))? rv=false: 0;
-	GenericLinkedListClass.delete(&test);
-	return rv;
-}
-
-static bool _GenericLinkedListDebug_Set(double *heapFloat){
-	bool rv=true;
-	GenericLinkedList *test=GenericLinkedListClass.new();
-	test->methods->setElementSize(test,sizeof(double));
-	for (int i=0; i<5; i++){
-		test->methods->add(test,heapFloat+i,1);
-		test->methods->add(test,heapFloat+i,1);
-	}
-	test->methods->set(test,heapFloat,5);
-	(test->numElements!=10)? rv=false: 0;
-	(*(double*)test->methods->get(test,0)!=*heapFloat)? rv=false: 0;
-	(*(double*)test->methods->get(test,4)!=*(heapFloat+4))? rv=false: 0;
-	test->methods->setAt(test,heapFloat,5,1);
-	(test->numElements!=10)? rv=false: 0;
-	(*(double*)test->methods->get(test,1)!=*heapFloat)? rv=false: 0;
-	(*(double*)test->methods->get(test,5)!=*(heapFloat+4))? rv=false: 0;
-	GenericLinkedListClass.delete(&test);
-	return rv;
-}
-
-static bool _GenericLinkedListDebug_Search(double *heapFloat){
-      	bool rv=true;
-	//double **secondHeapFloat=malloc(sizeof(double*)*5);
-	//*secondHeapFloat=(heapFloat);
-	//*(secondHeapFloat+1)=(heapFloat+1);
-	//*(secondHeapFloat+2)=(heapFloat+2);
-	//*(secondHeapFloat+3)=(heapFloat+3);
-	//*(secondHeapFloat+4)=(heapFloat+4);
-	double secondHeapFloat[]={
-		3.141595,1234.0,9999.99,0.00001,6.66
-	};
-      	GenericLinkedList *test=GenericLinkedListClass.new();
-	GenericLinkedList *test2=GenericLinkedListClass.new();
-      	test->methods->setElementSize(test,sizeof(double));
-	test2->methods->setElementSize(test2,sizeof(double));
-	test->methods->add(test,heapFloat,5);
-	test2->methods->add(test2,secondHeapFloat,5);
-	(!test->methods->contains(test,(void*)secondHeapFloat))? rv=false: 0;
-	(!test->methods->contains(test,(void*)(secondHeapFloat+4)))? rv=false: 0;
-	(test->methods->getFirstIndexOf(test,(void*)(secondHeapFloat+2))!=2)? rv=false: 0;
-	(test->methods->getFirstIndexOf(test,(void*)(secondHeapFloat+4))!=4)? rv=false: 0;
-	(test->methods->getFirstIndexOf(test,(void*)secondHeapFloat)!=0)? rv=false: 0;
-	(test->methods->getLastIndexOf(test,(void*)(secondHeapFloat+2))!=2)? rv=false: 0;
-	(test->methods->getLastIndexOf(test,(void*)(secondHeapFloat+4))!=4)? rv=false: 0;
-	(test->methods->getLastIndexOf(test,(void*)secondHeapFloat)!=0)? rv=false: 0;
-	(!test->methods->equals(test,test2))? rv=false: 0;
-      	GenericLinkedListClass.delete(&test);
-	GenericLinkedListClass.delete(&test2);
-      	return rv;
-}
-
-static bool _GenericLinkedListDebug_Misc(double *heapFloat){
-	bool rv=true;
-	GenericLinkedList *test=GenericLinkedListClass.new();
-	GenericLinkedList *test2=GenericLinkedListClass.new();
-	test->methods->setElementSize(test,sizeof(double));
-	test2->methods->setElementSize(test2,sizeof(double));
-	test->methods->add(test,heapFloat,5);
-	test2->methods->copyOtherBetween(test2,test,2,5);
-	(test2->numElements!=3)? rv=false: 0;
-	(*(double*)test2->methods->get(test2,0)!=*(heapFloat+2))? rv=false: 0;
-	(*(double*)test2->methods->get(test2,2)!=*(heapFloat+4))? rv=false: 0;
-	test2->methods->copyOtherBetween(test2,test,0,3);
-	(test2->numElements!=3)? rv=false: 0;
-	(*(double*)test2->methods->get(test2,0)!=*heapFloat)? rv=false: 0;
-	(*(double*)test2->methods->get(test2,2)!=*(heapFloat+2))? rv=false: 0;
-	test->methods->add(test,heapFloat+1,4);
-	test->methods->trimToSize(test,5);
-	(test->numElements!=5)? rv=false: 0;
-	(*(double*)test->methods->get(test,0)!=*heapFloat)? rv=false: 0;
-	(*(double*)test->methods->get(test,4)!=*(heapFloat+4))? rv=false: 0;
-	GenericLinkedListClass.delete(&test);
-	GenericLinkedListClass.delete(&test2);
-	return rv;
-}
+//static bool _GenericLinkedListDebug(void){
+//	bool successfull=true;
+//	double heapFloat[]={
+//		3.141595,1234.0,9999.99,0.00001,6.66
+//	};
+//	successfull&=_GenericLinkedListDebug_Add(heapFloat);
+//	successfull&=_GenericLinkedListDebug_Remove(heapFloat);
+//	successfull&=_GenericLinkedListDebug_Set(heapFloat);
+//	successfull&=_GenericLinkedListDebug_Search(heapFloat);
+//	successfull&=_GenericLinkedListDebug_Misc(heapFloat);
+//	//Print_t.objectDebug("GenericLinkedList",successfull);
+//	return successfull;
+//}
+//
+//static bool _GenericLinkedListDebug_Add(double *heapFloat){
+//	bool rv=true;
+//	GenericLinkedList *test=GenericLinkedListClass.new();
+//	test->methods->setElementSize(test,sizeof(double));
+//	for (int i=0; i<5; i++){
+//		test->methods->add(test,heapFloat+i,1);
+//	}
+//	test->methods->addAt(test,heapFloat,1,1);
+//	test->methods->addAt(test,heapFloat,1,5);
+//	test->methods->addAt(test,heapFloat+4,1,0);
+//	(test->elementSize!=sizeof(double))? rv=false: 0;
+//	(test->numElements!=8)? rv=false: 0;
+//	(*(double*)test->methods->get(test,1)!=*heapFloat)? rv=false: 0;
+//	(*(double*)test->methods->get(test,2)!=*heapFloat)? rv=false: 0;
+//	(*(double*)test->methods->get(test,0)!=*(heapFloat+4))? rv=false: 0;
+//	(*(double*)test->methods->get(test,6)!=*heapFloat)? rv=false: 0;
+//	GenericLinkedListClass.delete(&test);
+//	return rv;
+//}
+//
+//static bool _GenericLinkedListDebug_Remove(double *heapFloat){
+//	bool rv=true;
+//	GenericLinkedList *test=GenericLinkedListClass.new();
+//	test->methods->setElementSize(test,sizeof(double));
+//	for (int i=0; i<5; i++){
+//		test->methods->add(test,heapFloat+i,1);
+//		test->methods->add(test,heapFloat+i,1);
+//	}
+//	test->methods->removeAt(test,0);
+//	test->methods->removeAt(test,5);
+//	(test->numElements!=8)? rv=false: 0;
+//	(*(double*)test->methods->get(test,0)!=*heapFloat)? rv=false: 0;
+//	(*(double*)test->methods->get(test,5)!=*(heapFloat+3))? rv=false: 0;
+//	test->methods->removeBetween(test,3,5);
+//	(test->numElements!=6)? rv=false: 0;
+//	(*(double*)test->methods->get(test,3)!=*(heapFloat+3))? rv=false: 0;
+//	test->methods->removeBetween(test,test->numElements-1,test->numElements);
+//	(test->numElements!=5)? rv=false: 0;
+//	(*(double*)test->methods->get(test,test->numElements-1)!=*(heapFloat+4))? rv=false: 0;
+//	test->methods->remove(test,(void*)(heapFloat+1));
+//	(test->numElements!=3)? rv=false: 0;
+//	(*(double*)test->methods->get(test,0)!=*heapFloat)? rv=false: 0;
+//	(*(double*)test->methods->get(test,2)!=*(heapFloat+4))? rv=false: 0;
+//	(*(double*)test->methods->get(test,1)!=*(heapFloat+3))? rv=false: 0;
+//	GenericLinkedListClass.delete(&test);
+//	return rv;
+//}
+//
+//static bool _GenericLinkedListDebug_Set(double *heapFloat){
+//	bool rv=true;
+//	GenericLinkedList *test=GenericLinkedListClass.new();
+//	test->methods->setElementSize(test,sizeof(double));
+//	for (int i=0; i<5; i++){
+//		test->methods->add(test,heapFloat+i,1);
+//		test->methods->add(test,heapFloat+i,1);
+//	}
+//	test->methods->set(test,heapFloat,5);
+//	(test->numElements!=10)? rv=false: 0;
+//	(*(double*)test->methods->get(test,0)!=*heapFloat)? rv=false: 0;
+//	(*(double*)test->methods->get(test,4)!=*(heapFloat+4))? rv=false: 0;
+//	test->methods->setAt(test,heapFloat,5,1);
+//	(test->numElements!=10)? rv=false: 0;
+//	(*(double*)test->methods->get(test,1)!=*heapFloat)? rv=false: 0;
+//	(*(double*)test->methods->get(test,5)!=*(heapFloat+4))? rv=false: 0;
+//	GenericLinkedListClass.delete(&test);
+//	return rv;
+//}
+//
+//static bool _GenericLinkedListDebug_Search(double *heapFloat){
+//      	bool rv=true;
+//	//double **secondHeapFloat=malloc(sizeof(double*)*5);
+//	//*secondHeapFloat=(heapFloat);
+//	//*(secondHeapFloat+1)=(heapFloat+1);
+//	//*(secondHeapFloat+2)=(heapFloat+2);
+//	//*(secondHeapFloat+3)=(heapFloat+3);
+//	//*(secondHeapFloat+4)=(heapFloat+4);
+//	double secondHeapFloat[]={
+//		3.141595,1234.0,9999.99,0.00001,6.66
+//	};
+//      	GenericLinkedList *test=GenericLinkedListClass.new();
+//	GenericLinkedList *test2=GenericLinkedListClass.new();
+//      	test->methods->setElementSize(test,sizeof(double));
+//	test2->methods->setElementSize(test2,sizeof(double));
+//	test->methods->add(test,heapFloat,5);
+//	test2->methods->add(test2,secondHeapFloat,5);
+//	(!test->methods->contains(test,(void*)secondHeapFloat))? rv=false: 0;
+//	(!test->methods->contains(test,(void*)(secondHeapFloat+4)))? rv=false: 0;
+//	(test->methods->getFirstIndexOf(test,(void*)(secondHeapFloat+2))!=2)? rv=false: 0;
+//	(test->methods->getFirstIndexOf(test,(void*)(secondHeapFloat+4))!=4)? rv=false: 0;
+//	(test->methods->getFirstIndexOf(test,(void*)secondHeapFloat)!=0)? rv=false: 0;
+//	(test->methods->getLastIndexOf(test,(void*)(secondHeapFloat+2))!=2)? rv=false: 0;
+//	(test->methods->getLastIndexOf(test,(void*)(secondHeapFloat+4))!=4)? rv=false: 0;
+//	(test->methods->getLastIndexOf(test,(void*)secondHeapFloat)!=0)? rv=false: 0;
+//	(!test->methods->equals(test,test2))? rv=false: 0;
+//      	GenericLinkedListClass.delete(&test);
+//	GenericLinkedListClass.delete(&test2);
+//      	return rv;
+//}
+//
+//static bool _GenericLinkedListDebug_Misc(double *heapFloat){
+//	bool rv=true;
+//	GenericLinkedList *test=GenericLinkedListClass.new();
+//	GenericLinkedList *test2=GenericLinkedListClass.new();
+//	test->methods->setElementSize(test,sizeof(double));
+//	test2->methods->setElementSize(test2,sizeof(double));
+//	test->methods->add(test,heapFloat,5);
+//	test2->methods->copyOtherBetween(test2,test,2,5);
+//	(test2->numElements!=3)? rv=false: 0;
+//	(*(double*)test2->methods->get(test2,0)!=*(heapFloat+2))? rv=false: 0;
+//	(*(double*)test2->methods->get(test2,2)!=*(heapFloat+4))? rv=false: 0;
+//	test2->methods->copyOtherBetween(test2,test,0,3);
+//	(test2->numElements!=3)? rv=false: 0;
+//	(*(double*)test2->methods->get(test2,0)!=*heapFloat)? rv=false: 0;
+//	(*(double*)test2->methods->get(test2,2)!=*(heapFloat+2))? rv=false: 0;
+//	test->methods->add(test,heapFloat+1,4);
+//	test->methods->trimToSize(test,5);
+//	(test->numElements!=5)? rv=false: 0;
+//	(*(double*)test->methods->get(test,0)!=*heapFloat)? rv=false: 0;
+//	(*(double*)test->methods->get(test,4)!=*(heapFloat+4))? rv=false: 0;
+//	GenericLinkedListClass.delete(&test);
+//	GenericLinkedListClass.delete(&test2);
+//	return rv;
+//}
 
 static void _GenericLinkedListDestructor(GenericLinkedList **obj){
-	(*obj)->methods->clear((*obj));
+	GenericLinkedList_t.clear(*obj);
+	//(*obj)->methods->clear((*obj));
 	deleteObject((void**)obj);
 }

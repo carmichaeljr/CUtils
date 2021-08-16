@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <stdbool.h>
+#include "../src/Object.h"
 #include "GenericList.h"
 
 //Class: String
@@ -37,39 +38,7 @@ typedef struct StringObj {
 //
 //  <String>
 extern const struct String_t {
-	//Constructor: new
-	//Creates and initializes a String object.
-	//
-	//Parameters:
-	//
-	//  None
-	//
-	//Returns:
-	//
-	//  A pointer to a string object.
-	String* (*new)(void);
-	//Destructor: delete
-	//Deletes a String object and sets its pointer to NULL.
-	//
-	//Parameters:
-	//
-	//  obj - The object to delete.
-	//
-	//Returns:
-	//
-	//  Nothing
-	void (*delete)(String **obj);
-	//Function: print
-	//Prints the contents of a String object.
-	//
-	//Parameters:
-	//
-	//  obj - The string to print.
-	//
-	//Returns:
-	//
-	//  Nothing
-	void (*print)(const String * const obj);
+	Class class;
 	//Function: setSize
 	//Allocates enough space for a string of length len+1. (for NULL terminator)
 	//Contents of the string will not be changed unless the new size is less than the current size.
@@ -314,7 +283,7 @@ extern const struct String_t {
 	//  Returns true if the operation was successful and changes were made to the object.
 	//  A return value of false guarantees no changes were made to the object.
 	bool (*clear)(String *self);
-	//Function: equals
+	//Function: equalsCharArray
 	//Returns true/false depending if the strings are equal or not.
 	//Two NULL strings are considered equal. Two empty strings are considered equal.
 	//
@@ -326,7 +295,7 @@ extern const struct String_t {
 	//Returns:
 	//
 	//  True if the strings are equal, false if they aren't.
-	bool (*equals)(const String * const self, const char * const other);
+	bool (*equalsCharArray)(const String * const self, const char * const other);
 } String_t;
 
 #endif

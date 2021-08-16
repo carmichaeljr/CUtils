@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("all",["Function"],[["allocator",,[["Class",,,,0,"File:Object.h:Class.allocator","CClass:Class:allocator"]]]]);

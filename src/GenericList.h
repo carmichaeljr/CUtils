@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <stdbool.h>
+#include "../src/Object.h"
 
 //Class: GenericList
 //The struct that represents a GenericList.
@@ -65,39 +66,7 @@ typedef struct GenericList {
 //
 //  <GenericList>
 extern const struct GenericList_t {
-	//Constructor: new
-	//Creates and initializes a GenericList object.
-	//
-	//Parameters:
-	//
-	//  None
-	//
-	//Returns:
-	//
-	//  A pointer to a generic list object.
-	GenericList* (*new)(void);
-	//Destructor: delete
-	//Deletes a GenericList object and sets its pointer to NULL.
-	//
-	//Parameters:
-	//
-	//  obj - The object to delete.
-	//
-	//Returns:
-	//
-	//  Nothing
-	void (*delete)(GenericList **obj);
-	//Function: print
-	//Prints the contents of a GenericList object.
-	//
-	//Parameters:
-	//
-	//  obj - The generic list to print.
-	//
-	//Returns:
-	//
-	//  Nothing
-	void (*print)(const GenericList * const obj);
+	Class class;
 	//Function: setElementSize
 	//Sets the size of the elements stored in the list.
 	//
@@ -387,20 +356,20 @@ extern const struct GenericList_t {
 	//
 	//   true if the list is empty, false if not.
 	bool (*isEmpty)(const GenericList * const self);
-	//Function: equals
-	//Returns true/false depending if the two lists are equal.
-	//
-	//Equality is determined by comparing length, and the memory contents of each list.
-	//
-	//Parameters:
-	//
-	//  self - The first generic list to compare.
-	//  other - The second generic list to compare.
-	//
-	//Returns:
-	//
-	//  true if the lists are equal, otherwise false.
-	bool (*equals)(const GenericList * const self, const GenericList * const other);
+	////Function: equals
+	////Returns true/false depending if the two lists are equal.
+	////
+	////Equality is determined by comparing length, and the memory contents of each list.
+	////
+	////Parameters:
+	////
+	////  self - The first generic list to compare.
+	////  other - The second generic list to compare.
+	////
+	////Returns:
+	////
+	////  true if the lists are equal, otherwise false.
+	//bool (*equals)(const GenericList * const self, const GenericList * const other);
 } GenericList_t;
 
 #endif

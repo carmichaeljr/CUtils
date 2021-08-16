@@ -45,30 +45,6 @@
  <div class="CTitle">Functions</div>
 </div>
 
-<a name="String_t.new"></a><a name="Topic3"></a><div class="CTopic TFunction LC">
- <div class="CTitle">new</div>
- <div id="NDPrototype3" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters">String* (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">new</td></tr></table></td><td class="PAfterParameters">)(<span class="SHKeyword">void</span>)</td></tr></table></div></div>
- <div class="CBody"><p>Creates and initializes a String object.</p><div class="CHeading">Parameters</div><p>None</p><div class="CHeading">Returns</div><p>A pointer to a string object.</p></div>
-</div>
-
-<a name="String_t.delete"></a><a name="Topic20"></a><div class="CTopic TFunction LC">
- <div class="CTitle">delete</div>
- <div id="NDPrototype20" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">delete</td></tr></table></td><td class="PAfterParameters">)(String **obj)</td></tr></table></div></div>
- <div class="CBody"><p>Deletes a String object and sets its pointer to NULL.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">obj</td><td class="CDLDefinition"><p>The object to delete.</p></td></tr></table><div class="CHeading">Returns</div><p>Nothing</p></div>
-</div>
-
-<a name="String_t.print"></a><a name="Topic23"></a><div class="CTopic TFunction LC">
- <div class="CTitle">print</div>
- <div id="NDPrototype23" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">print</td></tr></table></td><td class="PAfterParameters">)(<span class="SHKeyword">const</span> String * <span class="SHKeyword">const</span> obj)</td></tr></table></div></div>
- <div class="CBody"><p>Prints the contents of a String object.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">obj</td><td class="CDLDefinition"><p>The string to print.</p></td></tr></table><div class="CHeading">Returns</div><p>Nothing</p></div>
-</div>
-
-<a name="String_t.setSize"></a><a name="Topic29"></a><div class="CTopic TFunction LC">
- <div class="CTitle">setSize</div>
- <div id="NDPrototype29" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">bool</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">setSize</td></tr></table></td><td class="PAfterParameters">)(String *self, <span class="SHKeyword">const int</span> len)</td></tr></table></div></div>
- <div class="CBody"><p>Allocates enough space for a string of length len+1. (for NULL terminator) Contents of the string will not be changed unless the new size is less than the current size.&nbsp; No terminating NULL character is added, this is purely just to set the size of the underlying array.&nbsp; If len==0 then <a href="../index.html#File:String.h:String_t.clear" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,43);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >String_t.clear</a> will be called.</p><p>Memory contents are not initialized.</p><p>Useful for reducing reallocations when you know the final size of the string.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">self</td><td class="CDLDefinition"><p>The string object to perform the operation on.</p></td></tr><tr><td class="CDLEntry">len</td><td class="CDLDefinition"><p>The number of characters to allocate space for (excluding the terminating null).</p></td></tr></table><div class="CHeading">Returns</div><p>Returns true if the operation was successful and changes were made to the object.&nbsp; A return value of false guarantees no changes were made to the object.</p></div>
-</div>
-
 <a name="String_t.set"></a><a name="Topic52"></a><div class="CTopic TFunction LC">
  <div class="CTitle">set</div>
  <div id="NDPrototype52" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">bool</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">set</td></tr></table></td><td class="PAfterParameters">)(String *self, <span class="SHKeyword">const char</span> * <span class="SHKeyword">const</span> newStr)</td></tr></table></div></div>
@@ -153,9 +129,9 @@
  <div class="CBody"><p>Clears the contents of the string, sets length to 0.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">self</td><td class="CDLDefinition"><p>The string object to perform the operation on.</p></td></tr></table><div class="CHeading">Returns</div><p>Returns true if the operation was successful and changes were made to the object.&nbsp; A return value of false guarantees no changes were made to the object.</p></div>
 </div>
 
-<a name="String_t.equals"></a><a name="Topic65"></a><div class="CTopic TFunction LC last">
- <div class="CTitle">equals</div>
- <div id="NDPrototype65" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">bool</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">equals</td></tr></table></td><td class="PAfterParameters">)(<span class="SHKeyword">const</span> String * <span class="SHKeyword">const</span> self, <span class="SHKeyword">const char</span> * <span class="SHKeyword">const</span> other)</td></tr></table></div></div>
+<a name="String_t.equalsCharArray"></a><a name="Topic3"></a><div class="CTopic TFunction LC last">
+ <div class="CTitle">equalsCharArray</div>
+ <div id="NDPrototype3" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">bool</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">equalsCharArray</td></tr></table></td><td class="PAfterParameters">)(<span class="SHKeyword">const</span> String * <span class="SHKeyword">const</span> self, <span class="SHKeyword">const char</span> * <span class="SHKeyword">const</span> other)</td></tr></table></div></div>
  <div class="CBody"><p>Returns true/false depending if the strings are equal or not.&nbsp; Two NULL strings are considered equal. Two empty strings are considered equal.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">self</td><td class="CDLDefinition"><p>The string object to perform the operation on.</p></td></tr><tr><td class="CDLEntry">other</td><td class="CDLDefinition"><p>The string to compare to.</p></td></tr></table><div class="CHeading">Returns</div><p>True if the strings are equal, false if they aren't.</p></div>
 </div>
 

@@ -7,9 +7,11 @@
 
 #define strGl self->genericList
 
-static String* constructor(void);
-static void print(const String * const obj);
-static void destructor(String **obj);
+static void constructor(void *obj);
+static void* copyConstructor(void *obj, const void * const other, size_t size);
+//static void print(const String * const obj);
+static int comparator(const void * first, const void * second, size_t size);
+static void destructor(void *obj);
 static bool setSize(String *self, const int len);
 static bool set(String *self, const char * const newStr);
 static bool setNonNullString(String *self, const char * const newStr, const int strLen);
@@ -27,12 +29,16 @@ static bool trimSubstring(String *self, const int startIndex, const int endIndex
 static bool trimWhitespace(String *self);
 static bool removeChars(String *self, const char * const unwantedChars);
 static bool clear(String *self);
-static bool equals(const String * const self, const char * const other);
+static bool equalsCharArray(const String * const self, const char * const other);
 
 const struct String_t String_t={
-	.new=constructor,
-	.delete=destructor,
-	.print=print,
+	.class={
+		.allocator=malloc,
+		.constructor=constructor,
+		.copyConstructor=copyConstructor,
+		.comparator=comparator,
+		.destructor=destructor,
+	},
 	.setSize=setSize,
 	.set=set,
 	.setNonNullString=setNonNullString,
@@ -50,8 +56,48 @@ const struct String_t String_t={
 	.trimWhitespace=trimWhitespace,
 	.removeChars=removeChars,
 	.clear=clear,
-	.equals=equals,
+	.equalsCharArray=equalsCharArray,
 };
+
+// Class Methods================================================================
+static void constructor(void *obj){
+	String *strObj=(String*)obj;
+	strObj->genericList=new(GenericList);
+	GenericList_t.setElementSize(strObj->genericList,sizeof(char));
+	strObj->str=NULL;
+	strObj->length=0;
+}
+
+static void* copyConstructor(void *obj, const void * const other, size_t size){
+	String *newObj=(String*)obj;
+	String *copyObj=(String*)other;
+	newObj->genericList=new(GenericList);
+	GenericList_t.setElementSize(newObj->genericList,sizeof(char));
+	String_t.copyOtherBetween(newObj,copyObj,0,copyObj->length);
+	return (void*)newObj;
+}
+
+//static void print(const String * const obj){
+//	Print_t.println("<String Obj[Addr: %p]: '%s'[%d chars]>",obj,obj->str,obj->length);
+//}
+
+static int comparator(const void *first, const void *second, size_t size){
+	String *self=(String*)first;
+	String *other=(String*)second;
+	int rv=(self->str==NULL && other->str==NULL)? 0: -1;
+	if (rv!=0 && self->str!=NULL && other->str!=NULL){
+		return strcmp(self->str,other->str);
+	} else if (rv!=0 && self->str!=NULL && other->str==NULL){
+		return -1;
+	} else if (rv!=0 && self->str==NULL && other->str!=NULL){
+		return 1;
+	}
+	return rv;
+}
+
+static void destructor(void *obj){
+	delete(GenericList,((String*)obj)->genericList);
+}
 
 //Object Methods================================================================
 //Public Methods
@@ -237,7 +283,7 @@ static bool clear(String *self){
 	return false;
 }
 
-static bool equals(const String * const self, const char * const other){
+static bool equalsCharArray(const String * const self, const char * const other){
 	bool rv=(self->str==NULL && other==NULL)? true: false;
 	if (!rv && self->str!=NULL && other!=NULL && strcmp(self->str,other)==0){
 		rv=true;
@@ -246,22 +292,3 @@ static bool equals(const String * const self, const char * const other){
 }
 
 #undef strGl
-
-// Class Methods================================================================
-static String* constructor(void){
-	String *rv=(String*)createObject(sizeof(String));
-	rv->genericList=GenericList_t.new();
-	GenericList_t.setElementSize(rv->genericList,sizeof(char));
-	rv->str=NULL;
-	rv->length=0;
-	return rv;
-}
-
-static void print(const String * const obj){
-	Print_t.println("<String Obj[Addr: %p]: '%s'[%d chars]>",obj,obj->str,obj->length);
-}
-
-static void destructor(String **obj){
-	GenericList_t.delete(&(*obj)->genericList);
-	deleteObject((void**)obj);
-}

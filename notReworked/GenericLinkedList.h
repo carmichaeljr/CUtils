@@ -4,17 +4,20 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-typedef struct GenericLinkedListObj GenericLinkedList;
+typedef struct  GenericLinkedList {
+	//const struct GenericLinkedListMethods *methods;
+	size_t elementSize;
+	int numElements;
+	struct GenericLinkedListNode *head;
+	struct GenericLinkedListNode *tail;
+} GenericLinkedList;
 
-struct GenericLinkedList_t {
+extern const struct GenericLinkedList_t {
 	GenericLinkedList* (*new)(void);
-	void (*delete)(GenericLinkedList **obj);
+	//GenericLinkedList* (*clone)(const GenericLinkedList * const obj);
 	void (*print)(const GenericLinkedList *obj);
-	bool (*debug)(void);
-	size_t objSize;
-};
-
-struct GenericLinkedListMethods {
+	void (*delete)(GenericLinkedList **obj);
+	//bool (*debug)(void);
 	void (*setElementSize)(GenericLinkedList *self, const size_t newSize);
 	void (*set)(GenericLinkedList *self, const void *newElements, const int numElements);
 	void (*setAt)(GenericLinkedList *self, const void *newElements, const int numElements, const int index);
@@ -32,22 +35,13 @@ struct GenericLinkedListMethods {
 	void (*clear)(GenericLinkedList *self);
 	bool (*isEmpty)(const GenericLinkedList *self);
 	bool (*equals)(const GenericLinkedList *self, const GenericLinkedList *other);
-};
+} GenericLinkedList_t;
 
+//TODO - move to C file
 struct GenericLinkedListNode {
 	void *element;
 	struct GenericLinkedListNode *previous;
 	struct GenericLinkedListNode *next;
 };
-
-struct GenericLinkedListObj {
-	const struct GenericLinkedListMethods *methods;
-	size_t elementSize;
-	int numElements;
-	struct GenericLinkedListNode *head;
-	struct GenericLinkedListNode *tail;
-};
-
-extern const struct GenericLinkedList_t GenericLinkedListClass;
 
 #endif

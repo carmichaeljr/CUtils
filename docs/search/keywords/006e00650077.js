@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("new",["Function"],[["new",,[["GenericList_t",,,,0,"File:GenericList.h:GenericList_t.new","CClass:GenericList_t:new"],["String_t",,,,0,"File:String.h:String_t.new","CClass:String_t:new"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("new",["Macro"],[["new",,[[,,,,0,"File:Object.h:new"]]]]);
