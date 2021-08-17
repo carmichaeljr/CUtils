@@ -255,6 +255,7 @@ static void get(void){
 	genericListTest(*(char*)GenericList_t.get(test,3)=='l');
 	genericListTest(*(char*)GenericList_t.get(test,4)=='o');
 	genericListTest(GenericList_t.get(test,5)==NULL);
+	delete(GenericList,test);
 }
 
 static void contains(void){
