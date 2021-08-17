@@ -18,9 +18,9 @@
  <div class="CTitle">Variables</div>
 </div>
 
-<a name="String.genericList"></a><a name="Topic5"></a><div class="CTopic TVariable LC">
+<a name="String.genericList"></a><a name="Topic20"></a><div class="CTopic TVariable LC">
  <div class="CTitle">genericList</div>
- <div id="NDPrototype5" class="NDPrototype"><div class="PSection PPlainSection"><a href="../index.html#File:GenericList.h:GenericList" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >GenericList</a> *genericList</div></div>
+ <div id="NDPrototype20" class="NDPrototype"><div class="PSection PPlainSection"><a href="../index.html#File:GenericList.h:GenericList" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,39);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >GenericList</a> genericList</div></div>
  <div class="CBody"><p>The underlying storage and memory management for the string.</p></div>
 </div>
 
@@ -43,6 +43,12 @@
 
 <a name="String_t.Functions"></a><a name="Topic34"></a><div class="CTopic TGroup LC">
  <div class="CTitle">Functions</div>
+</div>
+
+<a name="String_t.setSize"></a><a name="Topic70"></a><div class="CTopic TFunction LC">
+ <div class="CTitle">setSize</div>
+ <div id="NDPrototype70" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">bool</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">setSize</td></tr></table></td><td class="PAfterParameters">)(String *self, <span class="SHKeyword">const int</span> len)</td></tr></table></div></div>
+ <div class="CBody"><p>Allocates enough space for a string of length len+1. (for NULL terminator) Contents of the string will not be changed unless the new size is less than the current size.&nbsp; No terminating NULL character is added, this is purely just to set the size of the underlying array.&nbsp; If len==0 then <a href="../index.html#File:String.h:String_t.clear" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,43);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >String_t.clear</a> will be called.</p><p>Memory contents are not initialized.</p><p>Useful for reducing reallocations when you know the final size of the string.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">self</td><td class="CDLDefinition"><p>The string object to perform the operation on.</p></td></tr><tr><td class="CDLEntry">len</td><td class="CDLDefinition"><p>The number of characters to allocate space for (excluding the terminating null).</p></td></tr></table><div class="CHeading">Returns</div><p>Returns true if the operation was successful and changes were made to the object.&nbsp; A return value of false guarantees no changes were made to the object.</p></div>
 </div>
 
 <a name="String_t.set"></a><a name="Topic52"></a><div class="CTopic TFunction LC">

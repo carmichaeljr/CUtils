@@ -3,7 +3,7 @@
 #include <string.h>
 #include "GenericList.h"
 #include "Object.h"
-#include "Print.h"
+//#include "Print.h"
 
 static void constructor(void *obj);
 static void* copyConstructor(void *obj, const void * const other, size_t size);
@@ -36,13 +36,7 @@ static void* getPointerToLocation(const GenericList *self, const int index);
 static bool areListsCompatible(const GenericList *self, const GenericList *other);
 
 const struct GenericList_t GenericList_t={
-	.class={
-		.allocator=malloc,
-		.constructor=constructor,
-		.copyConstructor=copyConstructor,
-		.comparator=comparator,
-		.destructor=destructor,
-	},
+	.class=ALLOC_ONLY_DEFAULT_CLASS,
 	.setElementSize=setElementSize,
 	.setListSize=setListSize,
 	.set=set,

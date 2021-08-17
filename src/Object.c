@@ -1,13 +1,14 @@
-#include <stdlib.h>
 #include <string.h>
 #include "Object.h"
 
-void* createObject(size_t size, void* (*allocator)(size_t size), void (*constructor)(void *obj)){
-	void *obj=allocator(size);
-	if (obj!=NULL){
-		constructor(obj);
+void* createObject(void *obj, size_t size, 
+		   void* (*allocator)(size_t size),
+		   void (*constructor)(void *obj)){
+	void *newObj=(obj==NULL)? allocator(size): obj;
+	if (newObj!=NULL){
+		constructor(newObj);
 	}
-	return obj;
+	return newObj;
 }
 
 void* cloneObject(const void * const other, size_t size,
@@ -20,8 +21,10 @@ void* cloneObject(const void * const other, size_t size,
 	return cloneObj;
 }
 
-void deleteObject(void **obj, void (*destructor)(void *obj)){
+void deleteObject(void **obj, void (*destructor)(void *obj), bool freeObj){
 	destructor(*obj);
-	free(*obj);
-	*obj=NULL;
+	if (freeObj){
+		free(*obj);
+		*obj=NULL;
+	}
 }

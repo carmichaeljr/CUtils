@@ -63,6 +63,7 @@ static void copyConstructor(void){
 	genericListTest(test1->listSize==test2->listSize);
 	genericListTest(test1->strictAlloc==test2->strictAlloc);
 	genericListTest(test1->elementSize==test2->elementSize);
+	genericListTest(test1->list!=test2->list);
 	genericListTest(memcmp(test1->list,test2->list,test1->numElements*test1->elementSize)==0);
 	delete(GenericList,test1);
 	delete(GenericList,test2);

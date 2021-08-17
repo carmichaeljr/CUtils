@@ -30,22 +30,22 @@
  <div class="CBody"><p>Responsible for initializing an already allocated object.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">obj</td><td class="CDLDefinition"><p>A pointer to the memory block allocated for the object.</p></td></tr></table><div class="CHeading">Returns</div><p>Nothing</p></div>
 </div>
 
-<a name="copyConstructor"></a><a name="Topic20"></a><div class="CTopic TFunction LC">
+<a name="copyConstructor"></a><a name="Topic80"></a><div class="CTopic TFunction LC">
  <div class="CTitle">copyConstructor</div>
- <div id="NDPrototype20" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span>* (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">copyConstructor</td></tr></table></td><td class="PAfterParameters">)(<span class="SHKeyword">void</span> *obj, <span class="SHKeyword">const void</span> * <span class="SHKeyword">const</span> other, size_t size)</td></tr></table></div></div>
- <div class="CBody"><p>Responsible for creating a clone of another object.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">obj</td><td class="CDLDefinition"><p>A pointer to the memory block allocated for the new object.</p></td></tr><tr><td class="CDLEntry">other</td><td class="CDLDefinition"><p>The object to copy.</p></td></tr><tr><td class="CDLEntry">size</td><td class="CDLDefinition"><p>The size of the object being copied.</p></td></tr></table><div class="CHeading">Returns</div><p>A void pointer to the initialized new object.</p></div>
+ <div id="NDPrototype80" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span>* (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">copyConstructor</td></tr></table></td><td class="PAfterParameters">)(<span class="SHKeyword">void</span> *obj, <span class="SHKeyword">const void</span> * <span class="SHKeyword">const</span> other, size_t size)</td></tr></table></div></div>
+ <div class="CBody"><p>Responsible for creating a clone of another object, given already allocated memory.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">obj</td><td class="CDLDefinition"><p>A pointer to the memory block allocated for the new object.</p></td></tr><tr><td class="CDLEntry">other</td><td class="CDLDefinition"><p>The object to copy.</p></td></tr><tr><td class="CDLEntry">size</td><td class="CDLDefinition"><p>The size of the object being copied.</p></td></tr></table><div class="CHeading">Returns</div><p>A void pointer to the initialized new object.</p></div>
 </div>
 
-<a name="destructor"></a><a name="Topic62"></a><div class="CTopic TFunction LC">
- <div class="CTitle">destructor</div>
- <div id="NDPrototype62" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">destructor</td></tr></table></td><td class="PAfterParameters">)(<span class="SHKeyword">void</span> *obj)</td></tr></table></div></div>
- <div class="CBody"><p>Responsible for deleting and freeing memory allocated for the given object.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">obj</td><td class="CDLDefinition"><p>A pointer to the object.</p></td></tr></table><div class="CHeading">Returns</div><p>Nothing</p></div>
-</div>
-
-<a name="comparator"></a><a name="Topic65"></a><div class="CTopic TFunction LC last">
+<a name="comparator"></a><a name="Topic65"></a><div class="CTopic TFunction LC">
  <div class="CTitle">comparator</div>
  <div id="NDPrototype65" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">int</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">comparator</td></tr></table></td><td class="PAfterParameters">)(<span class="SHKeyword">const void</span> *first, <span class="SHKeyword">const void</span> *second, size_t size)</td></tr></table></div></div>
  <div class="CBody"><p>Responsible for comparing two objects of the same type.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">first</td><td class="CDLDefinition"><p>The first object to compare.</p></td></tr><tr><td class="CDLEntry">second</td><td class="CDLDefinition"><p>The second object to compare.</p></td></tr><tr><td class="CDLEntry">size</td><td class="CDLDefinition"><p>The size of the objects being compared.</p></td></tr></table><div class="CHeading">Returns</div><p>The return value is defined by the implementation of the comparator in the &lt;type&gt;_t struct.</p></div>
+</div>
+
+<a name="destructor"></a><a name="Topic62"></a><div class="CTopic TFunction LC last">
+ <div class="CTitle">destructor</div>
+ <div id="NDPrototype62" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span> (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">destructor</td></tr></table></td><td class="PAfterParameters">)(<span class="SHKeyword">void</span> *obj)</td></tr></table></div></div>
+ <div class="CBody"><p>Responsible for deleting and freeing memory allocated for the given object.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">obj</td><td class="CDLDefinition"><p>A pointer to the object.</p></td></tr></table><div class="CHeading">Returns</div><p>Nothing</p></div>
 </div>
 
 </body></html>

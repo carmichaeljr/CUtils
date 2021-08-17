@@ -2,10 +2,10 @@
 #include <string.h>
 #include "String.h"
 #include "Object.h"
-#include "Print.h"
+//#include "Print.h"
 #include "GenericList.h"
 
-#define strGl self->genericList
+#define strGl (&(self->genericList))
 
 static void constructor(void *obj);
 static void* copyConstructor(void *obj, const void * const other, size_t size);
@@ -32,13 +32,7 @@ static bool clear(String *self);
 static bool equalsCharArray(const String * const self, const char * const other);
 
 const struct String_t String_t={
-	.class={
-		.allocator=malloc,
-		.constructor=constructor,
-		.copyConstructor=copyConstructor,
-		.comparator=comparator,
-		.destructor=destructor,
-	},
+	.class=ALLOC_ONLY_DEFAULT_CLASS,
 	.setSize=setSize,
 	.set=set,
 	.setNonNullString=setNonNullString,
@@ -62,8 +56,8 @@ const struct String_t String_t={
 // Class Methods================================================================
 static void constructor(void *obj){
 	String *strObj=(String*)obj;
-	strObj->genericList=new(GenericList);
-	GenericList_t.setElementSize(strObj->genericList,sizeof(char));
+	new(GenericList,&strObj->genericList);
+	GenericList_t.setElementSize(&strObj->genericList,sizeof(char));
 	strObj->str=NULL;
 	strObj->length=0;
 }
@@ -71,8 +65,8 @@ static void constructor(void *obj){
 static void* copyConstructor(void *obj, const void * const other, size_t size){
 	String *newObj=(String*)obj;
 	String *copyObj=(String*)other;
-	newObj->genericList=new(GenericList);
-	GenericList_t.setElementSize(newObj->genericList,sizeof(char));
+	new(GenericList,&(newObj->genericList));
+	GenericList_t.setElementSize(&newObj->genericList,sizeof(char));
 	String_t.copyOtherBetween(newObj,copyObj,0,copyObj->length);
 	return (void*)newObj;
 }
@@ -96,7 +90,9 @@ static int comparator(const void *first, const void *second, size_t size){
 }
 
 static void destructor(void *obj){
-	delete(GenericList,((String*)obj)->genericList);
+	String *strObj=(String*)obj;
+	GenericList *temp=&strObj->genericList;
+	delete(GenericList,temp,false);
 }
 
 //Object Methods================================================================
@@ -159,7 +155,7 @@ static bool concatChar(String *self, const char newChar){
 }
 
 static bool copyOtherBetween(String *self, const String * const other, const int startIndex, const int endIndex){
-	GenericList *otherTemp=other->genericList;
+	const GenericList *otherTemp=&other->genericList;
 	if (startIndex>=0 && startIndex<endIndex && endIndex<=other->length &&
 	    GenericList_t.setListSize(strGl,endIndex-startIndex+1)){
 		GenericList_t.copyOtherBetween(strGl,otherTemp,startIndex,endIndex);
@@ -275,9 +271,9 @@ static bool removeChars(String *self, const char * const unwantedChars){
 }
 
 static bool clear(String *self){
-	if (GenericList_t.clear(self->genericList)){
-		self->str=(char*)self->genericList->list;
-		self->length=self->genericList->numElements;
+	if (GenericList_t.clear(&self->genericList)){
+		self->str=(char*)self->genericList.list;
+		self->length=self->genericList.numElements;
 		return true;
 	}
 	return false;

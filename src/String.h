@@ -23,7 +23,7 @@
 typedef struct StringObj {
 	//Variable: genericList
 	//The underlying storage and memory management for the string.
-	GenericList *genericList;
+	GenericList genericList;
 	//Variable: str
 	char *str;
 	//Variable: length

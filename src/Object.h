@@ -2,13 +2,20 @@
 #define OBJECT_FRAMEWORK
 
 #include <stdlib.h>
+#include <stdbool.h>
+
+#define GET_NEW_MACRO(one,two,NAME,...) NAME
+#define GET_DELETE_MACRO(one,two,three,NAME,...) NAME
 
 //Macro: new
 //--- Prototype ---
-//new(type) 
+//new(type,obj=NULL)
 //-----------------
 //
 //New is a function-macro that, given a type, creates a new object of that type.
+//This macro is overloaded through defining a default parameter.
+//If obj is NULL then space will be allocated for the new object. If obj is not NULL
+//then it is treated as a pointer to space already allocated for the new object.
 //
 //The constructor is supplied by the given object type. This means that in order for
 //this macro to work a constructor function with the following signature must be defined
@@ -24,7 +31,14 @@
 //Note that the struct of <type>_t must contain a <Class> struct as a member named "class" in order
 //for this macro expansion to work properly. The <Class> struct defines how objects of <type>
 //are created, destroyed, copied, and compared. An example of this is the <String_t> struct.
-#define new(type) createObject(sizeof(type),type##_t.class.allocator,type##_t.class.constructor)
+//
+//Parameters:
+//
+//  type - The type of object to create.
+//  obj - A pointer to already reserved memory to initialize the object with.
+#define new(...) GET_NEW_MACRO(__VA_ARGS__,newWithoutAlloc,newWithAlloc)(__VA_ARGS__)
+#define newWithAlloc(type) createObject(NULL,sizeof(type),type##_t.class.allocator,type##_t.class.constructor)
+#define newWithoutAlloc(type,obj) createObject((void*)obj,sizeof(type),type##_t.class.allocator,type##_t.class.constructor)
 //Macro: copy
 //--- Prototype ---
 //copy(type,obj) 
@@ -47,13 +61,21 @@
 //Note that the struct of <type>_t must contain a <Class> struct as a member named "class" in order
 //for this macro expansion to work properly. The <Class> struct defines how objects of <type>
 //are created, destroyed, copied, and compared. An example of this is the <String_t> struct.
+//
+//Parameters: 
+//
+//  type - The type of object being cloned.
+//  obj - The object to clone.
 #define copy(type,obj) cloneObject((void*)obj,sizeof(type),type##_t.class.allocator,type##_t.class.copyConstructor)
 //Macro: delete
 //--- Prototype ---
-//delete(type,obj) 
+//delete(type,obj,freeObj=true) 
 //-----------------
 //
 //Delete is a function-macro that, given a type and a preexisting object, deletes the object.
+//This macro is overloaded through defining a default parameter.
+//If freeObj is true then the memory allocated to the object will be freed. If obj is false
+//then the memory allocated for the object will not be freed.
 //
 //The destructor is supplied by the given object type. This means that in order for
 //this macro to work a destructor function with the following signature must be defined
@@ -69,7 +91,15 @@
 //Note that the struct of <type>_t must contain a <Class> struct as a member named "class" in order
 //for this macro expansion to work properly. The <Class> struct defines how objects of <type>
 //are created, destroyed, copied, and compared. An example of this is the <String_t> struct.
-#define delete(type,obj) deleteObject((void**)(&obj),type##_t.class.destructor)
+//
+//Parameters:
+//
+//  type - The type of the object being deleted.
+//  obj - A pointer to the object to be deleted.
+//  freeObj - Determines if the memory is freed or not.
+#define delete(...) GET_DELETE_MACRO(__VA_ARGS__,deleteWithoutFree,deleteWithFree)(__VA_ARGS__)
+#define deleteWithFree(type,obj) deleteObject((void**)(&obj),type##_t.class.destructor,true)
+#define deleteWithoutFree(type,obj,freeObj) deleteObject((void**)(&obj),type##_t.class.destructor,freeObj)
 //Macro: equals
 //--- Prototype ---
 //equals(type,obj1,obj2) 
@@ -92,6 +122,12 @@
 //Note that the struct of <type>_t must contain a <Class> struct as a member named "class" in order
 //for this macro expansion to work properly. The <Class> struct defines how objects of <type>
 //are created, destroyed, copied, and compared. An example of this is the <String_t> struct.
+//
+//Parameters:
+//
+//  type - The type of the two objects being compared.
+//  obj1 - The first object to compare.
+//  obj2 - The second object to compare.
 #define equals(type,obj1,obj2) type##_t.class.comparator(obj1,obj2,sizeof(type))
 //Macro: DEFAULT_CLASS
 //--- Prototype
@@ -122,7 +158,39 @@
 		.allocator=malloc,\
 		.constructor=constructor,\
 		.copyConstructor=memcpy,\
-		.comparator=memcmp\
+		.comparator=memcmp,\
+		.destructor=destructor,\
+	}
+//Macro: ALLOC_ONLY_DEFAULT_CLASS
+//--- Prototype
+//ALLOC_ONLY_DEFAULT_CLASS {
+//	.allocator=malloc,
+//	.constructor=constructor,
+//	.copyConstructor=copyConstructor,
+//	.comparator=comparator,
+//	.destructor=destructor,
+//}
+//---
+//ALLOC_ONLY_DEFAULT_CLASS is a macro that defines only a default allocator function.
+//Use this macro when the only functions you wish to change from default in the <Class> struct are the
+//constructor, copyConstructor, comparator, and destructor.
+//
+//The default allocator is malloc, which can be overridden manually.
+//
+//The functions not supplied need to be defined in the source file that the ALLOC_ONLY_DEFAULT_CLASS 
+//macro expands in, and are assumed to have the following signatures and names:
+//
+//--- Code
+//void constructor(void *obj);
+//void* copyConstructor(void *obj, const void * const other, size_t size);
+//int comparator(const void *first, const void *second, size_t size);
+//void destructor(void *obj);
+//---
+#define ALLOC_ONLY_DEFAULT_CLASS { \
+		.allocator=malloc,\
+		.constructor=constructor,\
+		.copyConstructor=copyConstructor,\
+		.comparator=comparator,\
 		.destructor=destructor,\
 	}
 
@@ -153,7 +221,7 @@ typedef struct Class {
 	//  Nothing
 	void (*constructor)(void *obj);
 	//Function: copyConstructor
-	//Responsible for creating a clone of another object.
+	//Responsible for creating a clone of another object, given already allocated memory.
 	//
 	//Parameters:
 	//
@@ -191,10 +259,12 @@ typedef struct Class {
 	void (*destructor)(void *obj);
 } Class;
 
-void* createObject(size_t size, void* (*allocator)(size_t size), void (*constructor)(void *obj));
+void* createObject(void *obj, size_t size, 
+		   void* (*allocator)(size_t size),
+		   void (*constructor)(void *obj));
 void* cloneObject(const void * const other, size_t size,
 		  void* (*allocator)(size_t size),
 		  void* (*copyConstructor)(void *obj, const void * const other, size_t size));
-void deleteObject(void **obj, void (*destructor)(void *obj));
+void deleteObject(void **obj, void (*destructor)(void *obj), bool freeObj);
 
 #endif
