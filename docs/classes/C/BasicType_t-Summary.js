@@ -1,0 +1,1 @@
+﻿NDFramePage.OnPageTitleLoaded("CClass:BasicType_t","BasicType_t");NDSummary.OnSummaryLoaded("CClass:BasicType_t",[["C/C++","C"]],[["Classes","Class"]],[[64,0,0,"BasicType_t"]]);

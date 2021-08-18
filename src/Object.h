@@ -5,7 +5,11 @@
 #include <stdbool.h>
 
 #define GET_NEW_MACRO(one,two,NAME,...) NAME
+#define GET_COPY_MACRO(one,two,three,NAME,...) NAME
 #define GET_DELETE_MACRO(one,two,three,NAME,...) NAME
+#define MERGE_(a,b)  a##b
+#define LABEL_(a) MERGE_(unique_name_, a)
+#define UNIQUE_NAME LABEL_(__LINE__)
 
 //Macro: new
 //--- Prototype ---
@@ -13,9 +17,9 @@
 //-----------------
 //
 //New is a function-macro that, given a type, creates a new object of that type.
-//This macro is overloaded through defining a default parameter.
-//If obj is NULL then space will be allocated for the new object. If obj is not NULL
-//then it is treated as a pointer to space already allocated for the new object.
+//This macro is overloaded with a default parameter.
+//If obj is NULL then memory will be allocated for the new object. If obj is not NULL
+//then obj is treated as a pointer to heap memory already allocated for the new object.
 //
 //The constructor is supplied by the given object type. This means that in order for
 //this macro to work a constructor function with the following signature must be defined
@@ -35,17 +39,20 @@
 //Parameters:
 //
 //  type - The type of object to create.
-//  obj - A pointer to already reserved memory to initialize the object with.
+//  obj - A pointer to already reserved heap memory to initialize the object with.
 #define new(...) GET_NEW_MACRO(__VA_ARGS__,newWithoutAlloc,newWithAlloc)(__VA_ARGS__)
 #define newWithAlloc(type) createObject(NULL,sizeof(type),type##_t.class.allocator,type##_t.class.constructor)
 #define newWithoutAlloc(type,obj) createObject((void*)obj,sizeof(type),type##_t.class.allocator,type##_t.class.constructor)
 //Macro: copy
 //--- Prototype ---
-//copy(type,obj) 
+//copy(type,obj=NULL,other) 
 //-----------------
 //
 //Copy is a function-macro that, given a type and a preexisting object, creates a copy of
 //the object.
+//This macro is overloaded with a default parameter.
+//If obj is NULL then memory will be allocated for the new object. If obj is not NULL
+//then obj is treated as a pointer to heap memory already allocated for the new object.
 //
 //The copyConstructor is supplied by the given object type. This means that in order for
 //this macro to work a copyConstructor function with the following signature must be defined
@@ -65,8 +72,13 @@
 //Parameters: 
 //
 //  type - The type of object being cloned.
-//  obj - The object to clone.
-#define copy(type,obj) cloneObject((void*)obj,sizeof(type),type##_t.class.allocator,type##_t.class.copyConstructor)
+//  obj - A pointer to already reserved heap memory to initialize the object with.
+//  other - The object to clone.
+#define copy(...) GET_COPY_MACRO(__VA_ARGS__,copyWithoutAlloc,copyWithAlloc)(__VA_ARGS__)
+#define copyWithAlloc(type,other)\
+	cloneObject(NULL,(void*)other,sizeof(type),type##_t.class.allocator,type##_t.class.copyConstructor)
+#define copyWithoutAlloc(type,obj,other)\
+	cloneObject((void*)obj,(void*)other,sizeof(type),type##_t.class.allocator,type##_t.class.copyConstructor)
 //Macro: delete
 //--- Prototype ---
 //delete(type,obj,freeObj=true) 
@@ -97,9 +109,10 @@
 //  type - The type of the object being deleted.
 //  obj - A pointer to the object to be deleted.
 //  freeObj - Determines if the memory is freed or not.
-#define delete(...) GET_DELETE_MACRO(__VA_ARGS__,deleteWithoutFree,deleteWithFree)(__VA_ARGS__)
+#define delete(...) GET_DELETE_MACRO(__VA_ARGS__,deleteFreeOption,deleteWithFree)(__VA_ARGS__)
 #define deleteWithFree(type,obj) deleteObject((void**)(&obj),type##_t.class.destructor,true)
-#define deleteWithoutFree(type,obj,freeObj) deleteObject((void**)(&obj),type##_t.class.destructor,freeObj)
+#define deleteFreeOption(type,obj,freeObj) deleteObject((void**)(&obj),type##_t.class.destructor,freeObj)
+
 //Macro: equals
 //--- Prototype ---
 //equals(type,obj1,obj2) 
@@ -259,10 +272,41 @@ typedef struct Class {
 	void (*destructor)(void *obj);
 } Class;
 
+//Class: BasicType_t
+//This class defines the types for the supported basic data types. Supported basic data types are:
+//
+//  - char_t: char
+//  - short_t: short
+//  - int_t: int
+//  - unsigned_t: unsigned
+//  - long_t: long
+//  - float_t: float
+//  - double_t: double
+//
+//Note that BasicType_t is not a supported type itself. Instead use the ones listed above.
+//
+//The class declaration is as follows for all basic data types:
+//--- Code
+//.allocator=malloc,
+//.constructor=NULL,
+//.copyConstructor=memcpy,
+//.comparator=memcmp,
+//.destructor=NULL,
+//---
+//The set function pointer is set as memcpy.
+//
+//Creating the class in this manner allows objects of basic data types to be supported.
+//It allows for basic data types to interact with the rest of the objects in the object
+//system and be treated as regular objects.
+const struct BasicType_t {
+	Class class;
+	void* (*set)(void *self, const void * const other, size_t size);
+} char_t, short_t, int_t, unsigned_t, long_t, float_t, double_t;
+
 void* createObject(void *obj, size_t size, 
 		   void* (*allocator)(size_t size),
 		   void (*constructor)(void *obj));
-void* cloneObject(const void * const other, size_t size,
+void* cloneObject(void *obj, const void * const other, size_t size,
 		  void* (*allocator)(size_t size),
 		  void* (*copyConstructor)(void *obj, const void * const other, size_t size));
 void deleteObject(void **obj, void (*destructor)(void *obj), bool freeObj);

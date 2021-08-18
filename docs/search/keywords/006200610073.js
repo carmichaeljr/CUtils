@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("bas",["Class"],[["BasicType_t",,[[,,,,0,"File:Object.h:BasicType_t","CClass:BasicType_t"]]]]);

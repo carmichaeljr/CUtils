@@ -4,7 +4,9 @@
 
 int main(int argc, char **argv){
 	resetTestResults();
+	basicTypesDebug();
 	genericListDebug();
+	genericLinkedListDebug();
 	stringDebug();
 	printTestResults();
 	//FileClass.debug();

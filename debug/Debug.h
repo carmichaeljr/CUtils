@@ -11,7 +11,9 @@ bool incrementTestCount(bool testResult);
 void printTestResults(void);
 
 //Defined in various debug files
+void basicTypesDebug(void);
 void genericListDebug(void);
+void genericLinkedListDebug(void);
 void stringDebug(void);
 
 #endif

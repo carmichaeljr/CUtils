@@ -84,10 +84,11 @@ static void comparator(void){
 static void setElementSize(void){
 	GenericList *test=new(GenericList);
 	genericListTest(test->elementSize==0);
-	GenericList_t.setElementSize(test,sizeof(char));
+	genericListTest(GenericList_t.setElementSize(test,sizeof(char)));
 	genericListTest(test->elementSize==sizeof(char));
 	GenericList_t.add(test,&("hello"[0]),1);
-	GenericList_t.setElementSize(test,sizeof(float));
+	genericListTest(!GenericList_t.setElementSize(test,sizeof(char)));
+	genericListTest(GenericList_t.setElementSize(test,sizeof(float)));
 	genericListTest(test->elementSize==sizeof(float));
 	genericListTest(test->numElements==0);
 	delete(GenericList,test);

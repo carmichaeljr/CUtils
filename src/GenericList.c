@@ -10,7 +10,7 @@ static void* copyConstructor(void *obj, const void * const other, size_t size);
 //static void print(const GenericList * const obj);
 static int comparator(const void *self, const void *other, size_t size);
 static void destructor(void *obj);
-static void setElementSize(GenericList *self, const size_t newSize);
+static bool setElementSize(GenericList *self, const size_t newSize);
 static bool setListSize(GenericList *self, const int numElements);
 static bool set(GenericList *self, const void * const newELements, const int numElements);
 static bool setAt(GenericList *self, const void * const newElements, const int numElements, const int index);
@@ -105,13 +105,15 @@ static void destructor(void *obj){
 
 //Object Methods================================================================
 //Public methods
-static void setElementSize(GenericList *self, const size_t newSize){
+static bool setElementSize(GenericList *self, const size_t newSize){
 	if (newSize!=self->elementSize){
 		if (!GenericList_t.isEmpty(self)){
 			GenericList_t.clear(self);
 		}
 		self->elementSize=newSize;
+		return true;
 	}
+	return false;
 }
 
 static bool setListSize(GenericList *self, const int numElements){

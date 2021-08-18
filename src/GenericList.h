@@ -83,8 +83,9 @@ extern const struct GenericList_t {
 	//
 	//Returns:
 	//
-	//Nothing
-	void (*setElementSize)(GenericList *self, const size_t newSize);
+	//  Returns true if the operation was successful and changes were made to the object.
+	//  A return value of false guarantees no changes were made to the object.
+	bool (*setElementSize)(GenericList *self, const size_t newSize);
 	//Function: setListSize
 	//Useful for reducing the number of memory reallocations if you know the final size of the list.
 	//Contents of the list will not be changed unless the new size is less than the current size.
