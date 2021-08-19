@@ -11,7 +11,7 @@ function printLine {
 mkdir -p build
 
 declare -i fileID=0
-for inputFile in $(find ./debug ./src -type f \( -iname "*.h" -o -iname "*.c" \))
+for inputFile in $(find ./debug ./src -type f \( -iname "*.c" \))
 do
 	if [[ $? -eq 0 ]]; then
 		printf "Running: C Pre-Processor     : $inputFile -> ./build/$fileID.i"
