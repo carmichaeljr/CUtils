@@ -11,6 +11,9 @@ static void basicTypeUnsigned(void);
 static void basicTypeLong(void);
 static void basicTypeFloat(void);
 static void basicTypeDouble(void);
+#ifdef CUSTOM_PRE_PROC_ENABLED
+static void basicTypeUnsignedInt(void);
+#endif
 
 void basicTypesDebug(void){
 	basicTypeChar();
@@ -20,6 +23,9 @@ void basicTypesDebug(void){
 	basicTypeLong();
 	basicTypeFloat();
 	basicTypeDouble();
+#if CUSTOM_PRE_PROC_ENABLED
+	basicTypeUnsignedInt();
+#endif
 }
 
 static void basicTypeChar(void){
@@ -85,3 +91,14 @@ static void basicTypeDouble(void){
 	delete(double,test);
 	basicTypeTest(temp==5);
 }
+
+#ifdef CUSTOM_PRE_PROC_ENABLED
+static void basicTypeUnsignedInt(void){
+	unsigned int temp='h';
+	unsigned int *test=new(unsigned int);
+	unsigned_int_t.set(test,&temp,sizeof(unsigned int));
+	basicTypeTest(*test=='h');
+	delete(unsigned int,test);
+	basicTypeTest(temp=='h');
+}
+#endif

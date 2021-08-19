@@ -57,6 +57,7 @@ typedef struct GenericList {
 	//
 	// - Default: 0
 	size_t elementSize;
+	Class *elementClass;
 } GenericList;
 
 //Class: GenericList_t

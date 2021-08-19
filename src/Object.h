@@ -273,7 +273,7 @@ typedef struct Class {
 } Class;
 
 //Class: BasicType_t
-//This class defines the types for the supported basic data types. Supported basic data types are:
+//This defines the class for the basic data types. Supported basic data types are:
 //
 //  - char_t: char
 //  - short_t: short
@@ -283,7 +283,17 @@ typedef struct Class {
 //  - float_t: float
 //  - double_t: double
 //
-//Note that BasicType_t is not a supported type itself. Instead use the ones listed above.
+//With the custom pre-processor enabled, the following additional basic data types are supported:
+//
+//  - unsigned_int_t: unsigned int
+//
+//Note that BasicType_t is a class that can represent multiple object types.
+//It is for this reason that BasicType is not a supported object, the size of the
+//underlying object cannot be determined because the underlying object can be one
+//of multiple types.
+//
+//The types listed above are just an alias for BasicType_t, but they have a size
+//associated with them making there objects supported.
 //
 //The class declaration is as follows for all basic data types:
 //--- Code
@@ -293,15 +303,37 @@ typedef struct Class {
 //.comparator=memcmp,
 //.destructor=NULL,
 //---
-//The set function pointer is set as memcpy.
 //
 //Creating the class in this manner allows objects of basic data types to be supported.
 //It allows for basic data types to interact with the rest of the objects in the object
 //system and be treated as regular objects.
 const struct BasicType_t {
 	Class class;
+	//Function: set
+	//Sets the objects value. The default operation is memcpy.
+	//
+	//Parameters:
+	//
+	//  self - The object to perform the operation on.
+	//  other - The object to copy from. In this case most likely a variable to
+	//  	    a corresponding data type.
+	//  size - The size of the object.
+	//
+	//Returns:
+	//	A void pointer to the newly set object.
 	void* (*set)(void *self, const void * const other, size_t size);
-} char_t, short_t, int_t, unsigned_t, long_t, float_t, double_t;
+} BasicType_t;
+#define char_t BasicType_t
+#define short_t BasicType_t
+#define int_t BasicType_t
+#define unsigned_t BasicType_t
+#define long_t BasicType_t
+#define float_t BasicType_t
+#define double_t BasicType_t
+
+#ifdef CUSTOM_PRE_PROC_ENABLED
+	#define unsigned_int_t BasicType_t
+#endif
 
 void* createObject(void *obj, size_t size, 
 		   void* (*allocator)(size_t size),

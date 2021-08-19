@@ -1,1 +1,1 @@
-﻿NDFramePage.OnPageTitleLoaded("CClass:BasicType_t","BasicType_t");NDSummary.OnSummaryLoaded("CClass:BasicType_t",[["C/C++","C"]],[["Classes","Class"]],[[64,0,0,"BasicType_t"]]);
+﻿NDFramePage.OnPageTitleLoaded("CClass:BasicType_t","BasicType_t");NDSummary.OnSummaryLoaded("CClass:BasicType_t",[["C/C++","C"]],[["Classes","Class"],["Functions","Function"],["Groups","Group"]],[[46,0,0,"BasicType_t"],[69,0,2,"Functions","Functions"],[73,0,1,"set","set"]]);

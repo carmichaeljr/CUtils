@@ -8,10 +8,20 @@
 
 <body onload="NDLoader.OnLoad('Content');" class="NDPage NDContentPage">
 
-<a name="Topic64"></a><div class="CTopic TClass LC first">
+<a name="Topic46"></a><div class="CTopic TClass LC first">
  <div class="CTitle">BasicType_t</div>
- <div class="NDClassPrototype" id="NDClassPrototype64"><div class="CPEntry TClass Current"><div class="CPModifiers"><span class="SHKeyword">const</span> <span class="SHKeyword">struct</span></div><div class="CPName">BasicType_t</div></div></div>
- <div class="CBody"><p>This class defines the types for the supported basic data types. Supported basic data types are:</p><ul><li><p>char_t: char</p></li><li><p>short_t: short</p></li><li><p>int_t: int</p></li><li><p>unsigned_t: unsigned</p></li><li><p>long_t: long</p></li><li><p>float_t: float</p></li><li><p>double_t: double</p></li></ul><p>Note that BasicType_t is not a supported type itself. Instead use the ones listed above.</p><p>The class declaration is as follows for all basic data types:</p><pre>.allocator=malloc,<br />.constructor=NULL,<br />.copyConstructor=memcpy,<br />.comparator=memcmp,<br />.destructor=NULL,</pre><p>The set function pointer is set as memcpy.</p><p>Creating the class in this manner allows objects of basic data types to be supported.&nbsp; It allows for basic data types to interact with the rest of the objects in the object system and be treated as regular objects.</p></div>
+ <div class="NDClassPrototype" id="NDClassPrototype46"><div class="CPEntry TClass Current"><div class="CPModifiers"><span class="SHKeyword">const</span> <span class="SHKeyword">struct</span></div><div class="CPName">BasicType_t</div></div></div>
+ <div class="CBody"><p>This class defines the types for the supported basic data types. Supported basic data types are:</p><ul><li><p>char_t: char</p></li><li><p>short_t: short</p></li><li><p>int_t: int</p></li><li><p>unsigned_t: unsigned</p></li><li><p>long_t: long</p></li><li><p>float_t: float</p></li><li><p>double_t: double</p></li></ul><p>Note that BasicType_t is not a supported type itself. Instead use the ones listed above.</p><p>The class declaration is as follows for all basic data types:</p><pre>.allocator=malloc,<br />.constructor=NULL,<br />.copyConstructor=memcpy,<br />.comparator=memcmp,<br />.destructor=NULL,</pre><p>Creating the class in this manner allows objects of basic data types to be supported.&nbsp; It allows for basic data types to interact with the rest of the objects in the object system and be treated as regular objects.</p></div>
+</div>
+
+<a name="Functions"></a><a name="Topic69"></a><div class="CTopic TGroup LC">
+ <div class="CTitle">Functions</div>
+</div>
+
+<a name="set"></a><a name="Topic73"></a><div class="CTopic TFunction LC last">
+ <div class="CTitle">set</div>
+ <div id="NDPrototype73" class="NDPrototype WideForm"><div class="PSection PParameterSection CStyle"><table><tr><td class="PBeforeParameters"><span class="SHKeyword">void</span>* (</td><td class="PParametersParentCell"><table class="PParameters"><tr><td class="PSymbols first">*</td><td class="PName last">set</td></tr></table></td><td class="PAfterParameters">)(<span class="SHKeyword">void</span> *self, <span class="SHKeyword">const void</span> * <span class="SHKeyword">const</span> other, size_t size)</td></tr></table></div></div>
+ <div class="CBody"><p>Sets the objects value. The set operation is memcpy.</p><div class="CHeading">Parameters</div><table class="CDefinitionList"><tr><td class="CDLEntry">self</td><td class="CDLDefinition"><p>The object to perform the operation on.</p></td></tr><tr><td class="CDLEntry">other</td><td class="CDLDefinition"><p>The object to copy from. In this case most likely a variable to a corresponding data type.</p></td></tr><tr><td class="CDLEntry">size</td><td class="CDLDefinition"><p>The size of the object.</p></td></tr></table><div class="CHeading">Returns</div><p>A void pointer to the newly set object.</p></div>
 </div>
 
 </body></html>

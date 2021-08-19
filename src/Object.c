@@ -2,7 +2,7 @@
 #include <stdarg.h>
 #include "Object.h"
 
-const struct BasicType_t char_t={
+const struct BasicType_t BasicType_t={
 	.class={
 		.allocator=malloc,
 		.constructor=NULL,
@@ -11,13 +11,7 @@ const struct BasicType_t char_t={
 		.destructor=NULL,
 	},
 	.set=memcpy,
-}, short_t=char_t,
-   int_t=char_t,
-   unsigned_t=char_t,
-   long_t=char_t,
-   float_t=char_t,
-   double_t=char_t;
-
+};
 
 void* createObject(void *obj, size_t size, 
 		   void* (*allocator)(size_t size),

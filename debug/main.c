@@ -1,6 +1,7 @@
 #include <stddef.h>
-#include "../src/Print.h"
 #include "Debug.h"
+
+#define DEBUG_CUSTOM_PREPROC
 
 int main(int argc, char **argv){
 	resetTestResults();
