@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("new",["Macro"],[["new",,[[,,,,0,"File:Object.h:new"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("new",["Macro"],[["new",,[[,,,,0,"File:objectSystem/Object.h:new"]]]]);

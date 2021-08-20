@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("cus",["Class"],[["CustomPreProcessor",,[[,,,,0,"File:objectSystem/customPreProcessor.sh:CustomPreProcessor","bashClass:CustomPreProcessor"]]]]);

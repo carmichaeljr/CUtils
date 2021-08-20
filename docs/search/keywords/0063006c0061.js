@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("cla",["Struct"],[["Class",,[[,,,,0,"File:Object.h:Class","CClass:Class"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("cla",["Struct"],[["Class",,[[,,,,0,"File:objectSystem/Object.h:Class","CClass:Class"]]]]);

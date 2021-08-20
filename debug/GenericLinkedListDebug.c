@@ -1,8 +1,8 @@
 #include <stdbool.h>
 #include "Debug.h"
-#include "../src/Object.h"
-#include "../src/GenericLinkedList.h"
-#include "../src/Print.h"
+#include "../src/objectSystem/Object.h"
+#include "../src/collections/GenericLinkedList.h"
+#include "../src/IO/Print.h"
 
 #define gllTest(result) test(result,"GenericLinkedList",__FUNCTION__,__LINE__)
 

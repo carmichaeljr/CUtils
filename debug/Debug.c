@@ -1,5 +1,5 @@
 #include "Debug.h"
-#include "../src/Print.h"
+#include "../src/IO/Print.h"
 
 static int successfulTests=0;
 static int testCount=0;

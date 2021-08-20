@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("tou",["Function"],[["toUpper",,[["String_t",,,,0,"File:String.h:String_t.toUpper","CClass:String_t:toUpper"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("tou",["Function"],[["toUpper",,[["String_t",,,,0,"File:collections/String.h:String_t.toUpper","CClass:String_t:toUpper"]]]]);

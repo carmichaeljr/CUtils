@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("len",["Variable"],[["length",,[["String",,,,0,"File:String.h:String.length","CClass:String:length"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("len",["Variable"],[["length",,[["String",,,,0,"File:collections/String.h:String.length","CClass:String:length"]]]]);

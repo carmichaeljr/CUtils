@@ -1,0 +1,1 @@
+﻿NDFramePage.OnPageTitleLoaded("File:objectSystem/customPreProcessor.sh","customPreProcessor.sh");NDSummary.OnSummaryLoaded("File:objectSystem/customPreProcessor.sh",[["bash","bash"]],[["Classes","Class"]],[[78,0,0,"CustomPreProcessor","CustomPreProcessor"]]);

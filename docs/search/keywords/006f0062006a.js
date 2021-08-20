@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("obj",["Function"],[["objectDebug",,[["Print_t",,,,0,"File:Print.h:Print_t.objectDebug","CClass:Print_t:objectDebug"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("obj",["Function"],[["objectDebug",,[["Print_t",,,,0,"File:IO/Print.h:Print_t.objectDebug","CClass:Print_t:objectDebug"]]]]);

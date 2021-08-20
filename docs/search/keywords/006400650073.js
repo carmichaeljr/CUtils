@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("des",["Function"],[["destructor",,[["Class",,,,0,"File:Object.h:Class.destructor","CClass:Class:destructor"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("des",["Function"],[["destructor",,[["Class",,,,0,"File:objectSystem/Object.h:Class.destructor","CClass:Class:destructor"]]]]);
