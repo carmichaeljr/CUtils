@@ -8,10 +8,10 @@
 
 <body onload="NDLoader.OnLoad('Content');" class="NDPage NDContentPage">
 
-<a name="Topic10"></a><div class="CTopic TClass LC first">
+<a name="Topic22"></a><div class="CTopic TClass LC first">
  <div class="CTitle">GenericList</div>
- <div class="NDClassPrototype" id="NDClassPrototype10"><div class="CPEntry TClass Current"><div class="CPModifiers"><span class="SHKeyword">typedef</span> <span class="SHKeyword">struct</span></div><div class="CPName">GenericList</div></div></div>
- <div class="CBody"><p>The struct that represents a GenericList.</p><p>This class is for storing continuous data in an array. This is perfect for standard data types and other small data types.</p><p>The memory allocated by the object follows the below rules, in the below order, unless strictAlloc is true.</p><table class="CDefinitionList"><tr><td class="CDLEntry">Rule 1</td><td class="CDLDefinition"><p>If reserved memory is &gt; newLen*2 reallocate (shrink to actual size)</p></td></tr><tr><td class="CDLEntry">Rule 2</td><td class="CDLDefinition"><p>If reserved memory is &lt; newLen, reallocate (grow to actual size)</p></td></tr><tr><td class="CDLEntry">Rule 3</td><td class="CDLDefinition"><p>If newLen is 0, free memory</p></td></tr><tr><td class="CDLEntry">Rule 4</td><td class="CDLDefinition"><p>If reserved memory is &gt;= newLen, don't reallocate</p></td></tr></table><p>General usage is as follows:</p><pre>GenericList *list=GenericList_t.<span class="SHKeyword">new</span>();<br />GenericList_t.&lt;func to call&gt;(list, &lt;params&gt;);<br />...<br />GenericList_t.<span class="SHKeyword">delete</span>(&amp;list);</pre><div class="CHeading">See Also</div><p><a href="../../index.html#CClass:GenericList_t" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,17);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >GenericList_t</a></p></div>
+ <div class="NDClassPrototype" id="NDClassPrototype22"><div class="CPEntry TClass Current"><div class="CPModifiers"><span class="SHKeyword">typedef</span> <span class="SHKeyword">struct</span></div><div class="CPName">GenericList</div></div></div>
+ <div class="CBody"><p>The struct that represents a GenericList.</p><p>This class is for storing continuous data in an array. This is perfect for standard data types and other small data types.</p><p>The memory allocated by the object follows the below rules, in the below order, unless strictAlloc is true.</p><table class="CDefinitionList"><tr><td class="CDLEntry">Rule 1</td><td class="CDLDefinition"><p>If reserved memory is &gt; newLen*2 and newLen&gt;0 reallocate (shrink to actual size)</p></td></tr><tr><td class="CDLEntry">Rule 2</td><td class="CDLDefinition"><p>If reserved memory is &lt; newLen, reallocate (grow to actual size)</p></td></tr><tr><td class="CDLEntry">Rule 3</td><td class="CDLDefinition"><p>If newLen is 0, free memory</p></td></tr><tr><td class="CDLEntry">Rule 4</td><td class="CDLDefinition"><p>If reserved memory is &gt;= newLen, don't reallocate</p></td></tr></table><p>General usage is as follows:</p><pre>GenericList *list=GenericList_t.<span class="SHKeyword">new</span>();<br />GenericList_t.&lt;func to call&gt;(list, &lt;params&gt;);<br />...<br />GenericList_t.<span class="SHKeyword">delete</span>(&amp;list);</pre><div class="CHeading">See Also</div><p><a href="../../index.html#CClass:GenericList_t" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,17);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >GenericList_t</a></p></div>
 </div>
 
 <a name="Variables"></a><a name="Topic11"></a><div class="CTopic TGroup LC">
@@ -42,10 +42,16 @@
  <div class="CBody"><p>Holds how many elements are in the list, may or may not the same as the internal lists actual size.</p><ul><li><p>Default: 0</p></li></ul></div>
 </div>
 
-<a name="elementSize"></a><a name="Topic16"></a><div class="CTopic TVariable LC last">
+<a name="elementSize"></a><a name="Topic16"></a><div class="CTopic TVariable LC">
  <div class="CTitle">elementSize</div>
  <div id="NDPrototype16" class="NDPrototype"><div class="PSection PPlainSection">size_t elementSize</div></div>
  <div class="CBody"><p>Holds the element size so that pointer arithmetic can be performed with the void pointer.</p><ul><li><p>Default: 0</p></li></ul></div>
+</div>
+
+<a name="elementClass"></a><a name="Topic20"></a><div class="CTopic TVariable LC last">
+ <div class="CTitle">elementClass</div>
+ <div id="NDPrototype20" class="NDPrototype"><div class="PSection PPlainSection"><span class="SHKeyword">const</span> <a href="../../index.html#CClass:Class" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,68);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Class</a> *elementClass</div></div>
+ <div class="CBody"><p>A pointer to the element class so that elements will be created and destroyed properly.</p><ul><li><p>Default: NULL</p></li></ul><div class="CHeading">See Also</div><p><a href="../../index.html#CClass:Class" target="_top" onmouseover="NDContentPage.OnLinkMouseOver(event,68);" onmouseout="NDContentPage.OnLinkMouseOut(event);" >Class</a></p></div>
 </div>
 
 </body></html>

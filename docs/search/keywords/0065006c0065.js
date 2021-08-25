@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("ele",["Variable"],[["elementSize",,[["GenericList",,,,0,"File:collections/GenericList.h:GenericList.elementSize","CClass:GenericList:elementSize"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("ele",["Variable"],[["elementClass",,[["GenericList",,,,0,"File:collections/GenericList.h:GenericList.elementClass","CClass:GenericList:elementClass"]]],["elementSize",,[["GenericList",,,,0,"File:collections/GenericList.h:GenericList.elementSize","CClass:GenericList:elementSize"]]]]);

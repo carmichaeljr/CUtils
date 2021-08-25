@@ -5,8 +5,10 @@
 #include <stdbool.h>
 
 #define GET_NEW_MACRO(one,two,NAME,...) NAME
+#define GET_NEW_FROM_CLASS_MACRO(one,two,three,NAME,...) NAME
 #define GET_COPY_MACRO(one,two,three,NAME,...) NAME
 #define GET_DELETE_MACRO(one,two,three,NAME,...) NAME
+#define GET_DELETE_FROM_CLASS_MACRO(one,two,three,four,NAME,...) NAME
 #define MERGE_(a,b)  a##b
 #define LABEL_(a) MERGE_(unique_name_, a)
 #define UNIQUE_NAME LABEL_(__LINE__)
@@ -41,8 +43,12 @@
 //  type - The type of object to create.
 //  obj - A pointer to already reserved heap memory to initialize the object with.
 #define new(...) GET_NEW_MACRO(__VA_ARGS__,newWithoutAlloc,newWithAlloc)(__VA_ARGS__)
-#define newWithAlloc(type) createObject(NULL,sizeof(type),type##_t.class.allocator,type##_t.class.constructor)
-#define newWithoutAlloc(type,obj) createObject((void*)obj,sizeof(type),type##_t.class.allocator,type##_t.class.constructor)
+#define newWithAlloc(type) createObject(NULL,sizeof(type),(type##_t).class.allocator,(type##_t).class.constructor)
+#define newWithoutAlloc(type,obj) createObject((void*)obj,sizeof(type),(type##_t).class.allocator,(type##_t).class.constructor)
+
+#define newFromClass(...) GET_NEW_FROM_CLASS_MACRO(__VA_ARGS__,newFromClassWithoutAlloc,newWithAlloc)(__VA_ARGS__)
+#define newFromClassWithAlloc(class,size) createObject(NULL,size,(class).allocator,(class).constructor)
+#define newFromClassWithoutAlloc(class,size,obj) createObject(obj,size,(class).allocator,(class).constructor)
 //Macro: copy
 //--- Prototype ---
 //copy(type,obj=NULL,other) 
@@ -76,9 +82,9 @@
 //  other - The object to clone.
 #define copy(...) GET_COPY_MACRO(__VA_ARGS__,copyWithoutAlloc,copyWithAlloc)(__VA_ARGS__)
 #define copyWithAlloc(type,other)\
-	cloneObject(NULL,(void*)other,sizeof(type),type##_t.class.allocator,type##_t.class.copyConstructor)
+	cloneObject(NULL,(void*)other,sizeof(type),(type##_t).class.allocator,(type##_t).class.copyConstructor)
 #define copyWithoutAlloc(type,obj,other)\
-	cloneObject((void*)obj,(void*)other,sizeof(type),type##_t.class.allocator,type##_t.class.copyConstructor)
+	cloneObject((void*)obj,(void*)other,sizeof(type),(type##_t).class.allocator,(type##_t).class.copyConstructor)
 //Macro: delete
 //--- Prototype ---
 //delete(type,obj,freeObj=true) 
@@ -110,16 +116,22 @@
 //  obj - A pointer to the object to be deleted.
 //  freeObj - Determines if the memory is freed or not.
 #define delete(...) GET_DELETE_MACRO(__VA_ARGS__,deleteFreeOption,deleteWithFree)(__VA_ARGS__)
-#define deleteWithFree(type,obj) deleteObject((void**)(&obj),type##_t.class.destructor,true)
-#define deleteFreeOption(type,obj,freeObj) deleteObject((void**)(&obj),type##_t.class.destructor,freeObj)
+#define deleteWithFree(type,obj) deleteObject((void**)(&obj),(type##_t).class.destructor,true)
+#define deleteFreeOption(type,obj,freeObj) deleteObject((void**)(&obj),(type##_t).class.destructor,freeObj)
 
+#define deleteFromClass(...) GET_DELETE_FROM_CLASS_MACRO(__VA_ARGS__,deleteFromClassFreeOption,deleteWithFree)(__VA_ARGS__)
+#define deleteFromClassWithFree(class,size,obj) deleteObject((void**)(&obj),(class).destructor,true)
+#define deleteFromClassFreeOption(class,size,obj,freeObj) deleteObject((void**)(&obj),(class).destructor,freeObj)
 //Macro: equals
 //--- Prototype ---
 //equals(type,obj1,obj2) 
 //-----------------
-//
 //Equals is a function-macro that, given a type and a preexisting object, compares the two
-//objects. The return value is defined by the implementation of the comparator in the <type>_t struct.
+//objects. The return value is as follows:
+//
+//  - <0: obj1 is considered to be less than object 2.
+//  - 0: The two objects are considered to be equal.
+//  - >0: obj1 is considered to be greater than object 2.
 //
 //The comparator is supplied by the given object type. This means that in order for
 //this macro to work a comparator function with the following signature must be defined
@@ -141,7 +153,9 @@
 //  type - The type of the two objects being compared.
 //  obj1 - The first object to compare.
 //  obj2 - The second object to compare.
-#define equals(type,obj1,obj2) type##_t.class.comparator(obj1,obj2,sizeof(type))
+#define equals(type,obj1,obj2) (type##_t).class.comparator(obj1,obj2,sizeof(type))
+
+#define equalsFromClass(class,size,obj1,obj2) (class).comparator(obj1,obj2,size)
 //Macro: DEFAULT_CLASS
 //--- Prototype
 //DEFAULT_CLASS {

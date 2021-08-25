@@ -11,10 +11,10 @@
 //This class is for storing and manipulating Strings.
 //General usage is as follows:
 //--- Code
-//String *list=String_t.new();
-//String_t.<func to call>(list, <params>);
+//String *str=new(String);
+//String_t.<func to call>(str, <params>);
 //...
-//String_t.delete(&list);
+//delete(String,str);
 //---
 //
 //See Also:
@@ -56,8 +56,8 @@ extern const struct String_t {
 	//
 	//Returns:
 	//
-	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false guarantees no changes were made to the object.
+	//  Returns true if the operation was successful.
+	//  A return value of false indicates no operation occurred, or an error occurred during the operation.
 	bool (*setSize)(String *self, const int len);
 	//Function: set
 	//Copies the contents of a NULL terminated string.
@@ -71,8 +71,8 @@ extern const struct String_t {
 	//
 	//Returns:
 	//
-	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false guarantees no changes were made to the object.
+	//  Returns true if the operation was successful.
+	//  A return value of false indicates no operation occurred, or an error occurred during the operation.
 	bool (*set)(String *self, const char * const newStr);
 	//Function: setNonNullString
 	//Copies the contents of a non-NULL terminated string.
@@ -87,8 +87,8 @@ extern const struct String_t {
 	//
 	//Returns:
 	//
-	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false guarantees no changes were made to the object.
+	//  Returns true if the operation was successful.
+	//  A return value of false indicates no operation occurred, or an error occurred during the operation.
 	bool (*setNonNullString)(String *self, const char * const newStr, const int strLen);
 	//Function: concat
 	//Appends a NULL terminated string to the current string.
@@ -102,8 +102,8 @@ extern const struct String_t {
 	//
 	//Returns:
 	//
-	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false guarantees no changes were made to the object.
+	//  Returns true if the operation was successful.
+	//  A return value of false indicates no operation occurred, or an error occurred during the operation.
 	bool (*concat)(String *self, const char * const newStr);
 	//Function: concatChar
 	//Appends a character to the current string.
@@ -119,8 +119,8 @@ extern const struct String_t {
 	//
 	//Returns:
 	//
-	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false guarantees no changes were made to the object.
+	//  Returns true if the operation was successful.
+	//  A return value of false indicates no operation occurred, or an error occurred during the operation.
 	bool (*concatChar)(String *self, const char newChar);
 	//Function: copyOtherBetween
 	//Copies another string given the supplied indexes.
@@ -137,8 +137,8 @@ extern const struct String_t {
 	//
 	//Returns:
 	//
-	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false guarantees no changes were made to the object.
+	//  Returns true if the operation was successful.
+	//  A return value of false indicates no operation occurred, or an error occurred during the operation.
 	bool (*copyOtherBetween)(String *self, const String * const other, const int startIndex, const int endIndex);
 	//Function: toUpper
 	//Makes a string uppercase.
@@ -231,13 +231,8 @@ extern const struct String_t {
 	//
 	//Returns:
 	//
-	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false guarantees no changes were made to the object, 
-	//  unless strictAlloc is true for the underlying GenericList data structure (defaults to false).
-	//
-	//See Also:
-	//
-	//  - <GenericList.strictAlloc>
+	//  Returns true if the operation was successful.
+	//  A return value of false indicates no operation occurred, or an error occurred during the operation.
 	bool (*trimSubstring)(String *self, const int startIndex, const int endIndex);
 	//Function: trimWhitespace
 	//Removes whitespace characters (' ','\t') from the beginning and end of the string.
@@ -248,9 +243,8 @@ extern const struct String_t {
 	//
 	//Returns:
 	//
-	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false guarantees no changes were made to the object, 
-	//  unless strictAlloc is true for the underlying GenericList data structure (defaults to false).
+	//  Returns true if the operation was successful.
+	//  A return value of false indicates no operation occurred, or an error occurred during the operation.
 	bool (*trimWhitespace)(String *self);
 	//Function: removeChars
 	//Removes the supplied chars from the string.
@@ -263,13 +257,8 @@ extern const struct String_t {
 	//
 	//Returns:
 	//
-	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false guarantees no changes were made to the object, 
-	//  unless strictAlloc is true for the underlying GenericList data structure (defaults to false).
-	//
-	//See Also:
-	//
-	//  - <GenericList.strictAlloc>
+	//  Returns true if the operation was successful.
+	//  A return value of false indicates no operation occurred, or an error occurred during the operation.
 	bool (*removeChars)(String *self, const char * const unwantedChars);
 	//Function: clear
 	//Clears the contents of the string, sets length to 0.
@@ -280,8 +269,8 @@ extern const struct String_t {
 	//
 	//Returns:
 	//
-	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false guarantees no changes were made to the object.
+	//  Returns true if the operation was successful.
+	//  A return value of false indicates no operation occurred, or an error occurred during the operation.
 	bool (*clear)(String *self);
 	//Function: equalsCharArray
 	//Returns true/false depending if the strings are equal or not.

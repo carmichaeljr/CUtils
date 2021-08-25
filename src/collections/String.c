@@ -57,7 +57,7 @@ const struct String_t String_t={
 static void constructor(void *obj){
 	String *strObj=(String*)obj;
 	new(GenericList,&strObj->genericList);
-	GenericList_t.setElementSize(&strObj->genericList,sizeof(char));
+	GenericList_t.setElementType(&strObj->genericList,&char_t.class,sizeof(char));
 	strObj->str=NULL;
 	strObj->length=0;
 }
@@ -66,7 +66,7 @@ static void* copyConstructor(void *obj, const void * const other, size_t size){
 	String *newObj=(String*)obj;
 	String *copyObj=(String*)other;
 	new(GenericList,&(newObj->genericList));
-	GenericList_t.setElementSize(&newObj->genericList,sizeof(char));
+	GenericList_t.setElementType(&newObj->genericList,&char_t.class,sizeof(char));
 	String_t.copyOtherBetween(newObj,copyObj,0,copyObj->length);
 	return (void*)newObj;
 }
@@ -82,9 +82,9 @@ static int comparator(const void *first, const void *second, size_t size){
 	if (rv!=0 && self->str!=NULL && other->str!=NULL){
 		return strcmp(self->str,other->str);
 	} else if (rv!=0 && self->str!=NULL && other->str==NULL){
-		return -1;
-	} else if (rv!=0 && self->str==NULL && other->str!=NULL){
 		return 1;
+	} else if (rv!=0 && self->str==NULL && other->str!=NULL){
+		return -1;
 	}
 	return rv;
 }
@@ -270,6 +270,7 @@ static bool removeChars(String *self, const char * const unwantedChars){
 	return false;
 }
 
+//TODO - clear without realloc
 static bool clear(String *self){
 	if (GenericList_t.clear(&self->genericList)){
 		self->str=(char*)self->genericList.list;

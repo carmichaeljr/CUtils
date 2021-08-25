@@ -13,20 +13,17 @@
 //
 //The memory allocated by the object follows the below rules, in the below order, unless strictAlloc is true.
 //
-//  Rule 1 - If reserved memory is > newLen*2 reallocate (shrink to actual size)
-//
+//  Rule 1 - If reserved memory is > newLen*2 and newLen>0 reallocate (shrink to actual size)
 //  Rule 2 - If reserved memory is < newLen, reallocate (grow to actual size)
-//
 //  Rule 3 - If newLen is 0, free memory
-//
 //  Rule 4 - If reserved memory is >= newLen, don't reallocate
 //
 //General usage is as follows:
 //--- Code
-//GenericList *list=GenericList_t.new();
+//GenericList *list=new(GenericList);
 //GenericList_t.<func to call>(list, <params>);
 //...
-//GenericList_t.delete(&list);
+//delete(GenericList,list);
 //---
 //
 //See Also:
@@ -57,7 +54,15 @@ typedef struct GenericList {
 	//
 	// - Default: 0
 	size_t elementSize;
-	Class *elementClass;
+        //Variable: elementClass
+        //A pointer to the element class so that elements will be created and destroyed properly.
+        //
+        // - Default: NULL
+        //
+        //See Also:
+        //
+        //  <Class>
+	const Class *elementClass;
 } GenericList;
 
 //Class: GenericList_t
@@ -68,11 +73,11 @@ typedef struct GenericList {
 //  <GenericList>
 extern const struct GenericList_t {
 	Class class;
-	//Function: setElementSize
-	//Sets the size of the elements stored in the list.
+	//Function: setElementType
+	//Sets the size and type of the elements stored in the list.
 	//
-	//If element size is 0 then the generic list object will be considered uninitialized, and no other
-	//functions will perform any action.
+	//If element size is 0 or element class is NULL then the generic list object 
+        //will be considered uninitialized, and no other functions will perform any action.
 	//
 	//When setting the element size, if the new element size is different from the current element size
 	//then <GenericList_t.clear> will be called.
@@ -84,15 +89,16 @@ extern const struct GenericList_t {
 	//
 	//Returns:
 	//
-	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false guarantees no changes were made to the object.
-	bool (*setElementSize)(GenericList *self, const size_t newSize);
+	//  Returns true if the operation was successful.
+	//  A return value of false indicates no operation occurred, or an error occurred during the operation.
+	bool (*setElementType)(GenericList *self, const Class * const newClass, const size_t newSize);
 	//Function: setListSize
 	//Useful for reducing the number of memory reallocations if you know the final size of the list.
 	//Contents of the list will not be changed unless the new size is less than the current size.
 	//numElements will not be updated, and future calls should assume that the list is 'empty' or
 	//contains what was previously held in the array.
-	//This is purely just to set the size of the underlying array.
+        //The elements constructors will not be called to initialize each object,
+	//this is purely just to set the size of the underlying array.
 	//
 	//Parameters:
 	//
@@ -102,8 +108,27 @@ extern const struct GenericList_t {
 	//Returns:
 	//
 	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false guarantees no changes were made to the object.
+        //
+	//  Returns true if the operation was successful.
+	//  A return value of false indicates no operation occurred, or an error occurred during the operation.
 	bool (*setListSize)(GenericList *self, const int numElements);
+        //Function: setNumElements
+        //Sets the size of the list and calls the elements constructors defined by <GenericList.elementClass>
+        //to initialize each object that is created (if any).
+        //If the given number of elements is less than the current number of elements,
+        //<GenericList_t.removeBetween> will be called to remove the appropriate number of
+        //elements from the end of the list.
+        //
+        //Paremeters:
+        //
+        //  self - The generic list to perform the operation on.
+        //  numElements - The number of elements to have in the list.
+        //
+        //Returns:
+        //
+	//  Returns true if the operation was successful.
+	//  A return value of false indicates no operation occurred, or an error occurred during the operation.
+        bool (*setNumElements)(GenericList *self, const int numElements);
 	//Function: set
 	//Sets the list with the given data, clearing any data that was previously held in the list.
 	//
@@ -115,8 +140,8 @@ extern const struct GenericList_t {
 	//
 	//Returns:
 	//
-	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false guarantees no changes were made to the object.
+	//  Returns true if the operation was successful.
+	//  A return value of false indicates no operation occurred, or an error occurred during the operation.
 	bool (*set)(GenericList *self, const void * const newElements, const int numElements);
 	//Function: setAt
 	//Sets the selected elements in the list, up to the end of the list.
@@ -133,8 +158,8 @@ extern const struct GenericList_t {
 	//
 	//Returns:
 	//
-	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false guarantees no changes were made to the object.
+	//  Returns true if the operation was successful.
+	//  A return value of false indicates no operation occurred, or an error occurred during the operation.
 	bool (*setAt)(GenericList *self, const void * const newElements, const int numElements, const int index);
 	//Function: add
 	//Appends the given elements to the list
@@ -147,8 +172,8 @@ extern const struct GenericList_t {
 	//
 	//Returns:
 	//
-	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false guarantees no changes were made to the object.
+	//  Returns true if the operation was successful.
+	//  A return value of false indicates no operation occurred, or an error occurred during the operation.
 	bool (*add)(GenericList *self, const void * const newElements, const int numElements);
 	//Function: addAt
 	//Inserts the given elements into the list
@@ -164,11 +189,12 @@ extern const struct GenericList_t {
 	//
 	//Returns:
 	//
-	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false guarantees no changes were made to the object.
+	//  Returns true if the operation was successful.
+	//  A return value of false indicates no operation occurred, or an error occurred during the operation.
 	bool (*addAt)(GenericList *self, const void * const newElement, const int numElements, const int index);
 	//Function: copyOtherBetween
-	//Copies the selected data from another GenericList.
+	//Copies the selected data from another GenericList. If elements are already in the
+        //list then <GenericList_t.clear> is called.
 	//
 	//If startIndex is less than 0, endIndex is greater than the number of elements in the list being copied,
 	//or startIndex>endIndex, no operation occurs.
@@ -182,8 +208,8 @@ extern const struct GenericList_t {
 	//
 	//Returns:
 	//
-	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false guarantees no changes were made to the object.
+	//  Returns true if the operation was successful.
+	//  A return value of false indicates no operation occurred, or an error occurred during the operation.
 	bool (*copyOtherBetween)(GenericList *self, const GenericList * const other, const int startIndex, const int endIndex);
 	//Function: get
 	//Gets the selected element from the list.
@@ -209,7 +235,7 @@ extern const struct GenericList_t {
 	//
 	//Returns:
 	//
-	//  true if token is found in the list, otherwise false.
+	//  True if token is found in the list, otherwise false.
 	bool (*contains)(const GenericList * const self, const void * const token);
 	//Function: getFirstIndexOf
 	//Returns the first index of where token is in the list. If not present in the list, it returns -1.
@@ -240,7 +266,8 @@ extern const struct GenericList_t {
 	//  The last index where token is found in the list, or -1 if it is not found.
 	int (*getLastIndexOf)(const GenericList * const self, const void * const token);
 	//Function: remove
-	//Removes all instances of the supplied token from the list.
+	//Removes all instances of the supplied token from the list. The destructor in the
+        //<GenericList.elementClass> struct will be called for each element that is deleted.
 	//
 	//Only one memory reallocation is performed.
 	//
@@ -251,11 +278,12 @@ extern const struct GenericList_t {
 	//
 	//Returns:
 	//
-	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false guarantees no changes were made to the object, unless strictAlloc is true.
+	//  Returns true if the operation was successful.
+	//  A return value of false indicates no operation occurred, or an error occurred during the operation.
 	bool (*remove)(GenericList *self, const void * const token);
 	//Function: removeAll
-	//Removes all instances of the supplied tokens from the list.
+	//Removes all instances of the supplied tokens from the list. The destructor in the
+        //<GenericList.elementClass> struct will be called for each element that is deleted.
 	//
 	//Only one memory reallocation is performed.
 	//
@@ -267,11 +295,12 @@ extern const struct GenericList_t {
 	//
 	//Returns:
 	//
-	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false guarantees no changes were made to the object, unless strictAlloc is true.
+	//  Returns true if the operation was successful.
+	//  A return value of false indicates no operation occurred, or an error occurred during the operation.
 	bool (*removeAll)(GenericList *self, const void *const tokens, const int numTokens);
 	//Function: removeAt
-	//Removes the item at the supplied index from the list.
+	//Removes the item at the supplied index from the list. The destructor in the
+        //<GenericList.elementClass> struct will be called for each element that is deleted.
 	//
 	//Parameters:
 	//
@@ -280,11 +309,12 @@ extern const struct GenericList_t {
 	//
 	//Returns:
 	//
-	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false guarantees no changes were made to the object, unless strictAlloc is true.
+	//  Returns true if the operation was successful.
+	//  A return value of false indicates no operation occurred, or an error occurred during the operation.
 	bool (*removeAt)(GenericList *self, const int index);
 	//Function: removeBetween
-	//Removes the items between the supplied indexes.
+	//Removes the items between the supplied indexes. The destructor in the
+        //<GenericList.elementClass> struct will be called for each element that is deleted.
 	//
 	//No action will occur if start index is less than 0,
 	//the start index is greater than the end index,
@@ -300,13 +330,11 @@ extern const struct GenericList_t {
 	//
 	//Returns:
 	//
-	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false guarantees no changes were made to the object, unless strictAlloc is true.
+	//  Returns true if the operation was successful.
+	//  A return value of false indicates no operation occurred, or an error occurred during the operation.
 	bool (*removeBetween)(GenericList *self, const int startIndex, const int endIndex);
 	//Function: trimToSize
 	//Reallocates the internal memory so that numElements==listSize.
-	//If strictAlloc is true then this function has no purpose, as numElements and listSize
-	//are always the same when strictAlloc is true.
 	//
 	//Parameters:
 	//
@@ -314,11 +342,12 @@ extern const struct GenericList_t {
 	//
 	//Returns:
 	//
-	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false guarantees no changes were made to the object.
+	//  Returns true if the operation was successful.
+	//  A return value of false indicates no operation occurred, or an error occurred during the operation.
 	bool (*trimToSize)(GenericList *self);
 	//Function: clear
-	//Removes all elements from the list and frees the underlying memory.
+	//Removes all elements from the list and frees the underlying memory. The destructor in the
+        //<GenericList.elementClass> struct will be called for each element that is deleted.
 	//
 	//Parameters:
 	//
@@ -326,14 +355,14 @@ extern const struct GenericList_t {
 	//
 	//Returns:
 	//
-	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false guarantees no changes were made to the object.
+	//  Returns true if the operation was successful.
+	//  A return value of false indicates no operation occurred, or an error occurred during the operation.
 	bool (*clear)(GenericList *self);
 	//Function: clearElements
 	//Removes all elements from the list but does not free the underlying memory.
-	//Nothing about the list is changed except setting <GenericList.numElements> to 0.
-	//The previous data will still be stored in memory, but will be inaccessible to other
-	//method calls. This does not create a memory leak because the actual list size is
+        //The destructor in the <GenericList.elementClass> struct will be called for
+        //each element that is deleted.
+	//This does not create a memory leak because the actual list size is
 	//tracked by <GenericList.listSize>.
 	//
 	//This is useful for avoiding the memory reallocation associated with <GenericList_t.clear>.
@@ -344,8 +373,8 @@ extern const struct GenericList_t {
 	//
 	//Returns:
 	//
-	//  Returns true if the operation was successful and changes were made to the object.
-	//  A return value of false guarantees no changes were made to the object.
+	//  Returns true if the operation was successful.
+	//  A return value of false indicates no operation occurred, or an error occurred during the operation.
 	bool (*clearElements)(GenericList *self);
 	//Function: isEmpty
 	//Returns true or false depending on weather the list is empty or not.
@@ -358,20 +387,6 @@ extern const struct GenericList_t {
 	//
 	//   true if the list is empty, false if not.
 	bool (*isEmpty)(const GenericList * const self);
-	////Function: equals
-	////Returns true/false depending if the two lists are equal.
-	////
-	////Equality is determined by comparing length, and the memory contents of each list.
-	////
-	////Parameters:
-	////
-	////  self - The first generic list to compare.
-	////  other - The second generic list to compare.
-	////
-	////Returns:
-	////
-	////  true if the lists are equal, otherwise false.
-	//bool (*equals)(const GenericList * const self, const GenericList * const other);
 } GenericList_t;
 
 #endif

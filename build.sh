@@ -23,7 +23,7 @@ do
 
 	printf "Running: GCC Compiler        : ./build/$fileID.i -> ./build/$fileID.o"
 	printLine " " 100 "\r"
-	gcc -Wpointer-arith -Wall -c ./build/$fileID.i -o ./build/$fileID.o
+	gcc -Wpointer-arith -Wall -g -c ./build/$fileID.i -o ./build/$fileID.o
 
 	fileID=$(( fileID+1 ))
 done

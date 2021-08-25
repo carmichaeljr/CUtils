@@ -55,7 +55,7 @@ static void copyConstructor(void){
 	String *test2=copy(String,test1);
 	stringTest(test1!=test2);
 	stringTest(test1->length==test2->length);
-	stringTest(equals(GenericList,&test1->genericList,&test2->genericList));
+	stringTest(equals(GenericList,&test1->genericList,&test2->genericList)==0);
 	stringTest(strcmp(test1->str,test2->str)==0);
 	delete(String,test1);
 	delete(String,test2);
@@ -72,10 +72,10 @@ static void comparator(void){
 	test2->str[0]='h';
 	stringTest(equals(String,test1,test2)<0);
 	String_t.clear(test1);
-	stringTest(equals(String,test1,test2)>0);
+	stringTest(equals(String,test1,test2)<0);
 	String_t.set(test1,"hello");
 	String_t.clear(test2);
-	stringTest(equals(String,test1,test2)<0);
+	stringTest(equals(String,test1,test2)>0);
 	String_t.clear(test1);
 	stringTest(equals(String,test1,test2)==0);
 	delete(String,test1);
