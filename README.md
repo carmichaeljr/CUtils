@@ -1,4 +1,5 @@
 # Generic Collections In C
+### NOTE: This repository is undergoing a major rework and the README is no longer accurate. It will be updated when the rework is farther along. See the docs for accurate information.
 A library to make dynamic memory management easier in C
 
 As stated above, this is a library and does nothing usefull on its own. Its main purpose is for easy creation of collections in C. The following collections are provided by this library:
