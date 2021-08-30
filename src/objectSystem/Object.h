@@ -221,6 +221,40 @@
 		.destructor=destructor,\
 	}
 
+//Macro: SINGLETON_CLASS
+//--- Prototype
+//SINGLETON_CLASS {
+//	.allocator=allocator,
+//	.constructor=constructor,
+//	.copyConstructor=NULL,
+//	.comparator=NULL,
+//	.destructor=destructor,
+//}
+//---
+//SINGLETON_CLASS is a macro that defines class functions to support singleton creation. Note
+//that the class needs to keep track of weather or not it has been initialized already or not.
+//Use this macro when the only functions you wish to change from default in the <Class> struct are the
+//allocator, constructor, and destructor.
+//
+//The default copyConstructor and comparator are NULL because a singleton by definition
+//cannot be copied, and has no other objects to compare to besides itself.
+//
+//The functions not supplied need to be defined in the source file that the SINGLETON_CLASS
+//macro expands in, and are assumed to have the following signatures and names:
+//
+//--- Code
+//void* allocator(size_t size);
+//void constructor(void *obj);
+//void destructor(void *obj);
+//---
+#define SINGLETON_CLASS { \
+		.allocator=allocator,\
+		.constructor=constructor,\
+		.copyConstructor=NULL,\
+		.comparator=NULL,\
+		.destructor=destructor,\
+	}
+
 //Struct: Class
 //The struct that defines various memory related operations related to objects.
 //Each struct of <type>_t needs to have a Class struct named "class" for the above macros to work.

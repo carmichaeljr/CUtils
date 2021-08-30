@@ -16,7 +16,7 @@ const struct BasicType_t BasicType_t={
 void* createObject(void *obj, size_t size, 
 		   void* (*allocator)(size_t size),
 		   void (*constructor)(void *obj)){
-	void *newObj=(obj==NULL)? allocator(size): obj;
+	void *newObj=(obj==NULL)? ((allocator==NULL)? NULL: allocator(size)): obj;
 	if (newObj!=NULL && constructor!=NULL){
 		constructor(newObj);
 	}
@@ -26,7 +26,7 @@ void* createObject(void *obj, size_t size,
 void* cloneObject(void *obj, const void * const other, size_t size,
 		  void* (*allocator)(size_t size),
 		  void* (*copyConstructor)(void *obj, const void * const other, size_t size)){
-	void *cloneObj=(obj==NULL)? allocator(size): obj;
+	void *cloneObj=(obj==NULL)? ((allocator==NULL)? NULL: allocator(size)): obj;
 	if (cloneObj!=NULL && copyConstructor!=NULL){
 		copyConstructor(cloneObj,other,size);
 	}
