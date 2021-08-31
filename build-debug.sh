@@ -11,6 +11,8 @@ function printLine {
 mkdir -p build
 rm -r build/*
 
+mkdir -p bin
+
 declare -i fileID=0
 for inputFile in $(find ./debug ./src -type f \( -iname "*.c" \))
 do
