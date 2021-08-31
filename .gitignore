@@ -3,3 +3,8 @@
 *.i
 *.o
 *.s
+*.exe
+*.a
+build/
+bin/
+release/
