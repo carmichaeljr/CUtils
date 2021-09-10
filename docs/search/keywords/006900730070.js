@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("isp",["Function"],[["isPipe",,[["File_t",,,,0,"File:IO/File.h:File_t.isPipe","CClass:File_t:isPipe"]]]]);

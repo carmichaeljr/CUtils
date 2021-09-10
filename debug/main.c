@@ -5,9 +5,11 @@
 
 int main(int argc, char **argv){
 	resetTestResults();
+	fileDebug();
 	outputStreamDebug();
 	basicTypesDebug();
 	genericListDebug();
+	genericListIteratorDebug();
 	genericLinkedListDebug();
 	stringDebug();
 	printTestResults();

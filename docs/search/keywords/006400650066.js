@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("def",["Macro"],[["DEFAULT_CLASS",,[[,,,,0,"File:objectSystem/Object.h:DEFAULT_CLASS"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("def",["Macro"],[["DEFAULT_CLASS",,[[,,,,0,"File:objectSystem/Object.h:DEFAULT_CLASS"]]],["DEFAULT_ITERATOR",,[[,,,,0,"File:objectSystem/Iterator.h:DEFAULT_ITERATOR"]]]]);

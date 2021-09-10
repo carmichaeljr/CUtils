@@ -1,1 +1,1 @@
-﻿NDContentPage.OnToolTipsLoaded({78:"<div class=\"NDToolTip TClass Lbash\"><div class=\"TTSummary\">The custom pre-processor is meant to be run on the output of the standard C pre-processor and enables features such as extended basic data type support.</div></div>"});
+﻿NDContentPage.OnToolTipsLoaded({71:"<div class=\"NDToolTip TClass Lbash\"><div class=\"TTSummary\">The custom pre-processor is meant to be run on the output of the standard C pre-processor and enables features such as extended basic data type support.</div></div>"});

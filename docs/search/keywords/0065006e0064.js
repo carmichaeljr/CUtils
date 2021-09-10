@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("end",["Function"],[["end",,[["Iterator",,,,0,"File:objectSystem/Iterator.h:Iterator.end","CClass:Iterator:end"]]]]);

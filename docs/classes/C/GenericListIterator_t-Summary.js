@@ -1,0 +1,1 @@
+﻿NDFramePage.OnPageTitleLoaded("CClass:GenericListIterator_t","GenericListIterator_t");NDSummary.OnSummaryLoaded("CClass:GenericListIterator_t",[["C/C++","C"]],[["Classes","Class"]],[[105,0,0,"GenericListIterator_t"]]);

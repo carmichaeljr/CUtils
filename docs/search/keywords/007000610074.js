@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("pat",["Variable"],[["pathSeparator",,[["File_t",,,,0,"File:IO/File.h:File_t.pathSeparator","CClass:File_t:pathSeparator"]]]]);

@@ -33,12 +33,11 @@ void* cloneObject(void *obj, const void * const other, size_t size,
 	return cloneObj;
 }
 
-void deleteObject(void **obj, void (*destructor)(void *obj), bool freeObj){
+void deleteObject(void *obj, void (*destructor)(void *obj), bool freeObj){
 	if (destructor!=NULL){
-		destructor(*obj);
+		destructor(obj);
 	}
 	if (freeObj){
-		free(*obj);
-		*obj=NULL;
+		free(obj);
 	}
 }

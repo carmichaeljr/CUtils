@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("out",["Variable","Class"],[["output",,[["OutputFileStream",,,,0,"File:IO/OutputFileStream.h:OutputFileStream.output","CClass:OutputFileStream:output"]]],["OutputFileStream",,[[,,,,1,"File:IO/OutputFileStream.h:OutputFileStream","CClass:OutputFileStream"]]]]);

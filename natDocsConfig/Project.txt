@@ -8,8 +8,8 @@
 # Project Information
 # ------------------------------------------------------------------------
 
-Title: Generic Collections
-Subtitle: An implementation of generic collections in C.
+Title: CUtils
+Subtitle: A library to bring a simplified object system, collections, and basic IO to C.
 
 
 # This is where you specify general information about your project.

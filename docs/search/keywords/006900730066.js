@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("isf",["Function"],[["isFile",,[["File_t",,,,0,"File:IO/File.h:File_t.isFile","CClass:File_t:isFile"]]]]);

@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("equ",["Macro","Function"],[["equals",,[[,,,,0,"File:objectSystem/Object.h:equals"]]],["equalsCharArray",,[["String_t",,,,1,"File:collections/String.h:String_t.equalsCharArray","CClass:String_t:equalsCharArray"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("equ",["Macro","Function"],[["equals",,[[,,,,0,"File:objectSystem/Object.h:equals"]]],["equalsCharArray",,[["String_t",,,,1,"File:collections/String.h:String_t.equalsCharArray","CClass:String_t:equalsCharArray"]]],["equalsFromClass",,[[,,,,0,"File:objectSystem/Object.h:equalsFromClass"]]]]);

@@ -21,7 +21,7 @@
 //New is a function-macro that, given a type, creates a new object of that type.
 //This macro is overloaded with a default parameter.
 //If obj is NULL then memory will be allocated for the new object. If obj is not NULL
-//then obj is treated as a pointer to heap memory already allocated for the new object.
+//then obj is treated as a pointer to memory already allocated for the new object.
 //
 //The constructor is supplied by the given object type. This means that in order for
 //this macro to work a constructor function with the following signature must be defined
@@ -41,14 +41,53 @@
 //Parameters:
 //
 //  type - The type of object to create.
-//  obj - A pointer to already reserved heap memory to initialize the object with.
+//  obj - A pointer to already reserved memory to initialize the object with.
+//
+//Returns:
+//
+//  A void pointer to the new object.
 #define new(...) GET_NEW_MACRO(__VA_ARGS__,newWithoutAlloc,newWithAlloc)(__VA_ARGS__)
 #define newWithAlloc(type) createObject(NULL,sizeof(type),(type##_t).class.allocator,(type##_t).class.constructor)
 #define newWithoutAlloc(type,obj) createObject((void*)obj,sizeof(type),(type##_t).class.allocator,(type##_t).class.constructor)
 
+//Macro: newFromClass
+//--- Prototype ---
+//newFromClass(type,obj=NULL)
+//-----------------
+//
+//A function-macro that, given a class, and object size, creates a new object of that type.
+//This macro is overloaded with a default parameter.
+//If obj is NULL then memory will be allocated for the new object. If obj is not NULL
+//then obj is treated as a pointer to memory already allocated for the new object.
+//
+//The constructor is supplied by the given object type. This means that in order for
+//this macro to work a constructor function with the following signature must be defined
+//in the types <Class> struct.
+//--- Code
+//void constructor(void *obj)
+//---
+//Note that the naming convention of <type> for objects of class <type>_t must be
+//followed in order for this macro expansion to work properly. An example of this naming convention
+//is a string. The object is a <String> struct and the class associated with that object
+//is a <String_t> struct.
+//
+//Note that the struct of <type>_t must contain a <Class> struct as a member named "class" in order
+//for this macro expansion to work properly. The <Class> struct defines how objects of <type>
+//are created, destroyed, copied, and compared. An example of this is the <String_t> struct.
+//
+//Parameters:
+//
+//  class - The type of object to be deleted.
+//  size - The size of the object to be deleted.
+//  obj - A pointer to already reserved memory to initialize the object with.
+//
+//Returns:
+//
+//  A void pointer to the new object.
 #define newFromClass(...) GET_NEW_FROM_CLASS_MACRO(__VA_ARGS__,newFromClassWithoutAlloc,newWithAlloc)(__VA_ARGS__)
 #define newFromClassWithAlloc(class,size) createObject(NULL,size,(class).allocator,(class).constructor)
 #define newFromClassWithoutAlloc(class,size,obj) createObject(obj,size,(class).allocator,(class).constructor)
+
 //Macro: copy
 //--- Prototype ---
 //copy(type,obj=NULL,other) 
@@ -58,7 +97,7 @@
 //the object.
 //This macro is overloaded with a default parameter.
 //If obj is NULL then memory will be allocated for the new object. If obj is not NULL
-//then obj is treated as a pointer to heap memory already allocated for the new object.
+//then obj is treated as a pointer to memory already allocated for the new object.
 //
 //The copyConstructor is supplied by the given object type. This means that in order for
 //this macro to work a copyConstructor function with the following signature must be defined
@@ -78,13 +117,18 @@
 //Parameters: 
 //
 //  type - The type of object being cloned.
-//  obj - A pointer to already reserved heap memory to initialize the object with.
+//  obj - A pointer to already reserved memory to initialize the object with.
 //  other - The object to clone.
+//
+//Returns:
+//
+//  A void pointer to the new object.
 #define copy(...) GET_COPY_MACRO(__VA_ARGS__,copyWithoutAlloc,copyWithAlloc)(__VA_ARGS__)
 #define copyWithAlloc(type,other)\
 	cloneObject(NULL,(void*)other,sizeof(type),(type##_t).class.allocator,(type##_t).class.copyConstructor)
 #define copyWithoutAlloc(type,obj,other)\
 	cloneObject((void*)obj,(void*)other,sizeof(type),(type##_t).class.allocator,(type##_t).class.copyConstructor)
+
 //Macro: delete
 //--- Prototype ---
 //delete(type,obj,freeObj=true) 
@@ -115,23 +159,60 @@
 //  type - The type of the object being deleted.
 //  obj - A pointer to the object to be deleted.
 //  freeObj - Determines if the memory is freed or not.
+//
+//Returns:
+//
+//  Nothing.
 #define delete(...) GET_DELETE_MACRO(__VA_ARGS__,deleteFreeOption,deleteWithFree)(__VA_ARGS__)
-#define deleteWithFree(type,obj) deleteObject((void**)(&obj),(type##_t).class.destructor,true)
-#define deleteFreeOption(type,obj,freeObj) deleteObject((void**)(&obj),(type##_t).class.destructor,freeObj)
+#define deleteWithFree(type,obj) deleteObject((void*)(obj),(type##_t).class.destructor,true)
+#define deleteFreeOption(type,obj,freeObj) deleteObject((void*)(obj),(type##_t).class.destructor,freeObj)
 
+//Macro: deleteFromClass
+//--- Prototype ---
+//deleteFromClass(class,size,obj,freeObj=true) 
+//-----------------
+//
+//Delete is a function-macro that, given a class, preexisting object, and the size of the preexsisting
+//object, deletes the object.
+//This macro is overloaded through defining a default parameter.
+//If freeObj is true then the memory allocated to the object will be freed. If obj is false
+//then the memory allocated for the object will not be freed.
+//
+//The destructor is supplied by the given class. This means that in order for
+//this macro to work a destructor function with the following signature must be defined
+//in the types <Class> struct.
+//--- Code
+//void destructor(void *obj)
+//---
+//Note that the naming convention of <type> for objects of class <type>_t must be
+//followed in order for this macro expansion to work properly. An example of this naming convention
+//is a string. The object is a <String> struct and the class associated with that object
+//is a <String_t> struct.
+//
+//Note that the struct of <type>_t must contain a <Class> struct as a member named "class" in order
+//for this macro expansion to work properly. The <Class> struct defines how objects of <type>
+//are created, destroyed, copied, and compared. An example of this is the <String_t> struct.
+//
+//Parameters:
+//
+//  class - The type of object to be deleted.
+//  size - The size of the object to be deleted.
+//  obj - A pointer to the object to be deleted.
+//  freeObj - Determines if the memory if freed or not.
+//
+//Returns:
+//
+//  Nothing.
 #define deleteFromClass(...) GET_DELETE_FROM_CLASS_MACRO(__VA_ARGS__,deleteFromClassFreeOption,deleteWithFree)(__VA_ARGS__)
-#define deleteFromClassWithFree(class,size,obj) deleteObject((void**)(&obj),(class).destructor,true)
-#define deleteFromClassFreeOption(class,size,obj,freeObj) deleteObject((void**)(&obj),(class).destructor,freeObj)
+#define deleteFromClassWithFree(class,size,obj) deleteObject((void*)(obj),(class).destructor,true)
+#define deleteFromClassFreeOption(class,size,obj,freeObj) deleteObject((void*)(obj),(class).destructor,freeObj)
+
 //Macro: equals
 //--- Prototype ---
 //equals(type,obj1,obj2) 
 //-----------------
-//Equals is a function-macro that, given a type and a preexisting object, compares the two
-//objects. The return value is as follows:
-//
-//  - <0: obj1 is considered to be less than object 2.
-//  - 0: The two objects are considered to be equal.
-//  - >0: obj1 is considered to be greater than object 2.
+//Equals is a function-macro that, given a type and two preexisting objects, compares the two
+//objects.
 //
 //The comparator is supplied by the given object type. This means that in order for
 //this macro to work a comparator function with the following signature must be defined
@@ -153,9 +234,52 @@
 //  type - The type of the two objects being compared.
 //  obj1 - The first object to compare.
 //  obj2 - The second object to compare.
+//
+//Returns:
+//
+//  An integer, following the below rules:
+//  - <0: obj1 is considered to be less than object 2.
+//  - 0: The two objects are considered to be equal.
+//  - >0: obj1 is considered to be greater than object 2.
 #define equals(type,obj1,obj2) (type##_t).class.comparator(obj1,obj2,sizeof(type))
 
+//Macro: equalsFromClass
+//--- Prototype ---
+//equalsFromClass(class,size,obj1,obj2) 
+//-----------------
+//Equals is a function-macro that, given a type and two preexisting objects, compares the two
+//objects.
+//
+//The comparator is supplied by the given object type. This means that in order for
+//this macro to work a comparator function with the following signature must be defined
+//in the types <Class> struct.
+//--- Code
+//int comparator(const void *first, const void *second, size_t size)
+//---
+//Note that the naming convention of <type> for objects of class <type>_t must be
+//followed in order for this macro expansion to work properly. An example of this naming convention
+//is a string. The object is a <String> struct and the class associated with that object
+//is a <String_t> struct.
+//
+//Note that the struct of <type>_t must contain a <Class> struct as a member named "class" in order
+//for this macro expansion to work properly. The <Class> struct defines how objects of <type>
+//are created, destroyed, copied, and compared. An example of this is the <String_t> struct.
+//
+//Parameters:
+//
+//  class - The type of objects being compared.
+//  size - The size of the objects being compared.
+//  obj1 - The first object to compare.
+//  obj2 - The second object to compare.
+//
+//Returns:
+//
+//  An integer, following the below rules:
+//  - <0: obj1 is considered to be less than object 2.
+//  - 0: The two objects are considered to be equal.
+//  - >0: obj1 is considered to be greater than object 2.
 #define equalsFromClass(class,size,obj1,obj2) (class).comparator(obj1,obj2,size)
+
 //Macro: DEFAULT_CLASS
 //--- Prototype
 //DEFAULT_CLASS {
@@ -438,6 +562,6 @@ void* createObject(void *obj, size_t size,
 void* cloneObject(void *obj, const void * const other, size_t size,
 		  void* (*allocator)(size_t size),
 		  void* (*copyConstructor)(void *obj, const void * const other, size_t size));
-void deleteObject(void **obj, void (*destructor)(void *obj), bool freeObj);
+void deleteObject(void *obj, void (*destructor)(void *obj), bool freeObj);
 
 #endif

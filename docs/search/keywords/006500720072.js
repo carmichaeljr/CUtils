@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("err",["Variable"],[["errorCode",,[["OutputFileStream",,,,0,"File:IO/OutputFileStream.h:OutputFileStream.errorCode","CClass:OutputFileStream:errorCode"]]]]);

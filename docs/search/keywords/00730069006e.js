@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("sin",["Macro"],[["SINGLETON_CLASS",,[[,,,,0,"File:objectSystem/Object.h:SINGLETON_CLASS"]]]]);

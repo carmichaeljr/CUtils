@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("beg",["Function"],[["begin",,[["Iterator",,,,0,"File:objectSystem/Iterator.h:Iterator.begin","CClass:Iterator:begin"]]]]);

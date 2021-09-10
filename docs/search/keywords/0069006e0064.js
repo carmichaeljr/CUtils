@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("ind",["Variable"],[["index",,[["GenericListIterator",,,,0,"File:collections/GenericListIterator.h:GenericListIterator.index","CClass:GenericListIterator:index"]]]]);

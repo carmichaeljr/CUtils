@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "GenericList.h"
+#include "GenericListIterator.h"
 //#include "../IO/Print.h"
 
 static void constructor(void *obj);
@@ -9,6 +10,11 @@ static void* copyConstructor(void *obj, const void * const other, size_t size);
 //static void print(const GenericList * const obj);
 static int comparator(const void *self, const void *other, size_t size);
 static void destructor(void *obj);
+static void* begin(const void * const obj, void *iterator);
+static void increment(const void * const obj, void *iterator, const int num);
+static void dincrement(const void * const obj, void *iterator, const int num);
+static void* end(const void * const obj, void *iterator);
+static void* getVal(const void * const obj, const void * const iterator);
 static bool setElementType(GenericList *self, const Class * const newClass, const size_t size);
 static bool setListSize(GenericList *self, const int numElements);
 static bool setNumElements(GenericList *self, const int numElements);
@@ -39,6 +45,7 @@ static bool areListsCompatible(const GenericList *self, const GenericList *other
 
 const struct GenericList_t GenericList_t={
 	.class=ALLOC_ONLY_DEFAULT_CLASS,
+	.iterator=DEFAULT_ITERATOR,
         .setElementType=setElementType,
 	.setListSize=setListSize,
         .setNumElements=setNumElements,
@@ -116,6 +123,39 @@ static int comparator(const void *first, const void *second, size_t size){
 
 static void destructor(void *obj){
         clear((GenericList*)obj);
+}
+
+//Iterator Methods=============================================================
+static void* begin(const void * const obj, void *iterator){
+	GenericListIterator *iter=(iterator==NULL)?
+					new(GenericListIterator):
+					new(GenericListIterator,iterator);
+	return iter;
+}
+
+static void increment(const void * const obj, void *iterator, const int num){
+	GenericListIterator *iter=(GenericListIterator*)iterator;
+	iter->index+=num;
+}
+
+static void dincrement(const void * const obj, void *iterator, const int num){
+	GenericListIterator *iter=(GenericListIterator*)iterator;
+	iter->index-=num;
+}
+
+static void* end(const void * const obj, void *iterator){
+	const GenericList *self=(const GenericList*)obj;
+	GenericListIterator *iter=(iterator==NULL)?
+					new(GenericListIterator):
+					new(GenericListIterator,iterator);
+	iter->index=self->numElements;
+	return iter;
+}
+
+static void* getVal(const void * const obj, const void * const iterator){
+	const GenericList *self=(const GenericList*)obj;
+	const GenericListIterator *iter=(GenericListIterator*)iterator;
+	return get(self,iter->index);
 }
 
 //Object Methods================================================================
@@ -226,7 +266,7 @@ static bool contains(const GenericList * const self, const void * const token){
 	bool rv=false;
 	for (int i=0; i<self->numElements && !rv; i++){
 		void *iterElement=getPointerToLocation(self,i);
-		if (memcmp(iterElement,token,self->elementSize)==0){
+		if (equalsFromClass(*self->elementClass,self->elementSize,iterElement,token)==0){
 			rv=true;
 		}
 	}
@@ -237,7 +277,7 @@ static int getFirstIndexOf(const GenericList * const self, const void * const to
 	int rv=-1;
 	for (int i=0; i<self->numElements && rv==-1; i++){
 		void *iterElement=getPointerToLocation(self,i);
-		if (memcmp(iterElement,token,self->elementSize)==0){
+		if (equalsFromClass(*self->elementClass,self->elementSize,iterElement,token)==0){
 			rv=i;
 		}
 	}
@@ -248,7 +288,7 @@ static int getLastIndexOf(const GenericList * const self, const void * const tok
 	int rv=-1;
 	for (int i=self->numElements-1; i>=0 && rv==-1; i--){
 		void *iterElement=getPointerToLocation(self,i);
-		if (memcmp(iterElement,token,self->elementSize)==0){
+		if (equalsFromClass(*self->elementClass,self->elementSize,iterElement,token)==0){
 			rv=i;
 		}
 	}

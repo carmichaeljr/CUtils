@@ -270,7 +270,7 @@ static bool removeChars(String *self, const char * const unwantedChars){
 	return false;
 }
 
-//TODO - clear without realloc
+//TODO - clear without realloc???
 static bool clear(String *self){
 	if (GenericList_t.clear(&self->genericList)){
 		self->str=(char*)self->genericList.list;

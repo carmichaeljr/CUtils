@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("for",["Macro"],[["forEach",,[[,,,,0,"File:objectSystem/Iterator.h:forEach"]]]]);
