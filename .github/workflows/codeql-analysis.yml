@@ -64,7 +64,7 @@ jobs:
     #    uses a compiled language
 
     - run: |
-       gcc -Wpointer-arith -Wall -o bin/main.exe debug/*.h debug/*.c src/*
+       ./build-debug.sh enabled
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
