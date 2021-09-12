@@ -136,7 +136,42 @@
 #define previousVar(type,collectionObj,iterObj,num)\
 	type##_t.iterator.dincrement(collectionObj,iterObj,num)
 
-
+//Macro: iterEnd
+//--- Prototype ---
+//iterEnd(type,collectionObj,iterObj=NULL)
+//-----------------
+//
+//This is a function-macro that, given a collection type and collection object,
+//creates the appropriate iterator that represents the last object in the iteration
+//sequence.
+//This macro is overloaded with a default parameter.
+//If iterObj is NULL then memory will be allocated for the new object. If obj is not NULL
+//then obj is treated as a pointer to memory already allocated for the new object.
+//
+//The end method is supplied by the given object type. This means that in order for
+//this macro to work a function with the following signature must be defined
+//in the types <Iterator> struct.
+//--- Code
+//void* end(const void * const obj, void *iterator);
+//---
+//Note that the naming convention of <type> for objects of class <type>_t must be
+//followed in order for this macro expansion to work properly. An example of this naming convention
+//is a string. The object is a <String> struct and the class associated with that object
+//is a <String_t> struct.
+//
+//Note that the struct of <type>_t must contain a <Iterator> struct as a member named "iterator" in order
+//for this macro expansion to work properly. The <Iterator> struct defines how methods that determine
+//how the collection will be iterated over. An example of this is the <String_t> struct.
+//
+//Parameters:
+//
+//  type - The type of collection object to iterate over.
+//  collectionObj - A pointer to the collection object to iterate over.
+//  iterObj - A pointer to already reserved memory to initialize the object with.
+//
+//Returns:
+//
+//  A pointer to the iterator object.
 #define iterEnd(...) GET_END_MACRO(\
 		__VA_ARGS__,\
 		endNoAlloc,\
@@ -219,20 +254,18 @@
 //for this macro expansion to work properly. The <Iterator> struct defines how methods that determine
 //how the collection will be iterated over. An example of this is the <String_t> struct.
 #define forEach(type,subType,collectionObj,loopCode)\
-	type##Iterator iter,end;\
-	new(type##Iterator,&iter);\
-	new(type##Iterator,&end);\
+	type##Iterator iter=newS(type##Iterator,iter)\
+	type##Iterator end=newS(type##Iterator,end)\
 	iterBegin(type,list,&iter);\
 	iterEnd(type,list,&end);\
 	for ( ; equals(type##Iterator,&iter,&end)<0; iterNext(type,collectionObj,&iter)){\
 		subType *at=(subType*)iterVal(type,collectionObj,&iter);\
 		loopCode;\
 	}\
-	delete(type##Iterator,&iter,false);\
-	delete(type##Iterator,&end,false)
+	deleteS(type##Iterator,iter);\
+	deleteS(type##Iterator,end);
 //Idea?
 //#define forEachTransform(class,func,obj,__VA_ARGS__) class##_t.func##ForEach(obj,__VA_ARGS__)
-
 
 //Macro: DEFAULT_ITERATOR
 //--- Prototype

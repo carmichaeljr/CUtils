@@ -43,27 +43,9 @@ When run the only thing executed is the debug operations. The output of the debu
 [Ok   ]: 'XMLFile' class
 ```
 ### Todo/Fix
-* Remove debug from production code
-* String parser/stream parser
-* Sorting functions (need iterators first)
-* Clean up pointers and memory leaks, add const qualifiers to applicable function parameters
 * Create [profiler](https://www.youtube.com/watch?v=xlAH4dbMVnU) and [this](https://gist.github.com/TheCherno/31f135eea6ee729ab5f26a6908eb3a5e).
 * Add a reference counter to the object system along with getReference/deleteReference methods so an object can be deleted with its last reference. [This link](http://calmarius.net/?lang=en&page=programming%2Fresource_management_exceptions_and_templates_in_c) may be usefull.
 * The file class needs some major work. It works as it is, but barely
 * Look into using templates to define classes. [This link](https://stackoverflow.com/questions/10950828/simulation-of-templates-in-c-for-a-queue-data-type) may be usefull
 * The GenericDictionary class allows the addition of multiple keys with the same value
 * Add copyBetween methods to GenericTree and XMLFile
-
-IO/InputFileStream.c
-	FILE
-	.readLine
-	.nextInt
-	.nextFloat
-	.nextDouble
-	.nextBool
-	.nextChar
-	.readUntil
-	.isOk=returns true if the stream has not encountered an error
-	.eof=returns true if end of steam has been reached
-	.close
-	.rewind(bytes)

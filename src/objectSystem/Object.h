@@ -50,6 +50,39 @@
 #define newWithAlloc(type) createObject(NULL,sizeof(type),(type##_t).class.allocator,(type##_t).class.constructor)
 #define newWithoutAlloc(type,obj) createObject((void*)obj,sizeof(type),(type##_t).class.allocator,(type##_t).class.constructor)
 
+//Macro: newS
+//--- Prototype ---
+//newS(type,objName)
+//-----------------
+//
+//Creates an object on the stack instead of the heap. Note that this can already be
+//done with <new>. newS just supplies a short hand notation for doing so. The below
+//code examples show how to use newS.
+//
+//-- Code
+//String str=newS(String,str);
+// //The above line is equivalent to:
+//String str;
+//new(String,&str);
+//---
+//
+//A struct is *not* returned from a function call. This was done to prevent creating a
+//performance penalty related to creating objects on the stack.
+//
+//The same rules that apply to <new> apply to newS.
+//
+//Parameters:
+//
+//  type - The type of object to create.
+//  obj - The name of the object to be created.
+//
+//Returns:
+//
+//  An initialized object allocated on the stack.
+#define newS(type,obj)\
+	{0};\
+	new(type,&obj);
+
 //Macro: newFromClass
 //--- Prototype ---
 //newFromClass(type,obj=NULL)
@@ -206,6 +239,36 @@
 #define deleteFromClass(...) GET_DELETE_FROM_CLASS_MACRO(__VA_ARGS__,deleteFromClassFreeOption,deleteWithFree)(__VA_ARGS__)
 #define deleteFromClassWithFree(class,size,obj) deleteObject((void*)(obj),(class).destructor,true)
 #define deleteFromClassFreeOption(class,size,obj,freeObj) deleteObject((void*)(obj),(class).destructor,freeObj)
+
+//Macro: deleteS
+//--- Prototype ---
+//deleteS(type,objName)
+//-----------------
+//
+//Deletes an object allocated on the stack. Note that this can already be
+//done with <delete>. deleteS just supplies a short hand notation for doing so. The below
+//code examples show how to use deleteS.
+//
+//-- Code
+//String str=newS(String,str);
+//deleteS(String,str);
+// //The above line is equivalent to:
+//String str;
+//new(String,&str);
+//delete(String,&str,false);
+//---
+//
+//The same rules that apply to <delete> apply to deleteS.
+//
+//Parameters:
+//
+//  type - The type of object to create.
+//  obj - The name of the object to be created.
+//
+//Returns:
+//
+//  Nothing.
+#define deleteS(type,obj) delete(type,&obj,false)
 
 //Macro: equals
 //--- Prototype ---

@@ -102,21 +102,21 @@ static int comparator(const void *first, const void *second, size_t size){
 	GenericList *other=(GenericList*)second;
 	if (areListsCompatible(self,other) && self->numElements==other->numElements &&
 	    self->list!=NULL && other->list!=NULL){
-	        int rv=0;
-                for (int i=0; i<self->numElements && rv==0; i++){
-                        void *selfElement=getPointerToLocation(self,i);
-                        void *otherElement=getPointerToLocation(other,i);
-                        rv=equalsFromClass(*self->elementClass,self->elementSize,selfElement,otherElement);
-                }
-                return rv;
+		int rv=0;
+		for (int i=0; i<self->numElements && rv==0; i++){
+		        void *selfElement=getPointerToLocation(self,i);
+		        void *otherElement=getPointerToLocation(other,i);
+		        rv=equalsFromClass(*self->elementClass,self->elementSize,selfElement,otherElement);
+		}
+		return rv;
 	} else if (self->numElements<other->numElements ||
                    self->elementSize<other->elementSize ||
                    (self->list==NULL && other->list!=NULL)){
-                return -1;
+		return -1;
         } else if (other->numElements<self->numElements ||
                    other->elementSize<self->elementSize ||
                    (other->list==NULL && self->list!=NULL)){
-                return 1;
+		return 1;
         }
 	return -1;
 }
@@ -133,6 +133,24 @@ static void* begin(const void * const obj, void *iterator){
 	return iter;
 }
 
+//opAdd
+//opSub
+//opMul
+//opDiv
+//opMod
+//opPow
+//opAddEq
+//opSubEq
+//opMulEq
+//opDivEq
+//opModEq
+//opPowEq
+//opEq
+//opLt
+//opGt
+//opLte
+//opGte
+//opBrack
 static void increment(const void * const obj, void *iterator, const int num){
 	GenericListIterator *iter=(GenericListIterator*)iterator;
 	iter->index+=num;
@@ -261,6 +279,9 @@ static void* get(const GenericList * const self, const int index){
 	}
 	return NULL;
 }
+
+//Idea?
+//#define forEachTransform(class,func,obj,__VA_ARGS__) class##_t.func##ForEach(obj,__VA_ARGS__)
 
 static bool contains(const GenericList * const self, const void * const token){
 	bool rv=false;
