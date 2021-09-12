@@ -1,28 +1,24 @@
 #ifndef ITERATOR_FRAMEWORK
 #define ITERATOR_FRAMEWORK
 
-#define GET_BEGIN_MACRO(one,two,three,NAME,...) NAME
-#define GET_NEXT_MACRO(one,two,three,four,NAME,...) NAME
-#define GET_PREVIOUS_MACRO(one,two,three,four,NAME,...) NAME
+#define GET_NEXT_MACRO(one,two,three,NAME,...) NAME
+#define GET_PREVIOUS_MACRO(one,two,three,NAME,...) NAME
 #define GET_END_MACRO(one,two,three,NAME,...) NAME
 
 //Macro: iterBegin
 //--- Prototype ---
-//iterBegin(type,collectionObj,iterObj=NULL)
+//iterBegin(type,iterObj,collectionObj)
 //-----------------
 //
 //This is a function-macro that, given a collection type and collection object,
 //creates the appropriate iterator that represents the first object in the iteration
 //sequence.
-//This macro is overloaded with a default parameter.
-//If iterObj is NULL then memory will be allocated for the new object. If obj is not NULL
-//then obj is treated as a pointer to memory already allocated for the new object.
 //
 //The begin method is supplied by the given object type. This means that in order for
 //this macro to work a function with the following signature must be defined
 //in the types <Iterator> struct.
 //--- Code
-//void* begin(const void * const obj, void *iterator);
+//void* begin(void *iterator, void * collectionObj);
 //---
 //Note that the naming convention of <type> for objects of class <type>_t must be
 //followed in order for this macro expansion to work properly. An example of this naming convention
@@ -36,23 +32,17 @@
 //Parameters:
 //
 //  type - The type of collection object to iterate over.
+//  iterObj - A pointer to the iterator object to initialize.
 //  collectionObj - A pointer to the collection object to iterate over.
-//  iterObj - A pointer to already reserved memory to initialize the object with.
 //
 //Returns:
 //
 //  A pointer to the iterator object.
-#define iterBegin(...) GET_BEGIN_MACRO(\
-		__VA_ARGS__,\
-		beginNoAlloc,\
-		beginAlloc)(__VA_ARGS__)
-#define beginAlloc(type,collectionObj) type##_t.iterator.begin(collectionObj,NULL)
-#define beginNoAlloc(type,collectionObj,iterObj)\
-	type##_t.iterator.begin(collectionObj,iterObj)
+#define iterBegin(type,iterObj,collectionObj) type##Iterator_t.iterator.begin(iterObj,collectionObj)
 
 //Macro: iterNext
 //--- Prototype ---
-//iterNext(type,collectionObj,iterObj,num=1)
+//iterNext(type,iterObj,num=1)
 //-----------------
 //
 //This is a function-macro that, given a collection type, collection object, and iterator object,
@@ -63,7 +53,7 @@
 //this macro to work a function with the following signature must be defined
 //in the types <Iterator> struct.
 //--- Code
-//void increment(const void * const obj, void *iterator, const int num);
+//void* increment(void *iterator, const int num);
 //---
 //Note that the naming convention of <type> for objects of class <type>_t must be
 //followed in order for this macro expansion to work properly. An example of this naming convention
@@ -77,25 +67,24 @@
 //Parameters:
 //
 //  type - The type of collection object to iterate over.
-//  collectionObj - A pointer to the collection object to iterate over.
 //  iterObj - A pointer to the iterator object to increment.
 //  num - The number of elements forward to go.
 //
 //Returns:
 //
-//  Nothing.
+//  A pointer to the iterator object.
 #define iterNext(...) GET_NEXT_MACRO(\
 		__VA_ARGS__,\
 		nextVar,\
 		nextOne)(__VA_ARGS__)
-#define nextOne(type,collectionObj,iterObj)\
-	type##_t.iterator.increment(collectionObj,iterObj,1)
-#define nextVar(type,collectionObj,iterObj,num)\
-	type##_t.iterator.increment(collectionObj,iterObj,num)
+#define nextOne(type,iterObj)\
+	type##Iterator_t.iterator.increment(iterObj,1)
+#define nextVar(type,iterObj,num)\
+	type##Iterator_t.iterator.increment(iterObj,num)
 
 //Macro: iterPrev
 //--- Prototype ---
-//iterPrev(type,collectionObj,iterObj,num=1)
+//iterPrev(type,iterObj,num=1)
 //-----------------
 //
 //This is a function-macro that, given a collection type,collection object, and iterator object,
@@ -106,7 +95,7 @@
 //this macro to work a function with the following signature must be defined
 //in the types <Iterator> struct.
 //--- Code
-//void dincrement(const void * const obj, void *iterator, const int num);
+//void* dincrement(void *iterator, const int num);
 //---
 //Note that the naming convention of <type> for objects of class <type>_t must be
 //followed in order for this macro expansion to work properly. An example of this naming convention
@@ -120,39 +109,35 @@
 //Parameters:
 //
 //  type - The type of collection object to iterate over.
-//  collectionObj - A pointer to the collection object to iterate over.
 //  iterObj - A pointer to the iterator object to increment.
 //  num - The number of elements backward to go.
 //
 //Returns:
 //
-//  Nothing
+//  A pointer to the iterator object.
 #define iterPrev(...) GET_PREVIOUS_MACRO(\
 		__VA_ARGS__,\
 		previousVar,\
 		previousOne)(__VA_ARGS__)
-#define previousOne(type,collectionObj,iterObj)\
-	type##_t.iterator.dincrement(collectionObj,iterObj,1)
-#define previousVar(type,collectionObj,iterObj,num)\
-	type##_t.iterator.dincrement(collectionObj,iterObj,num)
+#define previousOne(type,iterObj)\
+	type##Iterator_t.iterator.dincrement(iterObj,1)
+#define previousVar(type,iterObj,num)\
+	type##Iterator_t.iterator.dincrement(iterObj,num)
 
 //Macro: iterEnd
 //--- Prototype ---
-//iterEnd(type,collectionObj,iterObj=NULL)
+//iterEnd(type,iterObj,collectionObj)
 //-----------------
 //
 //This is a function-macro that, given a collection type and collection object,
 //creates the appropriate iterator that represents the last object in the iteration
 //sequence.
-//This macro is overloaded with a default parameter.
-//If iterObj is NULL then memory will be allocated for the new object. If obj is not NULL
-//then obj is treated as a pointer to memory already allocated for the new object.
 //
 //The end method is supplied by the given object type. This means that in order for
 //this macro to work a function with the following signature must be defined
 //in the types <Iterator> struct.
 //--- Code
-//void* end(const void * const obj, void *iterator);
+//void* end(void *iterator, void *collectionObj);
 //---
 //Note that the naming convention of <type> for objects of class <type>_t must be
 //followed in order for this macro expansion to work properly. An example of this naming convention
@@ -166,23 +151,17 @@
 //Parameters:
 //
 //  type - The type of collection object to iterate over.
+//  iterObj - A pointer to the iterator to initialize.
 //  collectionObj - A pointer to the collection object to iterate over.
-//  iterObj - A pointer to already reserved memory to initialize the object with.
 //
 //Returns:
 //
 //  A pointer to the iterator object.
-#define iterEnd(...) GET_END_MACRO(\
-		__VA_ARGS__,\
-		endNoAlloc,\
-		endAlloc)(__VA_ARGS__)
-#define endAlloc(type,collectionObj) type##_t.iterator.end(collectionObj,NULL)
-#define endNoAlloc(type,collectionObj,iterObj)\
-	type##_t.iterator.end(collectionObj,iterObj)
+#define iterEnd(type,iterObj,collectionObj) type##Iterator_t.iterator.end(iterObj,collectionObj)
 
 //Macro: iterVal
 //--- Prototype ---
-//iterVal(type,collectionObj,iterObj)
+//iterVal(type,iterObj)
 //-----------------
 //
 //This is a function-macro that, given a collection type, collection object, and iterator object,
@@ -192,7 +171,7 @@
 //this macro to work a function with the following signature must be defined
 //in the types <Iterator> struct.
 //--- Code
-//void* getVal(const void * const obj, const void * const iterator);
+//void* getVal(const void * const iterator);
 //---
 //Note that the naming convention of <type> for objects of class <type>_t must be
 //followed in order for this macro expansion to work properly. An example of this naming convention
@@ -206,13 +185,12 @@
 //Parameters:
 //
 //  type - The type of collection object to iterate over.
-//  collectionObj - A pointer to the collection object to iterate over.
 //  iterObj - A pointer to the iterator object to increment.
 //
 //Returns:
 //
 //  A void pointer to the element that the iterator is currently at.
-#define iterVal(type,collectionObj,iterObj) type##_t.iterator.getVal(collectionObj,iterObj)
+#define iterVal(type,iterObj) type##Iterator_t.iterator.getVal(iterObj)
 
 //Macro: forEach
 //--- Prototype ---
@@ -256,10 +234,10 @@
 #define forEach(type,subType,collectionObj,loopCode)\
 	type##Iterator iter=newS(type##Iterator,iter)\
 	type##Iterator end=newS(type##Iterator,end)\
-	iterBegin(type,list,&iter);\
-	iterEnd(type,list,&end);\
-	for ( ; equals(type##Iterator,&iter,&end)<0; iterNext(type,collectionObj,&iter)){\
-		subType *at=(subType*)iterVal(type,collectionObj,&iter);\
+	iterBegin(type,&iter,collectionObj);\
+	iterEnd(type,&end,collectionObj);\
+	for ( ; equals(type##Iterator,&iter,&end)<0; iterNext(type,&iter)){\
+		subType *at=(subType*)iterVal(type,&iter);\
 		loopCode;\
 	}\
 	deleteS(type##Iterator,iter);\
@@ -316,7 +294,7 @@ typedef struct Iterator {
 	//Returns:
 	//
 	//  A pointer to the iterator that is initialized to the first element of the given collection.
-	void* (*begin)(const void * const obj, void *iterator);
+	void* (*begin)(void *self, void *collectionObj);
 	//Function: increment
 	//Responsible for advancing the iterator forward by the given number of elements.
 	//
@@ -329,7 +307,7 @@ typedef struct Iterator {
 	//Returns:
 	//
 	//  Nothing.
-	void (*increment)(const void * const obj, void *iterator, const int num);
+	void* (*increment)(void *self, const int num);
 	//Function: increment
 	//Responsible for advancing the iterator backward by the given number of elements.
 	//
@@ -342,7 +320,7 @@ typedef struct Iterator {
 	//Returns:
 	//
 	//  Nothing.
-	void (*dincrement)(const void * const obj, void *iterator, const int num);
+	void* (*dincrement)(void *self, const int num);
 	//Function: end
 	//Responsible to returning an initialized iterator to the last element of the collection.
 	//
@@ -357,7 +335,7 @@ typedef struct Iterator {
 	//Returns:
 	//
 	//  A pointer to the iterator that is initialized to the last element of the given collection.
-	void* (*end)(const void * const obj, void *iterator);
+	void* (*end)(void *self, void *collectionObj);
 	//Function: getVal
 	//Returns a void pointer to the value of the element at the iterators location.
 	//
@@ -369,7 +347,7 @@ typedef struct Iterator {
 	//Returns:
 	//
 	//  A void pointer to the value of the element at the iterators location.
-	void* (*getVal)(const void * const obj, const void * const iterator);
+	void* (*getVal)(const void * const self);
 } Iterator;
 
 #endif

@@ -2,8 +2,6 @@
 #define GENERIC_LIST_ITERATOR_CLASS
 
 #include "../objectSystem/Object.h"
-#include "../objectSystem/Iterator.h"
-#include "GenericList.h"
 
 //Class: GenericListIterator
 //A struct that represents an iterator for a generic list.
@@ -12,11 +10,10 @@
 //--- Code
 //GenericList *list=new(GenericList);
 //...
-//GenericListIterator *iter=new(GenericListIterator);
-//GenericListIterator *end=new(GenericListIterator);
-//iterEnd(GenericList,end,list);
-//for (iterBegin(GenericList,iter,list); equals(GenericListIterator,iter,end)>0; iterNext(GenericList,iter)){
-//	void* iterVal=iterVal(GenericList,iter);
+//GenericListIterator *iter=iterBegin(GenericList,list);
+//GenericListIterator *end=iterEnd(GenericList,list);
+//for ( ; equals(GenericListIterator,iter,end)>0; iterNext(GenericList,list,iter)){
+//	void* iterVal=iterVal(GenericList,list,iter);
 //	...
 //}
 //delete(GenericListIterator,iter);
@@ -30,13 +27,12 @@
 //  <GenericList>
 //  <GenericList_t>
 //  <GenericListIterator_t>
-typedef struct GenericListIterator {
+typedef struct StringIterator {
 	//Variable: index
 	//
 	// - Default: 0
 	int index;
-	GenericList *source;
-} GenericListIterator;
+} StringIterator;
 
 //Class: GenericListIterator_t
 //The struct that creates and performs operations on objects of type GenericListIterator.
@@ -45,9 +41,8 @@ typedef struct GenericListIterator {
 //
 //  <GenericList>
 //  <GenericListIterator>
-extern const struct GenericListIterator_t {
+extern const struct StringIterator_t {
 	Class class;
-	Iterator iterator;
-} GenericListIterator_t;
+} StringIterator_t;
 
 #endif
