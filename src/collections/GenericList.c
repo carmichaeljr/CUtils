@@ -10,8 +10,14 @@ static void* copyConstructor(void *obj, const void * const other, size_t size);
 //static void print(const GenericList * const obj);
 static int comparator(const void *self, const void *other, size_t size);
 static void destructor(void *obj);
-static bool setElementType(GenericList *self, const Class * const newClass, const size_t size);
+static bool eqOperator(const void * const first, const void * const second, size_t size);
+static bool neqOperator(const void * const first, const void * const second, size_t size);
+static bool gtOperator(const void * const first, const void * const second, size_t size);
+static bool ltOperator(const void * const first, const void * const second, size_t size);
+static bool gteOperator(const void * const first, const void * const second, size_t size);
+static bool lteOperator(const void * const first, const void * const second, size_t size);
 static bool setListSize(GenericList *self, const int numElements);
+static bool setElementType(GenericList *self, const Class * const newClass, const size_t newSize);
 static bool setNumElements(GenericList *self, const int numElements);
 static bool set(GenericList *self, const void * const newElements, const int numElements);
 static bool setAt(GenericList *self, const void * const newElements, const int numElements, const int index);
@@ -40,6 +46,7 @@ static bool areListsCompatible(const GenericList *self, const GenericList *other
 
 const struct GenericList_t GenericList_t={
 	.class=ALLOC_ONLY_DEFAULT_CLASS,
+	.comparisonOperators=DEFAULT_COMPARISON_OPERATORS,
 	.setElementType=setElementType,
 	.setListSize=setListSize,
 	.setNumElements=setNumElements,
@@ -117,6 +124,31 @@ static int comparator(const void *first, const void *second, size_t size){
 
 static void destructor(void *obj){
         clear((GenericList*)obj);
+}
+
+//Comparison Operators=========================================================
+static bool eqOperator(const void * const first, const void * const second, size_t size){
+	return false;
+}
+
+static bool neqOperator(const void * const first, const void * const second, size_t size){
+	return false;
+}
+
+static bool gtOperator(const void * const first, const void * const second, size_t size){
+	return false;
+}
+
+static bool ltOperator(const void * const first, const void * const second, size_t size){
+	return false;
+}
+
+static bool gteOperator(const void * const first, const void * const second, size_t size){
+	return false;
+}
+
+static bool lteOperator(const void * const first, const void * const second, size_t size){
+	return false;
 }
 
 //Object Methods================================================================

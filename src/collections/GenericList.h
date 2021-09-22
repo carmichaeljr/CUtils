@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "../objectSystem/Object.h"
+#include "../objectSystem/Operator.h"
 
 //Class: GenericList
 //The struct that represents a GenericList.
@@ -77,6 +78,7 @@ typedef struct GenericList {
 //  <GenericListIterator_t>
 extern const struct GenericList_t {
 	Class class;
+	ComparisonOperators comparisonOperators;
 	//Function: setElementType
 	//Sets the size and type of the elements stored in the list.
 	//

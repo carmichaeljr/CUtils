@@ -2,17 +2,6 @@
 #include <stdarg.h>
 #include "Object.h"
 
-const struct BasicType_t BasicType_t={
-	.class={
-		.allocator=malloc,
-		.constructor=NULL,
-		.copyConstructor=memcpy,
-		.comparator=memcmp,
-		.destructor=NULL,
-	},
-	.set=memcpy,
-};
-
 void* createObject(void *obj, size_t size, 
 		   void* (*allocator)(size_t size),
 		   void (*constructor)(void *obj)){

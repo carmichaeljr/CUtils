@@ -2,6 +2,7 @@
 #include <string.h>
 #include "String.h"
 #include "../objectSystem/Object.h"
+#include "../objectSystem/BasicType.h"
 //#include "Print.h"
 #include "GenericList.h"
 

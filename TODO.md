@@ -3,6 +3,7 @@
   - Fix memory leaks
   - Add const qualifiers to applicable function parameters
 1. Object System
+  - Change basic type, split up into SignedBasicType, UnsignedBasicType, and FloatBasicType
   - Add iterator to string class
   - Add setVal to iterator
   - Add operator overloading (separate equals from class struct, add move to class struct)

@@ -22,41 +22,41 @@
 #In order to support extended basic data types, the following string replacements
 #must be made:
 #
-#  - "unsigned long long BasicType_t" : BasicType_t
-#  - "signed long long BasicType_t" : BasicType_t
-#  - "unsigned long BasicType_t" : BasicType_t
-#  - "signed long BasicType_t" : BasicType_t
-#  - "unsigned long BasicType_t" : BasicType_t
-#  - "signed long BasicType_t" : BasicType_t
-#  - "long long BasicType_t" : BasicType_t
-#  - "unsigned short BasicType_t" : BasicType_t
-#  - "signed short BasicType_t" : BasicType_t
-#  - "unsigned BasicType_t" : BasicType_t
-#  - "signed BasicType_t" : BasicType_t
-#  - "short BasicType_t" : BasicType_t
-#  - "long BasicType_t" : BasicType_t
+#  - "unsigned long long SignedBasicType_t": UnsignedBasicType_t
+#  - "signed long long SignedBasicType_t": SignedBasicType_t
+#  - "unsigned long SignedBasicType_t": UnsignedBasicType_t
+#  - "signed long SignedBasicType_t": SignedBasicType_t
+#  - "signed long SignedBasicType_t": SignedBasicType_t
+#  - "long long SignedBasicType_t": SignedBasicType_t
+#  - "unsigned short SignedBasicType_t": UnsignedBasicType_t
+#  - "signed short SignedBasicType_t": SignedBasicType_t
+#  - "unsigned SignedBasicType_t": UnsignedBasicType_t
+#  - "signed SignedBasicType_t": SignedBasicType_t
+#  - "short SignedBasicType_t" : SignedBasicType_t
+#  - "long SignedBasicType_t" : SignedBasicType_t
+#  - "long FloatBasicType_t" : FloatBasicType_t
 #
 #These replacements must be made because the standard C pre-processor cannot replace
 #a string with a space in it. For example, the below statement is not valid, but would
 #be required to implement all of the standard C data types as a BasicType object.
 #
-#> #define "unsigned int_t" BasicType_t
+#> #define "unsigned int_t" UnsigedBasicType_t
 #
 #Parameters:
 #
 #  $1 - The file to pre-process.
 #  $2 - The file to place the pre-processors output.
 gcc -D CUSTOM_PRE_PROC_ENABLED -E $1 > $2
-sed -i 's|unsigned long long BasicType_t|BasicType_t|g;
-	s|signed long long BasicType_t|BasicType_t|g;
-	s|unsigned long BasicType_t|BasicType_t|g;
-	s|signed long BasicType_t|BasicType_t|g;
-	s|unsigned long BasicType_t|BasicType_t|g;
-	s|signed long BasicType_t|BasicType_t|g;
-	s|long long BasicType_t|BasicType_t|g;
-	s|unsigned short BasicType_t|BasicType_t|g;
-	s|signed short BasicType_t|BasicType_t|g;
-        s|unsigned BasicType_t|BasicType_t|g;
-	s|signed BasicType_t|BasicType_t|g;
-	s|short BasicType_t|BasicType_t|g;
-	s|long BasicType_t|BasicType_t|g;' $2
+sed -i 's|unsigned long long SignedBasicType_t|UnsignedBasicType_t|g;
+	s|signed long long SignedBasicType_t|SignedBasicType_t|g;
+	s|unsigned long SignedBasicType_t|UnsignedBasicType_t|g;
+	s|signed long SignedBasicType_t|SignedBasicType_t|g;
+	s|signed long SignedBasicType_t|SignedBasicType_t|g;
+	s|long long SignedBasicType_t|SignedBasicType_t|g;
+	s|unsigned short SignedBasicType_t|UnsignedBasicType_t|g;
+	s|signed short SignedBasicType_t|SignedBasicType_t|g;
+	s|unsigned SignedBasicType_t|UnsignedBasicType_t|g;
+	s|signed SignedBasicType_t|SignedBasicType_t|g;
+	s|short SignedBasicType_t|SignedBasicType_t|g;
+	s|long SignedBasicType_t|SignedBasicType_t|g;
+	s|long FloatBasicType_t|FloatBasicType_t|g;' $2

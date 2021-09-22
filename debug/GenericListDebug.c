@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include "Debug.h"
 #include "../src/objectSystem/Object.h"
+#include "../src/objectSystem/BasicType.h"
 #include "../src/collections/GenericList.h"
 #include "../src/IO/Print.h"
 

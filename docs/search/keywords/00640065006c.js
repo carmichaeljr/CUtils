@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("del",["Macro"],[["delete",,[[,,,,0,"File:objectSystem/Object.h:delete"]]],["deleteFromClass",,[[,,,,0,"File:objectSystem/Object.h:deleteFromClass"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("del",["Macro"],[["delete",,[[,,,,0,"File:objectSystem/Object.h:delete"]]],["deleteFromClass",,[[,,,,0,"File:objectSystem/Object.h:deleteFromClass"]]],["deleteS",,[[,,,,0,"File:objectSystem/Object.h:deleteS"]]]]);
