@@ -249,7 +249,7 @@
 //done with <delete>. deleteS just supplies a short hand notation for doing so. The below
 //code examples show how to use deleteS.
 //
-//-- Code
+//--- Code
 //String str=newS(String,str);
 //deleteS(String,str);
 // //The above line is equivalent to:

@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("eqo",["Function"],[["eqOperator",,[["ComparisonOperators",,,,0,"File:objectSystem/Operator.h:ComparisonOperators.eqOperator","CClass:ComparisonOperators:eqOperator"]]]]);

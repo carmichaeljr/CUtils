@@ -3,7 +3,6 @@
   - Fix memory leaks
   - Add const qualifiers to applicable function parameters
 1. Object System
-  - Change basic type, split up into SignedBasicType, UnsignedBasicType, and FloatBasicType
   - Add iterator to string class
   - Add setVal to iterator
   - Add operator overloading (separate equals from class struct, add move to class struct)
@@ -22,8 +21,11 @@
   - Map
   - Set
   - BinaryTree
+  - Heap
 1. Add sorting functions that act on generic collections
   - Relies on operator overloading
+    - quick sort, merge sort, radix sort
+
 
 
 Other Thoughts:

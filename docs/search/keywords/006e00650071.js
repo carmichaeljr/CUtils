@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("neq",["Macro","Function"],[["neq",,[[,,,,0,"File:objectSystem/Operator.h:neq"]]],["neqOperator",,[["ComparisonOperators",,,,1,"File:objectSystem/Operator.h:ComparisonOperators.neqOperator","CClass:ComparisonOperators:neqOperator"]]]]);

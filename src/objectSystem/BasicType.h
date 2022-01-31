@@ -77,6 +77,8 @@
 const struct BasicType_t {
 	Class class;
 	ComparisonOperators comparisonOperators;
+	AddOperators addOperators;
+	SubOperators subOperators;
 	//Function: set
 	//Sets the objects value. The default operation is memcpy.
 	//

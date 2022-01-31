@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("gte",["Macro","Function"],[["gte",,[[,,,,0,"File:objectSystem/Operator.h:gte"]]],["gteOperator",,[["ComparisonOperators",,,,1,"File:objectSystem/Operator.h:ComparisonOperators.gteOperator","CClass:ComparisonOperators:gteOperator"]]]]);

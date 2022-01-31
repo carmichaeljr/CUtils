@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("lt",["Macro"],[["lt",,[[,,,,0,"File:objectSystem/Operator.h:lt"]]]]);

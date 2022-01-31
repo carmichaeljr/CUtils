@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("lto",["Function"],[["ltOperator",,[["ComparisonOperators",,,,0,"File:objectSystem/Operator.h:ComparisonOperators.ltOperator","CClass:ComparisonOperators:ltOperator"]]]]);

@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("com",["Function"],[["comparator",,[["Class",,,,0,"File:objectSystem/Object.h:Class.comparator","CClass:Class:comparator"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("com",["Function","Struct"],[["comparator",,[["Class",,,,0,"File:objectSystem/Object.h:Class.comparator","CClass:Class:comparator"]]],["ComparisonOperators",,[[,,,,1,"File:objectSystem/Operator.h:ComparisonOperators","CClass:ComparisonOperators"]]]]);
