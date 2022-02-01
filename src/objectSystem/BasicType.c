@@ -10,9 +10,8 @@ bool unsignedGteOperator(const void * const first, const void * const second, si
 bool unsignedLtOperator(const void * const first, const void * const second, size_t size);
 bool unsignedLteOperator(const void * const first, const void * const second, size_t size);
 void* unsignedAddOp(const void * const self, const void * const other, void *result, size_t size);
-void* unsignedAddSelfOp(void *self, const void * const other, size_t size);
 void* unsignedSubOp(const void * const self, const void * const other, void *result, size_t size);
-void* unsignedSubSelfOp(void *self, const void * const other, size_t size);
+void* unsignedMulOp(const void * const self, const void * const other, void *result, size_t size);
 bool signedEqOperator(const void * const first, const void * const second, size_t size);
 bool signedNeqOperator(const void * const first, const void * const second, size_t size);
 bool signedGtOperator(const void * const first, const void * const second, size_t size);
@@ -20,8 +19,8 @@ bool signedGteOperator(const void * const first, const void * const second, size
 bool signedLtOperator(const void * const first, const void * const second, size_t size);
 bool signedLteOperator(const void * const first, const void * const second, size_t size);
 void* signedAddOp(const void * const self, const void * const other, void *result, size_t size);
-void* signedAddSelfOp(void *self, const void * const other, size_t size);
 void* signedSubOp(const void * const self, const void * const other, void *result, size_t size);
+void* signedMulOp(const void * const self, const void * const other, void *result, size_t size);
 void* signedSubSelfOp(void *self, const void * const other, size_t size);
 bool floatEqOperator(const void * const first, const void * const second, size_t size);
 bool floatNeqOperator(const void * const first, const void * const second, size_t size);
@@ -30,9 +29,8 @@ bool floatGteOperator(const void * const first, const void * const second, size_
 bool floatLtOperator(const void * const first, const void * const second, size_t size);
 bool floatLteOperator(const void * const first, const void * const second, size_t size);
 void* floatAddOp(const void * const self, const void * const other, void *result, size_t size);
-void* floatAddSelfOp(void *self, const void * const other, size_t size);
 void* floatSubOp(const void * const self, const void * const other, void *result, size_t size);
-void* floatSubSelfOp(void *self, const void * const other, size_t size);
+void* floatMulOp(const void * const self, const void * const other, void *result, size_t size);
 
 const struct BasicType_t UnsignedBasicType_t={
 	.class={
@@ -50,13 +48,10 @@ const struct BasicType_t UnsignedBasicType_t={
 		.ltOperator=unsignedLtOperator,
 		.lteOperator=unsignedLteOperator,
 	},
-	.addOperators={
-		.op=unsignedAddOp,
-		.opSelf=unsignedAddSelfOp,
-	},
-	.subOperators={
-		.op=unsignedSubOp,
-		.opSelf=unsignedSubSelfOp,
+	.operators={
+		.add=unsignedAddOp,
+		.sub=unsignedSubOp,
+		.mul=unsignedMulOp,
 	},
 	.set=memcpy,
 };
@@ -77,13 +72,10 @@ const struct BasicType_t SignedBasicType_t={
 		.ltOperator=signedLtOperator,
 		.lteOperator=signedLteOperator,
 	},
-	.addOperators={
-		.op=signedAddOp,
-		.opSelf=signedAddSelfOp,
-	},
-	.subOperators={
-		.op=signedSubOp,
-		.opSelf=signedSubSelfOp,
+	.operators={
+		.add=signedAddOp,
+		.sub=signedSubOp,
+		.mul=signedMulOp,
 	},
 	.set=memcpy,
 };
@@ -104,13 +96,10 @@ const struct BasicType_t FloatBasicType_t={
 		.ltOperator=floatLtOperator,
 		.lteOperator=floatLteOperator,
 	},
-	.addOperators={
-		.op=floatAddOp,
-		.opSelf=floatAddSelfOp,
-	},
-	.subOperators={
-		.op=floatSubOp,
-		.opSelf=floatSubSelfOp,
+	.operators={
+		.add=floatAddOp,
+		.sub=floatSubOp,
+		.mul=floatMulOp,
 	},
 	.set=memcpy,
 };
@@ -182,28 +171,23 @@ bool unsignedLteOperator(const void * const first, const void * const second, si
 void* unsignedAddOp(const void * const self, const void * const other, void *result, size_t size){
 	if (size==sizeof(unsigned)){
 		//also unsigned int
-		result=((result==NULL)? new(unsigned): result);
 		*(unsigned*)result=*(unsigned*)self+*(unsigned*)other;
 		return result;
 	} 
 #ifdef CUSTOM_PRE_PROC_ENABLED
 	if (size==sizeof(unsigned char)){
-		result=((result==NULL)? new(unsigned char): result);
 		*(unsigned char*)result=0;		//adding chars is undefined
 		return result;
 	} else if (size==sizeof(unsigned short)){
 		//also unsigned short int
-		result=((result==NULL)? new(unsigned short): result);
 		*(unsigned short*)result=*(unsigned short*)self+*(unsigned short*)other;
 		return result;
 	} else if (size==sizeof(unsigned long)){
 		//also unsigned long int
-		result=((result==NULL)? new(unsigned long): result);
 		*(unsigned long*)result=*(unsigned long*)self+*(unsigned long*)other;
 		return result;
 	} else if (size==sizeof(unsigned long long)){
 		//also unsigned long long int
-		result=((result==NULL)? new(unsigned long long): result);
 		*(unsigned long long*)result=*(unsigned long long*)self+*(unsigned long long*)other;
 		return result;
 	}
@@ -211,35 +195,26 @@ void* unsignedAddOp(const void * const self, const void * const other, void *res
 	return result;
 }
 
-void* unsignedAddSelfOp(void *self, const void * const other, size_t size){
-	return unsignedAddOp(self,other,self,size);
-}
-
 void* unsignedSubOp(const void * const self, const void * const other, void *result, size_t size){
 	if (size==sizeof(unsigned)){
 		//also unsigned int
-		result=((result==NULL)? new(unsigned): result);
 		*(unsigned*)result=*(unsigned*)self-*(unsigned*)other;
 		return result;
 	} 
 #ifdef CUSTOM_PRE_PROC_ENABLED
 	if (size==sizeof(unsigned char)){
-		result=((result==NULL)? new(unsigned char): result);
 		*(unsigned char*)result=0;		//subtracting chars is undefined
 		return result;
 	} else if (size==sizeof(unsigned short)){
 		//also unsigned short int
-		result=((result==NULL)? new(unsigned short): result);
 		*(unsigned short*)result=*(unsigned short*)self-*(unsigned short*)other;
 		return result;
 	} else if (size==sizeof(unsigned long)){
 		//also unsigned long int
-		result=((result==NULL)? new(unsigned long): result);
 		*(unsigned long*)result=*(unsigned long*)self-*(unsigned long*)other;
 		return result;
 	} else if (size==sizeof(unsigned long long)){
 		//also unsigned long long int
-		result=((result==NULL)? new(unsigned long long): result);
 		*(unsigned long long*)result=*(unsigned long long*)self-*(unsigned long long*)other;
 		return result;
 	}
@@ -248,8 +223,31 @@ void* unsignedSubOp(const void * const self, const void * const other, void *res
 }
 
 
-void* unsignedSubSelfOp(void *self, const void * const other, size_t size){
-	return unsignedSubOp(self,other,self,size);
+void* unsignedMulOp(const void * const self, const void * const other, void *result, size_t size){
+	if (size==sizeof(unsigned)){
+		//also unsigned int
+		*(unsigned*)result=(*(unsigned*)self)*(*(unsigned*)other);
+		return result;
+	} 
+#ifdef CUSTOM_PRE_PROC_ENABLED
+	if (size==sizeof(unsigned char)){
+		*(unsigned char*)result=0;		//multiplying chars is undefined
+		return result;
+	} else if (size==sizeof(unsigned short)){
+		//also unsigned short int
+		*(unsigned short*)result=(*(unsigned short*)self)*(*(unsigned short*)other);
+		return result;
+	} else if (size==sizeof(unsigned long)){
+		//also unsigned long int
+		*(unsigned long*)result=(*(unsigned long*)self)*(*(unsigned long*)other);
+		return result;
+	} else if (size==sizeof(unsigned long long)){
+		//also unsigned long long int
+		*(unsigned long long*)result=(*(unsigned long long*)self)*(*(unsigned long long*)other);
+		return result;
+	}
+#endif
+	return result;
 }
 
 //Signed Operators=============================================================
@@ -318,29 +316,24 @@ bool signedLteOperator(const void * const first, const void * const second, size
 void* signedAddOp(const void * const self, const void * const other, void *result, size_t size){
 	if (size==sizeof(char)){
 		//also signed char
-		result=((result==NULL)? new(char): result);
 		*(char*)result=0;	//Adding characters is undefined
 		return result;
 	} else if (size==sizeof(short)){
 		//also short int, signed short, signed short int
-		result=((result==NULL)? new(short): result);
 		*(short*)result=*(short*)self+*(short*)other;
 		return result;
 	} else if (size==sizeof(int)){
 		//also signed int
-		result=((result==NULL)? new(int): result);
 		*(int*)result=*(int*)self+*(int*)other;
 		return result;
 	} else if (size==sizeof(long)){
 		//also long int, signed long, signed long int
-		result=((result==NULL)? new(long): result);
 		*(long*)result=*(long*)self+*(long*)other;
 		return result;
 	} 
 #ifdef CUSTOM_PRE_PROC_ENABLED	
 	if (size==sizeof(long long)){
 		//also long long int, signed long long, signed long long int
-		result=((result==NULL)? new(long long): result);
 		*(long long*)result=*(long long*)self+*(long long*)other;
 		return result;
 	}
@@ -348,36 +341,27 @@ void* signedAddOp(const void * const self, const void * const other, void *resul
 	return result;
 }
 
-void* signedAddSelfOp(void *self, const void * const other, size_t size){
-	return signedAddOp(self,other,self,size);
-}
-
 void* signedSubOp(const void * const self, const void * const other, void *result, size_t size){
 	if (size==sizeof(char)){
 		//also signed char
-		result=((result==NULL)? new(char): result);
 		*(char*)result=0;	//subtracting characters is undefined
 		return result;
 	} else if (size==sizeof(short)){
 		//also short int, signed short, signed short int
-		result=((result==NULL)? new(short): result);
 		*(short*)result=*(short*)self-*(short*)other;
 		return result;
 	} else if (size==sizeof(int)){
 		//also signed int
-		result=((result==NULL)? new(int): result);
 		*(int*)result=*(int*)self-*(int*)other;
 		return result;
 	} else if (size==sizeof(long)){
 		//also long int, signed long, signed long int
-		result=((result==NULL)? new(long): result);
 		*(long*)result=*(long*)self-*(long*)other;
 		return result;
 	} 
 #ifdef CUSTOM_PRE_PROC_ENABLED	
 	if (size==sizeof(long long)){
 		//also long long int, signed long long, signed long long int
-		result=((result==NULL)? new(long long): result);
 		*(long long*)result=*(long long*)self-*(long long*)other;
 		return result;
 	}
@@ -385,8 +369,32 @@ void* signedSubOp(const void * const self, const void * const other, void *resul
 	return result;
 }
 
-void* signedSubSelfOp(void *self, const void * const other, size_t size){
-	return signedSubOp(self,other,self,size);
+void* signedMulOp(const void * const self, const void * const other, void *result, size_t size){
+	if (size==sizeof(char)){
+		//also signed char
+		*(char*)result=0;	//subtracting characters is undefined
+		return result;
+	} else if (size==sizeof(short)){
+		//also short int, signed short, signed short int
+		*(short*)result=(*(short*)self)*(*(short*)other);
+		return result;
+	} else if (size==sizeof(int)){
+		//also signed int
+		*(int*)result=(*(int*)self)*(*(int*)other);
+		return result;
+	} else if (size==sizeof(long)){
+		//also long int, signed long, signed long int
+		*(long*)result=(*(long*)self)*(*(long*)other);
+		return result;
+	} 
+#ifdef CUSTOM_PRE_PROC_ENABLED	
+	if (size==sizeof(long long)){
+		//also long long int, signed long long, signed long long int
+		*(long long*)result=(*(long long*)self)*(*(long long*)other);
+		return result;
+	}
+#endif
+	return result;
 }
 
 //Float Operations=============================================================
@@ -436,17 +444,14 @@ bool floatLteOperator(const void * const first, const void * const second, size_
 
 void* floatAddOp(const void * const self, const void * const other, void *result, size_t size){
 	if (size==sizeof(float)){
-		result=((result==NULL)? new(float): result);
 		*(float*)result=*(float*)self+*(float*)other;
 		return result;
 	} else if (size==sizeof(double)){
-		result=((result==NULL)? new(double): result);
 		*(double*)result=*(double*)self+*(double*)other;
 		return result;
 	}
 #ifdef CUSTOM_PRE_PROC_ENABLED
 	if (size==sizeof(long double)){
-		result=((result==NULL)? new(long double): result);
 		*(long double*)result=*(long double*)self+*(long double*)other;
 		return result;
 	}
@@ -454,23 +459,16 @@ void* floatAddOp(const void * const self, const void * const other, void *result
 	return result;
 }
 
-void* floatAddSelfOp(void *self, const void * const other, size_t size){
-	return floatAddOp(self,other,self,size);
-}
-
 void* floatSubOp(const void * const self, const void * const other, void *result, size_t size){
 	if (size==sizeof(float)){
-		result=((result==NULL)? new(float): result);
 		*(float*)result=*(float*)self-*(float*)other;
 		return result;
 	} else if (size==sizeof(double)){
-		result=((result==NULL)? new(double): result);
 		*(double*)result=*(double*)self-*(double*)other;
 		return result;
 	}
 #ifdef CUSTOM_PRE_PROC_ENABLED
 	if (size==sizeof(long double)){
-		result=((result==NULL)? new(long double): result);
 		*(long double*)result=*(long double*)self-*(long double*)other;
 		return result;
 	}
@@ -478,7 +476,20 @@ void* floatSubOp(const void * const self, const void * const other, void *result
 	return result;
 }
 
-void* floatSubSelfOp(void *self, const void * const other, size_t size){
-	return floatSubOp(self,other,self,size);
+void* floatMulOp(const void * const self, const void * const other, void *result, size_t size){
+	if (size==sizeof(float)){
+		*(float*)result=(*(float*)self)*(*(float*)other);
+		return result;
+	} else if (size==sizeof(double)){
+		*(double*)result=(*(double*)self)*(*(double*)other);
+		return result;
+	}
+#ifdef CUSTOM_PRE_PROC_ENABLED
+	if (size==sizeof(long double)){
+		*(long double*)result=(*(long double*)self)*(*(long double*)other);
+		return result;
+	}
+#endif
+	return result;
 }
 

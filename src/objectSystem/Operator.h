@@ -7,31 +7,44 @@
 //Result *result=new(Result);
 //opSqrt(opPowEq(opAddEq(one,two),five),opPowEq(opAddEq(three,four),six),result);
 typedef struct ArithLogicOperators {
-	void* (*op)(const void * const self, const void * const other, void *result, size_t size);
-	void* (*opSelf)(void *self, const void * const other, size_t size);
+	void* (*add)(const void * const self, const void * const other, void *result, size_t size);
+	void* (*sub)(const void * const self, const void * const other, void *result, size_t size);
+	void* (*mul)(const void * const self, const void * const other, void *result, size_t size);
+	void* (*div)(const void * const self, const void * const other, void *result, size_t size);
+	void* (*mod)(const void * const self, const void * const other, void *result, size_t size);
+	void* (*pow)(const void * const self, const void * const other, void *result, size_t size);
+	void* (*sll)(const void * const self, const void * const other, void *result, size_t size);
+	void* (*srl)(const void * const self, const void * const other, void *result, size_t size);
+	void* (*_and)(const void * const self, const void * const other, void *result, size_t size);
+	void* (*_not)(const void * const self, const void * const other, void *result, size_t size);
+	void* (*_or)(const void * const self, const void * const other, void *result, size_t size);
 } ArithLogicOperators;
 
-#define AddOperators ArithLogicOperators
-#define SubOperators ArithLogicOperators
-#define MulOperators ArithLogicOperators
-#define DivOperators ArithLogicOperators
-#define ModOperators ArithLogicOperators
-#define PowOperators ArithLogicOperators
-#define SllOperators ArithLogicOperators
-#define SrlOperators ArithLogicOperators
-#define AndOperators ArithLogicOperators
-#define NotOperators ArithLogicOperators
-#define OrOperators ArithLogicOperators
+//#define AddOperators ArithLogicOperators
+//#define SubOperators ArithLogicOperators
+//#define MulOperators ArithLogicOperators
+//#define DivOperators ArithLogicOperators
+//#define ModOperators ArithLogicOperators
+//#define PowOperators ArithLogicOperators
+//#define SllOperators ArithLogicOperators
+//#define SrlOperators ArithLogicOperators
+//#define AndOperators ArithLogicOperators
+//#define NotOperators ArithLogicOperators
+//#define OrOperators ArithLogicOperators
 
 #define GET_OPERATOR(one,two,three,four,NAME,...) NAME
 
-#define opAdd(...) GET_OPERATOR(__VA_ARGS__,addOther,addSelf)(__VA_ARGS__)
-#define addSelf(type,obj1,obj2) type##_t.addOperators.opSelf((void*)obj1,(void*)obj2,sizeof(type))
-#define addOther(type,obj1,obj2,obj3) type##_t.addOperators.op((void*)obj1,(void*)obj2,(void*)obj3,sizeof(type))
+#define ADD(...) GET_OPERATOR(__VA_ARGS__,addOther,addSelf)(__VA_ARGS__)
+#define addSelf(type,obj1,obj2) type##_t.operators.add((void*)obj1,(void*)obj2,(void*)obj1,sizeof(type))
+#define addOther(type,obj1,obj2,obj3) type##_t.operators.add((void*)obj1,(void*)obj2,(void*)obj3,sizeof(type))
 
-#define opSub(...) GET_OPERATOR(__VA_ARGS__,subOther,subSelf)(__VA_ARGS__)
-#define subSelf(type,obj1,obj2) type##_t.subOperators.opSelf((void*)obj1,(void*)obj2,sizeof(type))
-#define subOther(type,obj1,obj2,obj3) type##_t.subOperators.op((void*)obj1,(void*)obj2,(void*)obj3,sizeof(type))
+#define SUB(...) GET_OPERATOR(__VA_ARGS__,subOther,subSelf)(__VA_ARGS__)
+#define subSelf(type,obj1,obj2) type##_t.operators.sub((void*)obj1,(void*)obj2,(void*)obj1,sizeof(type))
+#define subOther(type,obj1,obj2,obj3) type##_t.operators.sub((void*)obj1,(void*)obj2,(void*)obj3,sizeof(type))
+
+#define MUL(...) GET_OPERATOR(__VA_ARGS__,mulOther,mulSelf)(__VA_ARGS__)
+#define mulSelf(type,obj1,obj2) type##_t.operators.mul((void*)obj1,(void*)obj2,(void*)obj1,sizeof(type))
+#define mulOther(type,obj1,obj2,obj3) type##_t.operators.mul((void*)obj1,(void*)obj2,(void*)obj3,sizeof(type))
 
 //Macro: eq
 //--- Prototype ---
@@ -65,7 +78,7 @@ typedef struct ArithLogicOperators {
 //Returns:
 //
 //  True if the two objects are considered equal, false otherwise.
-#define eq(type,obj1,obj2) type##_t.comparisonOperators.eqOperator((void*)obj1,(void*)obj2,sizeof(type))
+#define EQ(type,obj1,obj2) type##_t.comparisonOperators.eqOperator((void*)obj1,(void*)obj2,sizeof(type))
 
 //#define eqFromOperator(operators,obj1,obj2) (operators).eqOperator((void*)obj1,(void*)obj2,sizeof(type))
 
@@ -101,7 +114,7 @@ typedef struct ArithLogicOperators {
 //Returns:
 //
 //  True if the two objects are considered not equal, false otherwise.
-#define neq(type,obj1,obj2) type##_t.comparisonOperators.neqOperator((void*)obj1,(void*)obj2,sizeof(type))
+#define NEQ(type,obj1,obj2) type##_t.comparisonOperators.neqOperator((void*)obj1,(void*)obj2,sizeof(type))
 //Macro: gt
 //--- Prototype ---
 //gt(type,obj1,obj2) 
@@ -134,7 +147,7 @@ typedef struct ArithLogicOperators {
 //Returns:
 //
 //  True if the first object is considered to be greater than the second object.
-#define gt(type,obj1,obj2) type##_t.comparisonOperators.gtOperator((void*)obj1,(void*)obj2,sizeof(type))
+#define GT(type,obj1,obj2) type##_t.comparisonOperators.gtOperator((void*)obj1,(void*)obj2,sizeof(type))
 //Macro: lt
 //--- Prototype ---
 //lt(type,obj1,obj2) 
@@ -167,7 +180,7 @@ typedef struct ArithLogicOperators {
 //Returns:
 //
 //  True if the first object is considered to be less than the second object.
-#define lt(type,obj1,obj2) type##_t.comparisonOperators.ltOperator((void*)obj1,(void*)obj2,sizeof(type))
+#define LT(type,obj1,obj2) type##_t.comparisonOperators.ltOperator((void*)obj1,(void*)obj2,sizeof(type))
 //Macro: gte
 //--- Prototype ---
 //gte(type,obj1,obj2) 
@@ -200,7 +213,7 @@ typedef struct ArithLogicOperators {
 //Returns:
 //
 //  True if the first object is considered to be greater than or equal to the second object.
-#define gte(type,obj1,obj2) type##_t.comparisonOperators.gteOperator((void*)obj1,(void*)obj2,sizeof(type))
+#define GTE(type,obj1,obj2) type##_t.comparisonOperators.gteOperator((void*)obj1,(void*)obj2,sizeof(type))
 //Macro: lte
 //--- Prototype ---
 //lte(type,obj1,obj2) 
@@ -233,7 +246,7 @@ typedef struct ArithLogicOperators {
 //Returns:
 //
 //  True if the first object is considered to be less than or equal to the second object.
-#define lte(type,obj1,obj2) type##_t.comparisonOperators.lteOperator((void*)obj1,(void*)obj2,sizeof(type))
+#define LTE(type,obj1,obj2) type##_t.comparisonOperators.lteOperator((void*)obj1,(void*)obj2,sizeof(type))
 
 //Macro: DEFAULT_COMPARISON_OPERATORS
 //--- Prototype

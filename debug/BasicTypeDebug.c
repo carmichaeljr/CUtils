@@ -18,35 +18,45 @@
 		typeName.set(&test2,&temp1,sizeof(type));\
 		basicTypeTest(*test1==val1);\
 		basicTypeTest(test2==val1);\
-		basicTypeTest(eq(type,test1,&test2));\
-		basicTypeTest(gte(type,test1,&test2));\
-		basicTypeTest(lte(type,test1,&test2));\
+		basicTypeTest(EQ(type,test1,&test2));\
+		basicTypeTest(GTE(type,test1,&test2));\
+		basicTypeTest(LTE(type,test1,&test2));\
 		\
 		typeName.set(&test2,&temp2,sizeof(type));\
-		basicTypeTest(neq(type,test1,&test2));\
-		basicTypeTest(gt(type,&test2,test1));\
-		basicTypeTest(gte(type,&test2,test1));\
-		basicTypeTest(lt(type,test1,&test2));\
-		basicTypeTest(lte(type,test1,&test2));\
+		basicTypeTest(NEQ(type,test1,&test2));\
+		basicTypeTest(GT(type,&test2,test1));\
+		basicTypeTest(GTE(type,&test2,test1));\
+		basicTypeTest(LT(type,test1,&test2));\
+		basicTypeTest(LTE(type,test1,&test2));\
 		\
 		*test1=val1;\
 		test2=val2;\
-		opAdd(type,test1,&test2,&test3);\
+		ADD(type,test1,&test2,&test3);\
 		basicTypeTest(*test1==val1);\
 		basicTypeTest(test2==val2);\
 		basicTypeTest(test3==(type)((type)val1+(type)val2));\
-		opAdd(type,test1,&test2);\
+		ADD(type,test1,&test2);\
 		basicTypeTest(*test1==(type)((type)val1+(type)val2));\
 		basicTypeTest(test2==val2);\
 		\
 		*test1=val1;\
 		test2=val2;\
-		opSub(type,test1,&test2,&test3);\
+		SUB(type,test1,&test2,&test3);\
 		basicTypeTest(*test1==val1);\
 		basicTypeTest(test2==val2);\
 		basicTypeTest(test3==(type)((type)val1-(type)val2));\
-		opSub(type,test1,&test2);\
+		SUB(type,test1,&test2);\
 		basicTypeTest(*test1==(type)((type)val1-(type)val2));\
+		basicTypeTest(test2==val2);\
+		\
+		*test1=val1;\
+		test2=val2;\
+		MUL(type,test1,&test2,&test3);\
+		basicTypeTest(*test1==val1);\
+		basicTypeTest(test2==val2);\
+		basicTypeTest(test3==(type)((type)val1*(type)val2));\
+		MUL(type,test1,&test2);\
+		basicTypeTest(*test1==(type)((type)val1*(type)val2));\
 		basicTypeTest(test2==val2);\
 		\
 		delete(type,test1);\
@@ -68,34 +78,44 @@
 		typeName.set(&test2,&temp1,sizeof(type));\
 		basicTypeTest(*test1==val1);\
 		basicTypeTest(test2==val1);\
-		basicTypeTest(eq(type,test1,&test2));\
-		basicTypeTest(gte(type,test1,&test2));\
-		basicTypeTest(lte(type,test1,&test2));\
+		basicTypeTest(EQ(type,test1,&test2));\
+		basicTypeTest(GTE(type,test1,&test2));\
+		basicTypeTest(LTE(type,test1,&test2));\
 		\
 		typeName.set(&test2,&temp2,sizeof(type));\
-		basicTypeTest(neq(type,test1,&test2));\
-		basicTypeTest(gt(type,&test2,test1));\
-		basicTypeTest(gte(type,&test2,test1));\
-		basicTypeTest(lt(type,test1,&test2));\
-		basicTypeTest(lte(type,test1,&test2));\
+		basicTypeTest(NEQ(type,test1,&test2));\
+		basicTypeTest(GT(type,&test2,test1));\
+		basicTypeTest(GTE(type,&test2,test1));\
+		basicTypeTest(LT(type,test1,&test2));\
+		basicTypeTest(LTE(type,test1,&test2));\
 		\
 		*test1=val1;\
 		test2=val2;\
-		opAdd(type,test1,&test2,&test3);\
+		ADD(type,test1,&test2,&test3);\
 		basicTypeTest(*test1==val1);\
 		basicTypeTest(test2==val2);\
 		basicTypeTest(test3==0);\
-		opAdd(type,test1,&test2);\
+		ADD(type,test1,&test2);\
 		basicTypeTest(*test1==0);\
 		basicTypeTest(test2==val2);\
 		\
 		*test1=val1;\
 		test2=val2;\
-		opSub(type,test1,&test2,&test3);\
+		SUB(type,test1,&test2,&test3);\
 		basicTypeTest(*test1==val1);\
 		basicTypeTest(test2==val2);\
 		basicTypeTest(test3==0);\
-		opSub(type,test1,&test2);\
+		SUB(type,test1,&test2);\
+		basicTypeTest(*test1==0);\
+		basicTypeTest(test2==val2);\
+		\
+		*test1=val1;\
+		test2=val2;\
+		MUL(type,test1,&test2,&test3);\
+		basicTypeTest(*test1==val1);\
+		basicTypeTest(test2==val2);\
+		basicTypeTest(test3==0);\
+		MUL(type,test1,&test2);\
 		basicTypeTest(*test1==0);\
 		basicTypeTest(test2==val2);\
 		\
