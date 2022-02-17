@@ -46,6 +46,14 @@ typedef struct ArithLogicOperators {
 #define mulSelf(type,obj1,obj2) type##_t.operators.mul((void*)obj1,(void*)obj2,(void*)obj1,sizeof(type))
 #define mulOther(type,obj1,obj2,obj3) type##_t.operators.mul((void*)obj1,(void*)obj2,(void*)obj3,sizeof(type))
 
+#define DIV(...) GET_OPERATOR(__VA_ARGS__,divOther,divSelf)(__VA_ARGS__)
+#define divSelf(type,obj1,obj2) type##_t.operators.div((void*)obj1,(void*)obj2,(void*)obj1,sizeof(type))
+#define divOther(type,obj1,obj2,obj3) type##_t.operators.div((void*)obj1,(void*)obj2,(void*)obj3,sizeof(type))
+
+#define MOD(...) GET_OPERATOR(__VA_ARGS__,modOther,modSelf)(__VA_ARGS__)
+#define modSelf(type,obj1,obj2) type##_t.operators.mod((void*)obj1,(void*)obj2,(void*)obj1,sizeof(type))
+#define modOther(type,obj1,obj2,obj3) type##_t.operators.mod((void*)obj1,(void*)obj2,(void*)obj3,sizeof(type))
+
 //Macro: eq
 //--- Prototype ---
 //eq(type,obj1,obj2) 

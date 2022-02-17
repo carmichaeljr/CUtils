@@ -12,6 +12,8 @@ bool unsignedLteOperator(const void * const first, const void * const second, si
 void* unsignedAddOp(const void * const self, const void * const other, void *result, size_t size);
 void* unsignedSubOp(const void * const self, const void * const other, void *result, size_t size);
 void* unsignedMulOp(const void * const self, const void * const other, void *result, size_t size);
+void* unsignedDivOp(const void * const self, const void * const other, void *result, size_t size);
+void* unsignedModOp(const void * const self, const void * const other, void *result, size_t size);
 bool signedEqOperator(const void * const first, const void * const second, size_t size);
 bool signedNeqOperator(const void * const first, const void * const second, size_t size);
 bool signedGtOperator(const void * const first, const void * const second, size_t size);
@@ -21,7 +23,8 @@ bool signedLteOperator(const void * const first, const void * const second, size
 void* signedAddOp(const void * const self, const void * const other, void *result, size_t size);
 void* signedSubOp(const void * const self, const void * const other, void *result, size_t size);
 void* signedMulOp(const void * const self, const void * const other, void *result, size_t size);
-void* signedSubSelfOp(void *self, const void * const other, size_t size);
+void* signedDivOp(const void * const self, const void * const other, void *result, size_t size);
+void* signedModOp(const void * const self, const void * const other, void *result, size_t size);
 bool floatEqOperator(const void * const first, const void * const second, size_t size);
 bool floatNeqOperator(const void * const first, const void * const second, size_t size);
 bool floatGtOperator(const void * const first, const void * const second, size_t size);
@@ -31,6 +34,8 @@ bool floatLteOperator(const void * const first, const void * const second, size_
 void* floatAddOp(const void * const self, const void * const other, void *result, size_t size);
 void* floatSubOp(const void * const self, const void * const other, void *result, size_t size);
 void* floatMulOp(const void * const self, const void * const other, void *result, size_t size);
+void* floatDivOp(const void * const self, const void * const other, void *result, size_t size);
+void* floatModOp(const void * const self, const void * const other, void *result, size_t size);
 
 const struct BasicType_t UnsignedBasicType_t={
 	.class={
@@ -52,6 +57,8 @@ const struct BasicType_t UnsignedBasicType_t={
 		.add=unsignedAddOp,
 		.sub=unsignedSubOp,
 		.mul=unsignedMulOp,
+		.div=unsignedDivOp,
+		.mod=unsignedModOp,
 	},
 	.set=memcpy,
 };
@@ -76,6 +83,8 @@ const struct BasicType_t SignedBasicType_t={
 		.add=signedAddOp,
 		.sub=signedSubOp,
 		.mul=signedMulOp,
+		.div=signedDivOp,
+		.mod=signedModOp,
 	},
 	.set=memcpy,
 };
@@ -100,6 +109,8 @@ const struct BasicType_t FloatBasicType_t={
 		.add=floatAddOp,
 		.sub=floatSubOp,
 		.mul=floatMulOp,
+		.div=floatDivOp,
+		.mod=floatModOp,
 	},
 	.set=memcpy,
 };
@@ -244,6 +255,60 @@ void* unsignedMulOp(const void * const self, const void * const other, void *res
 	} else if (size==sizeof(unsigned long long)){
 		//also unsigned long long int
 		*(unsigned long long*)result=(*(unsigned long long*)self)*(*(unsigned long long*)other);
+		return result;
+	}
+#endif
+	return result;
+}
+
+void* unsignedDivOp(const void * const self, const void * const other, void *result, size_t size){
+	if (size==sizeof(unsigned)){
+		//also unsigned int
+		*(unsigned*)result=(*(unsigned*)self)/(*(unsigned*)other);
+		return result;
+	} 
+#ifdef CUSTOM_PRE_PROC_ENABLED
+	if (size==sizeof(unsigned char)){
+		*(unsigned char*)result=0;		//dividing chars is undefined
+		return result;
+	} else if (size==sizeof(unsigned short)){
+		//also unsigned short int
+		*(unsigned short*)result=(*(unsigned short*)self)/(*(unsigned short*)other);
+		return result;
+	} else if (size==sizeof(unsigned long)){
+		//also unsigned long int
+		*(unsigned long*)result=(*(unsigned long*)self)/(*(unsigned long*)other);
+		return result;
+	} else if (size==sizeof(unsigned long long)){
+		//also unsigned long long int
+		*(unsigned long long*)result=(*(unsigned long long*)self)/(*(unsigned long long*)other);
+		return result;
+	}
+#endif
+	return result;
+}
+
+void* unsignedModOp(const void * const self, const void * const other, void *result, size_t size){
+	if (size==sizeof(unsigned)){
+		//also unsigned int
+		*(unsigned*)result=(*(unsigned*)self)%(*(unsigned*)other);
+		return result;
+	} 
+#ifdef CUSTOM_PRE_PROC_ENABLED
+	if (size==sizeof(unsigned char)){
+		*(unsigned char*)result=0;		//the mod of chars is undefined
+		return result;
+	} else if (size==sizeof(unsigned short)){
+		//also unsigned short int
+		*(unsigned short*)result=(*(unsigned short*)self)%(*(unsigned short*)other);
+		return result;
+	} else if (size==sizeof(unsigned long)){
+		//also unsigned long int
+		*(unsigned long*)result=(*(unsigned long*)self)%(*(unsigned long*)other);
+		return result;
+	} else if (size==sizeof(unsigned long long)){
+		//also unsigned long long int
+		*(unsigned long long*)result=(*(unsigned long long*)self)%(*(unsigned long long*)other);
 		return result;
 	}
 #endif
@@ -397,6 +462,62 @@ void* signedMulOp(const void * const self, const void * const other, void *resul
 	return result;
 }
 
+void* signedDivOp(const void * const self, const void * const other, void *result, size_t size){
+	if (size==sizeof(char)){
+		//also signed char
+		*(char*)result=0;	//subtracting characters is undefined
+		return result;
+	} else if (size==sizeof(short)){
+		//also short int, signed short, signed short int
+		*(short*)result=(*(short*)self)/(*(short*)other);
+		return result;
+	} else if (size==sizeof(int)){
+		//also signed int
+		*(int*)result=(*(int*)self)/(*(int*)other);
+		return result;
+	} else if (size==sizeof(long)){
+		//also long int, signed long, signed long int
+		*(long*)result=(*(long*)self)/(*(long*)other);
+		return result;
+	} 
+#ifdef CUSTOM_PRE_PROC_ENABLED	
+	if (size==sizeof(long long)){
+		//also long long int, signed long long, signed long long int
+		*(long long*)result=(*(long long*)self)/(*(long long*)other);
+		return result;
+	}
+#endif
+	return result;
+}
+
+void* signedModOp(const void * const self, const void * const other, void *result, size_t size){
+	if (size==sizeof(char)){
+		//also signed char
+		*(char*)result=0;	//subtracting characters is undefined
+		return result;
+	} else if (size==sizeof(short)){
+		//also short int, signed short, signed short int
+		*(short*)result=(*(short*)self)%(*(short*)other);
+		return result;
+	} else if (size==sizeof(int)){
+		//also signed int
+		*(int*)result=(*(int*)self)%(*(int*)other);
+		return result;
+	} else if (size==sizeof(long)){
+		//also long int, signed long, signed long int
+		*(long*)result=(*(long*)self)%(*(long*)other);
+		return result;
+	} 
+#ifdef CUSTOM_PRE_PROC_ENABLED	
+	if (size==sizeof(long long)){
+		//also long long int, signed long long, signed long long int
+		*(long long*)result=(*(long long*)self)%(*(long long*)other);
+		return result;
+	}
+#endif
+	return result;
+}
+
 //Float Operations=============================================================
 bool floatEqOperator(const void * const first, const void * const second, size_t size){
 	if (size==sizeof(float)){
@@ -493,3 +614,37 @@ void* floatMulOp(const void * const self, const void * const other, void *result
 	return result;
 }
 
+void* floatDivOp(const void * const self, const void * const other, void *result, size_t size){
+	if (size==sizeof(float)){
+		*(float*)result=(*(float*)self)/(*(float*)other);
+		return result;
+	} else if (size==sizeof(double)){
+		*(double*)result=(*(double*)self)/(*(double*)other);
+		return result;
+	}
+#ifdef CUSTOM_PRE_PROC_ENABLED
+	if (size==sizeof(long double)){
+		*(long double*)result=(*(long double*)self)/(*(long double*)other);
+		return result;
+	}
+#endif
+	return result;
+}
+
+//Mod is undefined for floating point numbers, this function will always return 0
+void* floatModOp(const void * const self, const void * const other, void *result, size_t size){
+	if (size==sizeof(float)){
+		*(float*)result=0;
+		return result;
+	} else if (size==sizeof(double)){
+		*(double*)result=0;
+		return result;
+	}
+#ifdef CUSTOM_PRE_PROC_ENABLED
+	if (size==sizeof(long double)){
+		*(long double*)result=0;
+		return result;
+	}
+#endif
+	return result;
+}
