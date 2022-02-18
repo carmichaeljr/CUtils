@@ -68,10 +68,14 @@ static void printWithoutIndent(const char *format, ...){
 }
 
 static void objectDebug(const char * const structName, const char * const funcName, const int line, const bool success){
+	char *red="\033[0;31m";
+	char *green="\033[0;32m";
+	char *white="\033[0m";
+	printf("%s[%-5s]%s: Class '%s': ",(success)? green: red,(success)? "Ok": "Error",white,structName);
 	if (funcName!=NULL){
-		Print_t.print("[%-5s]: Class '%s': Method '%s': Test Line %d",(success)? "Ok": "Error",structName, funcName,line);
+		Print_t.print("Method '%s': Test Line %d",funcName,line);
 	} else {
-		Print_t.print("[%-5s]: Class '%s': Test Line %d",(success)? "Ok": "Error",structName,line);
+		Print_t.print("Test Line %d",line);
 	}
 	printf("%c",(success)? '\r': '\n');
 }

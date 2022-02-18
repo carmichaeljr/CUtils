@@ -1,3 +1,4 @@
+#include <math.h>
 #include "Debug.h"
 #include "../src/objectSystem/Object.h"
 #include "../src/objectSystem/BasicType.h"
@@ -79,6 +80,66 @@
 		basicTypeTest(*test1==(type)((type)val1/(type)val2));\
 		basicTypeTest(test2==val2);\
 		\
+		*test1=val1;\
+		test2=val2;\
+		POW(type,test1,&test2,&test3);\
+		basicTypeTest(*test1==val1);\
+		basicTypeTest(test2==val2);\
+		basicTypeTest(test3==(type)pow((double)val1,(double)val2));\
+		POW(type,test1,&test2);\
+		basicTypeTest(*test1==(type)pow((double)val1,(double)val2));\
+		basicTypeTest(test2==val2);\
+		\
+		*test1=val1;\
+		test2=val2;\
+		SLL(type,test1,&test2,&test3);\
+		basicTypeTest(*test1==val1);\
+		basicTypeTest(test2==val2);\
+		basicTypeTest(test3==(type)val1<<(type)val2);\
+		SLL(type,test1,&test2);\
+		basicTypeTest(*test1==(type)val1<<(type)val2);\
+		basicTypeTest(test2==val2);\
+		\
+		*test1=val1;\
+		test2=val2;\
+		SRL(type,test1,&test2,&test3);\
+		basicTypeTest(*test1==val1);\
+		basicTypeTest(test2==val2);\
+		basicTypeTest(test3==(type)val1>>(type)val2);\
+		SRL(type,test1,&test2);\
+		basicTypeTest(*test1==(type)val1>>(type)val2);\
+		basicTypeTest(test2==val2);\
+		\
+		*test1=val1;\
+		test2=val2;\
+		AND(type,test1,&test2,&test3);\
+		basicTypeTest(*test1==val1);\
+		basicTypeTest(test2==val2);\
+		basicTypeTest(test3==((type)val1 & (type)val2));\
+		AND(type,test1,&test2);\
+		basicTypeTest(*test1==((type)val1 & (type)val2));\
+		basicTypeTest(test2==val2);\
+		\
+		*test1=val1;\
+		test2=val2;\
+		OR(type,test1,&test2,&test3);\
+		basicTypeTest(*test1==val1);\
+		basicTypeTest(test2==val2);\
+		basicTypeTest(test3==((type)val1 | (type)val2));\
+		OR(type,test1,&test2);\
+		basicTypeTest(*test1==((type)val1 | (type)val2));\
+		basicTypeTest(test2==val2);\
+		\
+		*test1=val1;\
+		test2=val2;\
+		NOT(type,test1,&test3);\
+		basicTypeTest(*test1==val1);\
+		basicTypeTest(test2==val2);\
+		basicTypeTest(test3==(~(type)val1));\
+		NOT(type,test1);\
+		basicTypeTest(*test1==(~(type)val1));\
+		basicTypeTest(test2==val2);\
+		\
 		delete(type,test1);\
 		deleteS(type,test2);\
 		deleteS(type,test3);\
@@ -147,6 +208,16 @@
 		basicTypeTest(test3==(type)((type)val1/(type)val2));\
 		DIV(type,test1,&test2);\
 		basicTypeTest(*test1==(type)((type)val1/(type)val2));\
+		basicTypeTest(test2==val2);\
+		\
+		*test1=val1;\
+		test2=val2;\
+		POW(type,test1,&test2,&test3);\
+		basicTypeTest(*test1==val1);\
+		basicTypeTest(test2==val2);\
+		basicTypeTest(test3==(type)pow((double)val1,(double)val2));\
+		POW(type,test1,&test2);\
+		basicTypeTest(*test1==(type)pow((double)val1,(double)val2));\
 		basicTypeTest(test2==val2);\
 		\
 		delete(type,test1);\
@@ -229,6 +300,66 @@
 		basicTypeTest(*test1==0);\
 		basicTypeTest(test2==val2);\
 		\
+		*test1=val1;\
+		test2=val2;\
+		POW(type,test1,&test2,&test3);\
+		basicTypeTest(*test1==val1);\
+		basicTypeTest(test2==val2);\
+		basicTypeTest(test3==0);\
+		POW(type,test1,&test2);\
+		basicTypeTest(*test1==0);\
+		basicTypeTest(test2==val2);\
+		\
+		*test1=val1;\
+		test2=val2;\
+		SLL(type,test1,&test2,&test3);\
+		basicTypeTest(*test1==val1);\
+		basicTypeTest(test2==val2);\
+		basicTypeTest(test3==0);\
+		SLL(type,test1,&test2);\
+		basicTypeTest(*test1==0);\
+		basicTypeTest(test2==val2);\
+		\
+		*test1=val1;\
+		test2=val2;\
+		SRL(type,test1,&test2,&test3);\
+		basicTypeTest(*test1==val1);\
+		basicTypeTest(test2==val2);\
+		basicTypeTest(test3==0);\
+		SRL(type,test1,&test2);\
+		basicTypeTest(*test1==0);\
+		basicTypeTest(test2==val2);\
+		\
+		*test1=val1;\
+		test2=val2;\
+		AND(type,test1,&test2,&test3);\
+		basicTypeTest(*test1==val1);\
+		basicTypeTest(test2==val2);\
+		basicTypeTest(test3==0);\
+		AND(type,test1,&test2);\
+		basicTypeTest(*test1==0);\
+		basicTypeTest(test2==val2);\
+		\
+		*test1=val1;\
+		test2=val2;\
+		OR(type,test1,&test2,&test3);\
+		basicTypeTest(*test1==val1);\
+		basicTypeTest(test2==val2);\
+		basicTypeTest(test3==0);\
+		OR(type,test1,&test2);\
+		basicTypeTest(*test1==0);\
+		basicTypeTest(test2==val2);\
+		\
+		*test1=val1;\
+		test2=val2;\
+		NOT(type,test1,&test3);\
+		basicTypeTest(*test1==val1);\
+		basicTypeTest(test2==val2);\
+		basicTypeTest(test3==0);\
+		NOT(type,test1);\
+		basicTypeTest(*test1==0);\
+		basicTypeTest(test2==val2);\
+		\
 		delete(type,test1);\
 		deleteS(type,test2);\
 		deleteS(type,test3);\
@@ -266,7 +397,24 @@ basicTypeTypeTest(unsigned long long int,unsigned_long_long_int_t,5,6)
 basicTypeFloatTypeTest(long double,long_double_t,5,6)
 #endif
 
+#include <stdio.h>
+
 void basicTypesDebug(void){
+	int one=2, two=3, three=0;
+	SLL(int,&one,&two,&three);
+	printf("%d: %d\n",three,one<<two);
+
+	unsigned int four=2, five=3, six=0;
+	SLL(unsigned int,&four,&five,&six);
+	printf("%hu: %hu\n",six,four<<five);
+
+	unsigned short seven=1;
+	unsigned short eight=1;
+	NOT(unsigned short,&seven);
+	printf("%hu: %hu\n",seven,~eight);
+	printf("%hu\n",eight);
+
+
 	basicType_char_t();
 	basicType_short_t();
 	basicType_int_t();

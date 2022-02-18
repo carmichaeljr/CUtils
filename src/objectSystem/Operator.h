@@ -15,24 +15,13 @@ typedef struct ArithLogicOperators {
 	void* (*pow)(const void * const self, const void * const other, void *result, size_t size);
 	void* (*sll)(const void * const self, const void * const other, void *result, size_t size);
 	void* (*srl)(const void * const self, const void * const other, void *result, size_t size);
-	void* (*_and)(const void * const self, const void * const other, void *result, size_t size);
-	void* (*_not)(const void * const self, const void * const other, void *result, size_t size);
-	void* (*_or)(const void * const self, const void * const other, void *result, size_t size);
+	void* (*and)(const void * const self, const void * const other, void *result, size_t size);
+	void* (*or)(const void * const self, const void * const other, void *result, size_t size);
+	void* (*not)(const void * const self, const void * const other, void *result, size_t size);
 } ArithLogicOperators;
 
-//#define AddOperators ArithLogicOperators
-//#define SubOperators ArithLogicOperators
-//#define MulOperators ArithLogicOperators
-//#define DivOperators ArithLogicOperators
-//#define ModOperators ArithLogicOperators
-//#define PowOperators ArithLogicOperators
-//#define SllOperators ArithLogicOperators
-//#define SrlOperators ArithLogicOperators
-//#define AndOperators ArithLogicOperators
-//#define NotOperators ArithLogicOperators
-//#define OrOperators ArithLogicOperators
-
 #define GET_OPERATOR(one,two,three,four,NAME,...) NAME
+#define GET_NOT_OPERATOR(one,two,three,NAME,...) NAME
 
 #define ADD(...) GET_OPERATOR(__VA_ARGS__,addOther,addSelf)(__VA_ARGS__)
 #define addSelf(type,obj1,obj2) type##_t.operators.add((void*)obj1,(void*)obj2,(void*)obj1,sizeof(type))
@@ -54,7 +43,31 @@ typedef struct ArithLogicOperators {
 #define modSelf(type,obj1,obj2) type##_t.operators.mod((void*)obj1,(void*)obj2,(void*)obj1,sizeof(type))
 #define modOther(type,obj1,obj2,obj3) type##_t.operators.mod((void*)obj1,(void*)obj2,(void*)obj3,sizeof(type))
 
-//Macro: eq
+#define POW(...) GET_OPERATOR(__VA_ARGS__,powOther,powSelf)(__VA_ARGS__)
+#define powSelf(type,obj1,obj2) type##_t.operators.pow((void*)obj1,(void*)obj2,(void*)obj1,sizeof(type))
+#define powOther(type,obj1,obj2,obj3) type##_t.operators.pow((void*)obj1,(void*)obj2,(void*)obj3,sizeof(type))
+
+#define SLL(...) GET_OPERATOR(__VA_ARGS__,sllOther,sllSelf)(__VA_ARGS__)
+#define sllSelf(type,obj1,obj2) type##_t.operators.sll((void*)obj1,(void*)obj2,(void*)obj1,sizeof(type))
+#define sllOther(type,obj1,obj2,obj3) type##_t.operators.sll((void*)obj1,(void*)obj2,(void*)obj3,sizeof(type))
+
+#define SRL(...) GET_OPERATOR(__VA_ARGS__,srlOther,srlSelf)(__VA_ARGS__)
+#define srlSelf(type,obj1,obj2) type##_t.operators.srl((void*)obj1,(void*)obj2,(void*)obj1,sizeof(type))
+#define srlOther(type,obj1,obj2,obj3) type##_t.operators.srl((void*)obj1,(void*)obj2,(void*)obj3,sizeof(type))
+
+#define AND(...) GET_OPERATOR(__VA_ARGS__,andOther,andSelf)(__VA_ARGS__)
+#define andSelf(type,obj1,obj2) type##_t.operators.and((void*)obj1,(void*)obj2,(void*)obj1,sizeof(type))
+#define andOther(type,obj1,obj2,obj3) type##_t.operators.and((void*)obj1,(void*)obj2,(void*)obj3,sizeof(type))
+
+#define OR(...) GET_OPERATOR(__VA_ARGS__,orOther,orSelf)(__VA_ARGS__)
+#define orSelf(type,obj1,obj2) type##_t.operators.or((void*)obj1,(void*)obj2,(void*)obj1,sizeof(type))
+#define orOther(type,obj1,obj2,obj3) type##_t.operators.or((void*)obj1,(void*)obj2,(void*)obj3,sizeof(type))
+
+#define NOT(...) GET_NOT_OPERATOR(__VA_ARGS__,notOther,notSelf)(__VA_ARGS__)
+#define notSelf(type,obj) type##_t.operators.not((void*)obj,NULL,(void*)obj,sizeof(type));
+#define notOther(type,obj1,obj2) type##_t.operators.not((void*)obj1,NULL,(void*)obj2,sizeof(type));
+
+//Macro: EQ
 //--- Prototype ---
 //eq(type,obj1,obj2) 
 //-----------------
@@ -90,7 +103,7 @@ typedef struct ArithLogicOperators {
 
 //#define eqFromOperator(operators,obj1,obj2) (operators).eqOperator((void*)obj1,(void*)obj2,sizeof(type))
 
-//Macro: neq
+//Macro: NEQ
 //--- Prototype ---
 //neq(type,obj1,obj2) 
 //-----------------
@@ -123,7 +136,8 @@ typedef struct ArithLogicOperators {
 //
 //  True if the two objects are considered not equal, false otherwise.
 #define NEQ(type,obj1,obj2) type##_t.comparisonOperators.neqOperator((void*)obj1,(void*)obj2,sizeof(type))
-//Macro: gt
+
+//Macro: GT
 //--- Prototype ---
 //gt(type,obj1,obj2) 
 //-----------------
@@ -156,7 +170,8 @@ typedef struct ArithLogicOperators {
 //
 //  True if the first object is considered to be greater than the second object.
 #define GT(type,obj1,obj2) type##_t.comparisonOperators.gtOperator((void*)obj1,(void*)obj2,sizeof(type))
-//Macro: lt
+
+//Macro: LT
 //--- Prototype ---
 //lt(type,obj1,obj2) 
 //-----------------
@@ -189,7 +204,8 @@ typedef struct ArithLogicOperators {
 //
 //  True if the first object is considered to be less than the second object.
 #define LT(type,obj1,obj2) type##_t.comparisonOperators.ltOperator((void*)obj1,(void*)obj2,sizeof(type))
-//Macro: gte
+
+//Macro: GTE
 //--- Prototype ---
 //gte(type,obj1,obj2) 
 //-----------------
@@ -222,7 +238,8 @@ typedef struct ArithLogicOperators {
 //
 //  True if the first object is considered to be greater than or equal to the second object.
 #define GTE(type,obj1,obj2) type##_t.comparisonOperators.gteOperator((void*)obj1,(void*)obj2,sizeof(type))
-//Macro: lte
+
+//Macro: LTE
 //--- Prototype ---
 //lte(type,obj1,obj2) 
 //-----------------

@@ -29,7 +29,7 @@ do
 done
 
 printLine "Running: GCC Linker          : ./build/*.o -> ./bin/main_$OSTYPE.exe"
-gcc ./build/*.o -o ./bin/main_${OSTYPE}.exe
+gcc ./build/*.o -lm -o ./bin/main_${OSTYPE}.exe
 
 printLine "Running: ./bin/main_${OSTYPE}.exe"
 ./bin/main_$OSTYPE.exe
