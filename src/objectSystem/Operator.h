@@ -12,7 +12,6 @@ typedef struct ArithLogicOperators {
 	void* (*mul)(const void * const self, const void * const other, void *result, size_t size);
 	void* (*div)(const void * const self, const void * const other, void *result, size_t size);
 	void* (*mod)(const void * const self, const void * const other, void *result, size_t size);
-	void* (*pow)(const void * const self, const void * const other, void *result, size_t size);
 	void* (*sll)(const void * const self, const void * const other, void *result, size_t size);
 	void* (*srl)(const void * const self, const void * const other, void *result, size_t size);
 	void* (*and)(const void * const self, const void * const other, void *result, size_t size);
@@ -42,10 +41,6 @@ typedef struct ArithLogicOperators {
 #define MOD(...) GET_OPERATOR(__VA_ARGS__,modOther,modSelf)(__VA_ARGS__)
 #define modSelf(type,obj1,obj2) type##_t.operators.mod((void*)obj1,(void*)obj2,(void*)obj1,sizeof(type))
 #define modOther(type,obj1,obj2,obj3) type##_t.operators.mod((void*)obj1,(void*)obj2,(void*)obj3,sizeof(type))
-
-#define POW(...) GET_OPERATOR(__VA_ARGS__,powOther,powSelf)(__VA_ARGS__)
-#define powSelf(type,obj1,obj2) type##_t.operators.pow((void*)obj1,(void*)obj2,(void*)obj1,sizeof(type))
-#define powOther(type,obj1,obj2,obj3) type##_t.operators.pow((void*)obj1,(void*)obj2,(void*)obj3,sizeof(type))
 
 #define SLL(...) GET_OPERATOR(__VA_ARGS__,sllOther,sllSelf)(__VA_ARGS__)
 #define sllSelf(type,obj1,obj2) type##_t.operators.sll((void*)obj1,(void*)obj2,(void*)obj1,sizeof(type))

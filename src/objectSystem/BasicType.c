@@ -15,7 +15,6 @@ void* unsignedSubOp(const void * const self, const void * const other, void *res
 void* unsignedMulOp(const void * const self, const void * const other, void *result, size_t size);
 void* unsignedDivOp(const void * const self, const void * const other, void *result, size_t size);
 void* unsignedModOp(const void * const self, const void * const other, void *result, size_t size);
-void* unsignedPowOp(const void * const self, const void * const other, void *result, size_t size);
 void* unsignedSllOp(const void * const self, const void * const other, void *result, size_t size);
 void* unsignedSrlOp(const void * const self, const void * const other, void *result, size_t size);
 void* unsignedAndOp(const void * const self, const void * const other, void *result, size_t size);
@@ -32,7 +31,6 @@ void* signedSubOp(const void * const self, const void * const other, void *resul
 void* signedMulOp(const void * const self, const void * const other, void *result, size_t size);
 void* signedDivOp(const void * const self, const void * const other, void *result, size_t size);
 void* signedModOp(const void * const self, const void * const other, void *result, size_t size);
-void* signedPowOp(const void * const self, const void * const other, void *result, size_t size);
 void* signedSllOp(const void * const self, const void * const other, void *result, size_t size);
 void* signedSrlOp(const void * const self, const void * const other, void *result, size_t size);
 void* signedAndOp(const void * const self, const void * const other, void *result, size_t size);
@@ -48,7 +46,6 @@ void* floatAddOp(const void * const self, const void * const other, void *result
 void* floatSubOp(const void * const self, const void * const other, void *result, size_t size);
 void* floatMulOp(const void * const self, const void * const other, void *result, size_t size);
 void* floatDivOp(const void * const self, const void * const other, void *result, size_t size);
-void* floatPowOp(const void * const self, const void * const other, void *result, size_t size);
 
 const struct BasicType_t UnsignedBasicType_t={
 	.class={
@@ -72,7 +69,6 @@ const struct BasicType_t UnsignedBasicType_t={
 		.mul=unsignedMulOp,
 		.div=unsignedDivOp,
 		.mod=unsignedModOp,
-		.pow=unsignedPowOp,
 		.sll=unsignedSllOp,
 		.srl=unsignedSrlOp,
 		.and=unsignedAndOp,
@@ -104,7 +100,6 @@ const struct BasicType_t SignedBasicType_t={
 		.mul=signedMulOp,
 		.div=signedDivOp,
 		.mod=signedModOp,
-		.pow=signedPowOp,
 		.sll=signedSllOp,
 		.srl=signedSrlOp,
 		.and=signedAndOp,
@@ -136,7 +131,6 @@ const struct BasicType_t FloatBasicType_t={
 		.mul=floatMulOp,
 		.div=floatDivOp,
 		.mod=NULL,		//mod is undefined for floating point numbers
-		.pow=floatPowOp,
 		.sll=NULL,		//sll is undefined for floating point numbers
 		.srl=NULL,		//srl is undefined for floating point numbers
 		.and=NULL,		//and is undefined for floating point numbers
@@ -345,35 +339,6 @@ void* unsignedModOp(const void * const self, const void * const other, void *res
 	return result;
 }
 
-void* unsignedPowOp(const void * const self, const void * const other, void *result, size_t size){
-	if (size==sizeof(unsigned)){
-		*(unsigned*)result=(unsigned)pow((double)(*(unsigned*)self),(double)(*(unsigned*)other));
-		return result;
-	} 
-#ifdef CUSTOM_PRE_PROC_ENABLED
-	if (size==sizeof(unsigned char)){
-		*(unsigned char*)result=0;		//the pow of chars is undefined
-		return result;
-	} else if (size==sizeof(unsigned short)){
-		//also unsigned short int
-		*(unsigned short*)result=(unsigned short)pow((double)(*(unsigned short*)self),(double)(*(unsigned short*)other));
-		return result;
-	} else if (size==sizeof(unsigned long)){
-		//also unsigned long int
-		*(unsigned long*)result=(unsigned long)pow((double)(*(unsigned long*)self),(double)(*(unsigned long*)other));
-		return result;
-	} else if (size==sizeof(unsigned long long)){
-		//also unsigned long long int
-		*(unsigned long long*)result=(unsigned long long)pow(
-				(double)(*(unsigned long long*)self),
-				(double)(*(unsigned long long*)other)
-		);
-		return result;
-	}
-#endif
-	return result;
-}
-
 void* unsignedSllOp(const void * const self, const void * const other, void *result, size_t size){
 	if (size==sizeof(unsigned)){
 		*(unsigned*)result=*(unsigned*)self<<*(unsigned*)other;
@@ -491,9 +456,7 @@ void* unsignedNotOp(const void * const self, const void * const other, void *res
 		return result;
 	} else if (size==sizeof(unsigned short)){
 		//also unsigned short int
-		printf("Here: Original value of self: %hu\n",*(unsigned short*)self);
 		*(unsigned short*)result=~ *(unsigned short*)self;
-		printf("New value of self? %hu: Value of result: %hu\n",~*(unsigned short*)self,*(unsigned short*)result);
 		return result;
 	} else if (size==sizeof(unsigned long)){
 		//also unsigned long int
@@ -705,34 +668,6 @@ void* signedModOp(const void * const self, const void * const other, void *resul
 	if (size==sizeof(long long)){
 		//also long long int, signed long long, signed long long int
 		*(long long*)result=(*(long long*)self)%(*(long long*)other);
-		return result;
-	}
-#endif
-	return result;
-}
-
-void* signedPowOp(const void * const self, const void * const other, void *result, size_t size){
-	if (size==sizeof(char)){
-		//also signed char
-		*(char*)result=0;	//the power of characters is undefined
-		return result;
-	} else if (size==sizeof(short)){
-		//also short int, signed short, signed short int
-		*(short*)result=(short)pow((double)(*(short*)self),(double)(*(short*)other));
-		return result;
-	} else if (size==sizeof(int)){
-		//also signed int
-		*(int*)result=(int)pow((double)(*(int*)self),(double)(*(int*)other));
-		return result;
-	} else if (size==sizeof(long)){
-		//also long int, signed long, signed long int
-		*(long*)result=(long)pow((double)(*(long*)self),(double)(*(long*)other));
-		return result;
-	} 
-#ifdef CUSTOM_PRE_PROC_ENABLED	
-	if (size==sizeof(long long)){
-		//also long long int, signed long long, signed long long int
-		*(long long*)result=(long long)pow((double)(*(long long*)self),(double)(*(long long*)other));
 		return result;
 	}
 #endif
@@ -988,23 +923,6 @@ void* floatDivOp(const void * const self, const void * const other, void *result
 #ifdef CUSTOM_PRE_PROC_ENABLED
 	if (size==sizeof(long double)){
 		*(long double*)result=(*(long double*)self)/(*(long double*)other);
-		return result;
-	}
-#endif
-	return result;
-}
-
-void* floatPowOp(const void * const self, const void * const other, void *result, size_t size){
-	if (size==sizeof(float)){
-		*(float*)result=(float)pow((double)(*(float*)self),(double)(*(float*)other));
-		return result;
-	} else if (size==sizeof(double)){
-		*(double*)result=(double)pow((double)(*(double*)self),(double)(*(double*)other));
-		return result;
-	}
-#ifdef CUSTOM_PRE_PROC_ENABLED
-	if (size==sizeof(long double)){
-		*(long double*)result=(long double)pow((double)(*(long double*)self),(double)(*(long double*)other));
 		return result;
 	}
 #endif
