@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("div",["Function","Macro"],[["div",,[["ArithLogicOperators",,,,0,"File:objectSystem/Operator.h:ArithLogicOperators.div","CClass:ArithLogicOperators:div"],[,"DIV",,,1,"File:objectSystem/Operator.h:DIV"]]]]);

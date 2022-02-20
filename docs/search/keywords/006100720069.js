@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("ari",["Struct"],[["ArithLogicOperators",,[[,,,,0,"File:objectSystem/Operator.h:ArithLogicOperators","CClass:ArithLogicOperators"]]]]);

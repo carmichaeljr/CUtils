@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("not",["Function","Macro"],[["not",,[["ArithLogicOperators",,,,0,"File:objectSystem/Operator.h:ArithLogicOperators.not","CClass:ArithLogicOperators:not"],[,"NOT",,,1,"File:objectSystem/Operator.h:NOT"]]]]);

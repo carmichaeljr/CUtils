@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("and",["Function","Macro"],[["and",,[["ArithLogicOperators",,,,0,"File:objectSystem/Operator.h:ArithLogicOperators.and","CClass:ArithLogicOperators:and"],[,"AND",,,1,"File:objectSystem/Operator.h:AND"]]]]);

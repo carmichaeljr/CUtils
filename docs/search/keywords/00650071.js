@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("eq",["Macro"],[["eq",,[[,,,,0,"File:objectSystem/Operator.h:eq"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("eq",["Macro"],[["EQ",,[["ArithLogicOperators",,,,0,"File:objectSystem/Operator.h:ArithLogicOperators.EQ","CClass:ArithLogicOperators:EQ"]]]]);
