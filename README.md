@@ -1,5 +1,21 @@
 # Generic Collections In C
-### NOTE: This repository is undergoing a major rework and the README is no longer accurate. It will be updated when the rework is farther along. See the docs for accurate information.
+A library to make dynamic memory management easier in C
+
+As stated above, this is a library and does nothing useful on its own. The goals of this project are two fold:
+  - Bring a pseudo-OO paradigm to C. This paradigm is a subset of full OOP and is comprised of composition and interfaces.
+  - Bring generic collections (a.k.a. generic data structures) to C.
+
+### Pseudo OO
+This library adds the ability to create, destroy, and manage objects in C. Every object has a allocator, constructor, copy constructor, destructor, and deallocator. These operations form the basis of an objects life cycle, implicitly creating a memory management system.
+
+Other features of the pseudo OO system are:
+  - Full support for basic types\* with zero memory overhead on a per-object level. In other words, an ```int``` is still just an ```int```. See ```BasicTypeDemo``` in the examples folder for more details.
+
+
+###### Footnotes
+* When the custom preprocessor is enabled. Only a subset (basic types without spaces in there names) are supported without it.
+
+### NOTE: This repository is undergoing a major rework and the README below this point is no longer accurate. It will be updated when the rework is farther along. See the docs for accurate information.
 A library to make dynamic memory management easier in C
 
 As stated above, this is a library and does nothing usefull on its own. Its main purpose is for easy creation of collections in C. The following collections are provided by this library:
