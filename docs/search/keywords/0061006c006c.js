@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("all",["Macro","Function"],[["ALLOC_ONLY_DEFAULT_CLASS",,[[,,,,0,"File:objectSystem/Object.h:ALLOC_ONLY_DEFAULT_CLASS"]]],["allocator",,[["Class",,,,1,"File:objectSystem/Object.h:Class.allocator","CClass:Class:allocator"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("all",["Macro","Function"],[["ALLOC_ONLY_DEFAULT_CLASS",,[["Class",,,,0,"File:objectSystem/Object.h:Class.ALLOC_ONLY_DEFAULT_CLASS","CClass:Class:ALLOC_ONLY_DEFAULT_CLASS"]]],["allocator",,[["Class",,,,1,"File:objectSystem/Object.h:Class.allocator","CClass:Class:allocator"]]]]);

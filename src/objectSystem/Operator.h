@@ -4,6 +4,152 @@
 #define GET_OPERATOR(one,two,three,four,NAME,...) NAME
 #define GET_NOT_OPERATOR(one,two,three,NAME,...) NAME
 
+//Struct: ArithLogicOperators
+//The struct that defines various operator operations related to objects.
+//Each struct of <type>_t needs to have a ArithLogicOperators struct named "operators" for the above macros to work.
+typedef struct ArithLogicOperators {
+	//Function: add
+	//Adds two objects.
+	//
+	//Parameters:
+	//
+	//  self - the first object to add
+	//  other - the second object to add
+	//  result - the object to store the result in
+	//  size - the size of the objects being operated on
+	//
+	//Returns:
+	//
+	//  A void pointer to the result object
+	void* (*add)(const void * const self, const void * const other, void *result, size_t size);
+	//Function: sub
+	//Subtracts two objects.
+	//
+	//Parameters:
+	//
+	//  self - the first object to subtract
+	//  other - the second object to subtract
+	//  result - the object to store the result in
+	//  size - the size of the objects being operated on
+	//
+	//Returns:
+	//
+	//  A void pointer to the result object
+	void* (*sub)(const void * const self, const void * const other, void *result, size_t size);
+	//Function: mul
+	//Multiplies two objects.
+	//
+	//Parameters:
+	//
+	//  self - the first object to multiply
+	//  other - the second object to multiply
+	//  result - the object to store the result in
+	//  size - the size of the objects being operated on
+	//
+	//Returns:
+	//
+	//  A void pointer to the result object
+	void* (*mul)(const void * const self, const void * const other, void *result, size_t size);
+	//Function: div
+	//Divides two objects.
+	//
+	//Parameters:
+	//
+	//  self - the first object to divide
+	//  other - the second object to divide
+	//  result - the object to store the result in
+	//  size - the size of the objects being operated on
+	//
+	//Returns:
+	//
+	//  A void pointer to the result object
+	void* (*div)(const void * const self, const void * const other, void *result, size_t size);
+	//Function: mod
+	//Computes the modulus two objects.
+	//
+	//Parameters:
+	//
+	//  self - the first object to take the modulus of
+	//  other - the second object to take the modulus of
+	//  result - the object to store the result in
+	//  size - the size of the objects being operated on
+	//
+	//Returns:
+	//
+	//  A void pointer to the result object
+	void* (*mod)(const void * const self, const void * const other, void *result, size_t size);
+	//Function: sll
+	//Computes the logical shift left of two objects.
+	//
+	//Parameters:
+	//
+	//  self - the first object to take the logical shift left of
+	//  other - the second object to take the logical shift left of
+	//  result - the object to store the result in
+	//  size - the size of the objects being operated on
+	//
+	//Returns:
+	//
+	//  A void pointer to the result object
+	void* (*sll)(const void * const self, const void * const other, void *result, size_t size);
+	//Function: srl
+	//Computes the logical shift right of two objects.
+	//
+	//Parameters:
+	//
+	//  self - the first object to take the logical shift right of
+	//  other - the second object to take the logical shift right of
+	//  result - the object to store the result in
+	//  size - the size of the objects being operated on
+	//
+	//Returns:
+	//
+	//  A void pointer to the result object
+	void* (*srl)(const void * const self, const void * const other, void *result, size_t size);
+	//Function: and
+	//Computes the logical and of two objects.
+	//
+	//Parameters:
+	//
+	//  self - the first object to take the logical and of
+	//  other - the second object to take the logical and of
+	//  result - the object to store the result in
+	//  size - the size of the objects being operated on
+	//
+	//Returns:
+	//
+	//  A void pointer to the result object
+	void* (*and)(const void * const self, const void * const other, void *result, size_t size);
+	//Function: or
+	//Computes the logical or of two objects.
+	//
+	//Parameters:
+	//
+	//  self - the first object to take the logical or of
+	//  other - the second object to take the logical or of
+	//  result - the object to store the result in
+	//  size - the size of the objects being operated on
+	//
+	//Returns:
+	//
+	//  A void pointer to the result object
+	void* (*or)(const void * const self, const void * const other, void *result, size_t size);
+	//Function: not
+	//Computes the logical not of an object.
+	//
+	//Parameters:
+	//
+	//  self - the first object to take the logical not of
+	//  other - the second object to take the logical or of, NULL most of the time
+	//  result - the object to store the result in
+	//  size - the size of the objects being operated on
+	//
+	//Returns:
+	//
+	//  A void pointer to the result object
+	void* (*not)(const void * const self, const void * const other, void *result, size_t size);
+} ArithLogicOperators;
+
 //Macro: ADD
 //--- Prototype ---
 //ADD(type,obj1,obj2,obj3=obj1) 
@@ -399,151 +545,151 @@
 #define notSelf(type,obj) type##_t.operators.not((void*)obj,NULL,(void*)obj,sizeof(type));
 #define notOther(type,obj1,obj2) type##_t.operators.not((void*)obj1,NULL,(void*)obj2,sizeof(type));
 
-//Struct: ArithLogicOperators
-//The struct that defines various operator operations related to objects.
-//Each struct of <type>_t needs to have a ArithLogicOperators struct named "operators" for the above macros to work.
-typedef struct ArithLogicOperators {
-	//Function: add
-	//Adds two objects.
+//Macro: DEFAULT_ARITH_OPERATORS
+//--- Prototype
+//DEFAULT_ARITH_OPERATORS {
+//	.add=add,
+//	.sub=sub,
+//	.mul=mul,
+//	.div=div,
+//	.mod=mod,
+//}
+//---
+//DEFAULT_ARITH_OPERATORS is a macro that defines default arithmetic operations for a class.
+//
+//All of the functions listed above need to be supplied, no defaults are set. These 
+//functions need to be defined in the source file that the DEFAULT_ARITH_OPERATORS macro 
+//expands in, and are assumed to have the following signatures and names:
+//
+//--- Code
+//	void* (*add)(const void * const self, const void * const other, void *result, size_t size);
+//	void* (*sub)(const void * const self, const void * const other, void *result, size_t size);
+//	void* (*mul)(const void * const self, const void * const other, void *result, size_t size);
+//	void* (*div)(const void * const self, const void * const other, void *result, size_t size);
+//	void* (*mod)(const void * const self, const void * const other, void *result, size_t size);
+//---
+#define DEFAULT_ARITH_OPERATORS {\
+	.sll=sll,\
+	.srl=srl,\
+	.and=and,\
+	.or=or,\
+	.not=not,\
+}
+
+//Macro: DEFAULT_LOGIC_OPERATORS
+//--- Prototype
+//DEFAULT_LOGIC_OPERATORS {
+//	.add=add,
+//	.sub=sub,
+//	.mul=mul,
+//	.div=div,
+//	.mod=mod,
+//}
+//---
+//DEFAULT_LOGIC_OPERATORS is a macro that defines default arithmetic operations for a class.
+//
+//All of the functions listed above need to be supplied, no defaults are set. These 
+//functions need to be defined in the source file that the DEFAULT_LOGIC_OPERATORS macro 
+//expands in, and are assumed to have the following signatures and names:
+//
+//--- Code
+//	void* (*sll)(const void * const self, const void * const other, void *result, size_t size);
+//	void* (*srl)(const void * const self, const void * const other, void *result, size_t size);
+//	void* (*and)(const void * const self, const void * const other, void *result, size_t size);
+//	void* (*or)(const void * const self, const void * const other, void *result, size_t size);
+//	void* (*not)(const void * const self, const void * const other, void *result, size_t size);
+//---
+#define DEFAULT_LOGIC_OPERATORS {\
+	.sll=sll,\
+	.srl=srl,\
+	.and=and,\
+	.or=or,\
+	.not=not,\
+}
+
+//Struct: ComparisonOperators
+//The struct that defines various equality related operations related to objects.
+//Each struct of <type>_t needs to have a ComparisonOperator struct named "comparisonOperators" for the above macros to work.
+typedef struct ComparisonOperators {
+	//Function: eqOperator
+	//Defines if two objects of the same type are considered equal or not
 	//
 	//Parameters:
 	//
-	//  self - the first object to add
-	//  other - the second object to add
-	//  result - the object to store the result in
-	//  size - the size of the objects being operated on
+	//  first - the first object to compare
+	//  second - the second object to compare
+	//  size - the size of the objects being compared
 	//
 	//Returns:
 	//
-	//  A void pointer to the result object
-	void* (*add)(const void * const self, const void * const other, void *result, size_t size);
-	//Function: sub
-	//Subtracts two objects.
+	//  True if the two objects are equal, false otherwise
+	bool (*eqOperator)(const void * const first, const void * const second, size_t size);
+	//Function: neqOperator
+	//Defines if two objects of the same type are considered not equal
 	//
 	//Parameters:
 	//
-	//  self - the first object to subtract
-	//  other - the second object to subtract
-	//  result - the object to store the result in
-	//  size - the size of the objects being operated on
+	//  first - the first object to compare
+	//  second - the second object to compare
+	//  size - the size of the objects being compared
 	//
 	//Returns:
 	//
-	//  A void pointer to the result object
-	void* (*sub)(const void * const self, const void * const other, void *result, size_t size);
-	//Function: mul
-	//Multiplies two objects.
+	//  True if the two objects are not equal, false otherwise
+	bool (*neqOperator)(const void * const first, const void * const second, size_t size);
+	//Function: gtOperator
+	//Defines if one object is greater than another object of the same type
 	//
 	//Parameters:
 	//
-	//  self - the first object to multiply
-	//  other - the second object to multiply
-	//  result - the object to store the result in
-	//  size - the size of the objects being operated on
+	//  first - the first object to compare
+	//  second - the second object to compare
+	//  size - the size of the objects being compared
 	//
 	//Returns:
 	//
-	//  A void pointer to the result object
-	void* (*mul)(const void * const self, const void * const other, void *result, size_t size);
-	//Function: div
-	//Divides two objects.
+	//  True if the first object is greater than the second object
+	bool (*gtOperator)(const void * const first, const void * const second, size_t size);
+	//Function: ltOperator
+	//Defines if one object is less than another object of the same type
 	//
 	//Parameters:
 	//
-	//  self - the first object to divide
-	//  other - the second object to divide
-	//  result - the object to store the result in
-	//  size - the size of the objects being operated on
+	//  first - the first object to compare
+	//  second - the second object to compare
+	//  size - the size of the objects being compared
 	//
 	//Returns:
 	//
-	//  A void pointer to the result object
-	void* (*div)(const void * const self, const void * const other, void *result, size_t size);
-	//Function: mod
-	//Computes the modulus two objects.
+	//  True if the first object is less than the second object
+	bool (*ltOperator)(const void * const first, const void * const second, size_t size);
+	//Function: gteOperator
+	//Defines if one object is greater than or equal to another object of the same type
 	//
 	//Parameters:
 	//
-	//  self - the first object to take the modulus of
-	//  other - the second object to take the modulus of
-	//  result - the object to store the result in
-	//  size - the size of the objects being operated on
+	//  first - the first object to compare
+	//  second - the second object to compare
+	//  size - the size of the objects being compared
 	//
 	//Returns:
 	//
-	//  A void pointer to the result object
-	void* (*mod)(const void * const self, const void * const other, void *result, size_t size);
-	//Function: sll
-	//Computes the logical shift left of two objects.
+	//  True if the first object is greater than or equal to the second object
+	bool (*gteOperator)(const void * const first, const void * const second, size_t size);
+	//Function: lteOperator
+	//Defines if one object is less than or equal to another object of the same type
 	//
 	//Parameters:
 	//
-	//  self - the first object to take the logical shift left of
-	//  other - the second object to take the logical shift left of
-	//  result - the object to store the result in
-	//  size - the size of the objects being operated on
+	//  first - the first object to compare
+	//  second - the second object to compare
+	//  size - the size of the objects being compared
 	//
 	//Returns:
 	//
-	//  A void pointer to the result object
-	void* (*sll)(const void * const self, const void * const other, void *result, size_t size);
-	//Function: srl
-	//Computes the logical shift right of two objects.
-	//
-	//Parameters:
-	//
-	//  self - the first object to take the logical shift right of
-	//  other - the second object to take the logical shift right of
-	//  result - the object to store the result in
-	//  size - the size of the objects being operated on
-	//
-	//Returns:
-	//
-	//  A void pointer to the result object
-	void* (*srl)(const void * const self, const void * const other, void *result, size_t size);
-	//Function: and
-	//Computes the logical and of two objects.
-	//
-	//Parameters:
-	//
-	//  self - the first object to take the logical and of
-	//  other - the second object to take the logical and of
-	//  result - the object to store the result in
-	//  size - the size of the objects being operated on
-	//
-	//Returns:
-	//
-	//  A void pointer to the result object
-	void* (*and)(const void * const self, const void * const other, void *result, size_t size);
-	//Function: or
-	//Computes the logical or of two objects.
-	//
-	//Parameters:
-	//
-	//  self - the first object to take the logical or of
-	//  other - the second object to take the logical or of
-	//  result - the object to store the result in
-	//  size - the size of the objects being operated on
-	//
-	//Returns:
-	//
-	//  A void pointer to the result object
-	void* (*or)(const void * const self, const void * const other, void *result, size_t size);
-	//Function: not
-	//Computes the logical not of an object.
-	//
-	//Parameters:
-	//
-	//  self - the first object to take the logical not of
-	//  other - the second object to take the logical or of, NULL most of the time
-	//  result - the object to store the result in
-	//  size - the size of the objects being operated on
-	//
-	//Returns:
-	//
-	//  A void pointer to the result object
-	void* (*not)(const void * const self, const void * const other, void *result, size_t size);
-} ArithLogicOperators;
+	//  True if the first object is less than or equal to the second object
+	bool (*lteOperator)(const void * const first, const void * const second, size_t size);
+} ComparisonOperators;
 
 //Macro: EQ
 //--- Prototype ---
@@ -785,89 +931,6 @@ typedef struct ArithLogicOperators {
 	.lteOperator=lteOperator,\
 }
 
-//Struct: ComparisonOperators
-//The struct that defines various equality related operations related to objects.
-//Each struct of <type>_t needs to have a ComparisonOperator struct named "comparisonOperators" for the above macros to work.
-typedef struct ComparisonOperators {
-	//Function: eqOperator
-	//Defines if two objects of the same type are considered equal or not
-	//
-	//Parameters:
-	//
-	//  first - the first object to compare
-	//  second - the second object to compare
-	//  size - the size of the objects being compared
-	//
-	//Returns:
-	//
-	//  True if the two objects are equal, false otherwise
-	bool (*eqOperator)(const void * const first, const void * const second, size_t size);
-	//Function: neqOperator
-	//Defines if two objects of the same type are considered not equal
-	//
-	//Parameters:
-	//
-	//  first - the first object to compare
-	//  second - the second object to compare
-	//  size - the size of the objects being compared
-	//
-	//Returns:
-	//
-	//  True if the two objects are not equal, false otherwise
-	bool (*neqOperator)(const void * const first, const void * const second, size_t size);
-	//Function: gtOperator
-	//Defines if one object is greater than another object of the same type
-	//
-	//Parameters:
-	//
-	//  first - the first object to compare
-	//  second - the second object to compare
-	//  size - the size of the objects being compared
-	//
-	//Returns:
-	//
-	//  True if the first object is greater than the second object
-	bool (*gtOperator)(const void * const first, const void * const second, size_t size);
-	//Function: ltOperator
-	//Defines if one object is less than another object of the same type
-	//
-	//Parameters:
-	//
-	//  first - the first object to compare
-	//  second - the second object to compare
-	//  size - the size of the objects being compared
-	//
-	//Returns:
-	//
-	//  True if the first object is less than the second object
-	bool (*ltOperator)(const void * const first, const void * const second, size_t size);
-	//Function: gteOperator
-	//Defines if one object is greater than or equal to another object of the same type
-	//
-	//Parameters:
-	//
-	//  first - the first object to compare
-	//  second - the second object to compare
-	//  size - the size of the objects being compared
-	//
-	//Returns:
-	//
-	//  True if the first object is greater than or equal to the second object
-	bool (*gteOperator)(const void * const first, const void * const second, size_t size);
-	//Function: lteOperator
-	//Defines if one object is less than or equal to another object of the same type
-	//
-	//Parameters:
-	//
-	//  first - the first object to compare
-	//  second - the second object to compare
-	//  size - the size of the objects being compared
-	//
-	//Returns:
-	//
-	//  True if the first object is less than or equal to the second object
-	bool (*lteOperator)(const void * const first, const void * const second, size_t size);
-} ComparisonOperators;
 
 typedef struct AccessOperators {
 	void* (*brackOperator)(const void * const self, const int num);

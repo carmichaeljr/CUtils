@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("lt",["Macro"],[["LT",,[["ArithLogicOperators",,,,0,"File:objectSystem/Operator.h:ArithLogicOperators.LT","CClass:ArithLogicOperators:LT"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("lt",["Macro"],[["LT",,[["ComparisonOperators",,,,0,"File:objectSystem/Operator.h:ComparisonOperators.LT","CClass:ComparisonOperators:LT"]]]]);

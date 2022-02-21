@@ -13,6 +13,72 @@
 #define LABEL_(a) MERGE_(unique_name_, a)
 #define UNIQUE_NAME LABEL_(__LINE__)
 
+//Struct: Class
+//The struct that defines various memory related operations related to objects.
+//Each struct of <type>_t needs to have a Class struct named "class" for the above macros to work.
+typedef struct Class {
+	//Function: allocator
+	//Responsible for allocating space for the object.
+	//
+	//Parameters:
+	//
+	//  size - The size in bytes to allocate for the object.
+	//
+	//Returns:
+	//
+	//  A void pointer to the memory block allocated.
+	void* (*allocator)(size_t size);
+	//Function: constructor
+	//Responsible for initializing an already allocated object.
+	//
+	//Parameters:
+	//
+	//  obj - A pointer to the memory block allocated for the object.
+	//
+	//Returns:
+	//
+	//  Nothing
+	void (*constructor)(void *obj);
+	//Function: copyConstructor
+	//Responsible for creating a clone of another object, given already allocated memory.
+	//
+	//Parameters:
+	//
+	//  obj - A pointer to the memory block allocated for the new object.
+	//  other - The object to copy.
+	//  size - The size of the object being copied.
+	//
+	//Returns:
+	//
+	//  A void pointer to the initialized new object.
+	void* (*copyConstructor)(void *obj, const void * const other, size_t size);
+	//Function: comparator
+	//Responsible for comparing two objects of the same type.
+	//
+	//Parameters:
+	//
+	//  first - The first object to compare.
+	//  second - The second object to compare.
+	//  size - The size of the objects being compared.
+	//
+	//Returns:
+	//
+	//  The return value is defined by the implementation of the comparator in the <type>_t struct.
+	int (*comparator)(const void *first, const void *second, size_t size);
+	//Function: destructor
+	//Responsible for deleting and freeing memory allocated for the given object.
+	//
+	//Parameters:
+	//
+	//  obj - A pointer to the object.
+	//
+	//Returns:
+	//
+	//  Nothing
+	void (*destructor)(void *obj);
+} Class;
+
+
 //Macro: new
 //--- Prototype ---
 //new(type,obj=NULL)
@@ -441,71 +507,6 @@
 		.comparator=NULL,\
 		.destructor=destructor,\
 	}
-
-//Struct: Class
-//The struct that defines various memory related operations related to objects.
-//Each struct of <type>_t needs to have a Class struct named "class" for the above macros to work.
-typedef struct Class {
-	//Function: allocator
-	//Responsible for allocating space for the object.
-	//
-	//Parameters:
-	//
-	//  size - The size in bytes to allocate for the object.
-	//
-	//Returns:
-	//
-	//  A void pointer to the memory block allocated.
-	void* (*allocator)(size_t size);
-	//Function: constructor
-	//Responsible for initializing an already allocated object.
-	//
-	//Parameters:
-	//
-	//  obj - A pointer to the memory block allocated for the object.
-	//
-	//Returns:
-	//
-	//  Nothing
-	void (*constructor)(void *obj);
-	//Function: copyConstructor
-	//Responsible for creating a clone of another object, given already allocated memory.
-	//
-	//Parameters:
-	//
-	//  obj - A pointer to the memory block allocated for the new object.
-	//  other - The object to copy.
-	//  size - The size of the object being copied.
-	//
-	//Returns:
-	//
-	//  A void pointer to the initialized new object.
-	void* (*copyConstructor)(void *obj, const void * const other, size_t size);
-	//Function: comparator
-	//Responsible for comparing two objects of the same type.
-	//
-	//Parameters:
-	//
-	//  first - The first object to compare.
-	//  second - The second object to compare.
-	//  size - The size of the objects being compared.
-	//
-	//Returns:
-	//
-	//  The return value is defined by the implementation of the comparator in the <type>_t struct.
-	int (*comparator)(const void *first, const void *second, size_t size);
-	//Function: destructor
-	//Responsible for deleting and freeing memory allocated for the given object.
-	//
-	//Parameters:
-	//
-	//  obj - A pointer to the object.
-	//
-	//Returns:
-	//
-	//  Nothing
-	void (*destructor)(void *obj);
-} Class;
 
 void* createObject(void *obj, size_t size, 
 		   void* (*allocator)(size_t size),

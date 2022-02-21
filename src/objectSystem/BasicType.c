@@ -2,8 +2,6 @@
 #include <string.h>
 #include "BasicType.h"
 
-#include <stdio.h>
-
 bool unsignedEqOperator(const void * const first, const void * const second, size_t size);
 bool unsignedNeqOperator(const void * const first, const void * const second, size_t size);
 bool unsignedGtOperator(const void * const first, const void * const second, size_t size);
@@ -190,7 +188,7 @@ bool unsignedGtOperator(const void * const first, const void * const second, siz
 }
 
 bool unsignedLtOperator(const void * const first, const void * const second, size_t size){
-	return unsignedGteOperator(second,first,size);
+	return !unsignedGteOperator(first,second,size);
 }
 
 bool unsignedGteOperator(const void * const first, const void * const second, size_t size){
@@ -523,7 +521,7 @@ bool signedGtOperator(const void * const first, const void * const second, size_
 }
 
 bool signedLtOperator(const void * const first, const void * const second, size_t size){
-	return signedGteOperator(second,first,size);
+	return !signedGteOperator(first,second,size);
 }
 
 bool signedGteOperator(const void * const first, const void * const second, size_t size){
@@ -850,7 +848,7 @@ bool floatGtOperator(const void * const first, const void * const second, size_t
 }
 
 bool floatLtOperator(const void * const first, const void * const second, size_t size){
-	return floatGteOperator(second,first,size);
+	return !floatGteOperator(first,second,size);
 }
 
 bool floatGteOperator(const void * const first, const void * const second, size_t size){

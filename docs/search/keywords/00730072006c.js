@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("srl",["Function","Macro"],[["srl",,[["ArithLogicOperators",,,,0,"File:objectSystem/Operator.h:ArithLogicOperators.srl","CClass:ArithLogicOperators:srl"],[,"SRL",,,1,"File:objectSystem/Operator.h:SRL"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("srl",["Function","Macro"],[["srl",,[["ArithLogicOperators",,,,0,"File:objectSystem/Operator.h:ArithLogicOperators.srl","CClass:ArithLogicOperators:srl"],["ArithLogicOperators","SRL",,,1,"File:objectSystem/Operator.h:ArithLogicOperators.SRL","CClass:ArithLogicOperators:SRL"]]]]);

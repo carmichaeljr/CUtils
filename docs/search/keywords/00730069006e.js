@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("sin",["Macro"],[["SINGLETON_CLASS",,[[,,,,0,"File:objectSystem/Object.h:SINGLETON_CLASS"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("sin",["Macro"],[["SINGLETON_CLASS",,[["Class",,,,0,"File:objectSystem/Object.h:Class.SINGLETON_CLASS","CClass:Class:SINGLETON_CLASS"]]]]);

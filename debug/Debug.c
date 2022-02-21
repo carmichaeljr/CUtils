@@ -19,4 +19,5 @@ bool incrementTestCount(bool testResult){
 
 void printTestResults(void){
 	Print_t.println("%d out of %d tests were successful",successfulTests,testCount);
+	Print_t.println("%d out of %d tests were unsuccessful",testCount-successfulTests,testCount);
 }

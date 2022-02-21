@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("new",["Macro"],[["new",,[[,,,,0,"File:objectSystem/Object.h:new"]]],["newFromClass",,[[,,,,0,"File:objectSystem/Object.h:newFromClass"]]],["newS",,[[,,,,0,"File:objectSystem/Object.h:newS"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("new",["Macro"],[["new",,[["Class",,,,0,"File:objectSystem/Object.h:Class.new","CClass:Class:new"]]],["newFromClass",,[["Class",,,,0,"File:objectSystem/Object.h:Class.newFromClass","CClass:Class:newFromClass"]]],["newS",,[["Class",,,,0,"File:objectSystem/Object.h:Class.newS","CClass:Class:newS"]]]]);

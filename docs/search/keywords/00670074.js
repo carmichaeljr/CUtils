@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("gt",["Macro"],[["GT",,[["ArithLogicOperators",,,,0,"File:objectSystem/Operator.h:ArithLogicOperators.GT","CClass:ArithLogicOperators:GT"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("gt",["Macro"],[["GT",,[["ComparisonOperators",,,,0,"File:objectSystem/Operator.h:ComparisonOperators.GT","CClass:ComparisonOperators:GT"]]]]);

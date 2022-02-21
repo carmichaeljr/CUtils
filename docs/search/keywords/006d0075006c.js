@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("mul",["Function","Macro"],[["mul",,[["ArithLogicOperators",,,,0,"File:objectSystem/Operator.h:ArithLogicOperators.mul","CClass:ArithLogicOperators:mul"],[,"MUL",,,1,"File:objectSystem/Operator.h:MUL"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("mul",["Function","Macro"],[["mul",,[["ArithLogicOperators",,,,0,"File:objectSystem/Operator.h:ArithLogicOperators.mul","CClass:ArithLogicOperators:mul"],["ArithLogicOperators","MUL",,,1,"File:objectSystem/Operator.h:ArithLogicOperators.MUL","CClass:ArithLogicOperators:MUL"]]]]);

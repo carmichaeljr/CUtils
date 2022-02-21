@@ -27,32 +27,7 @@
     - quick sort, merge sort, radix sort
 
 
-
-Other Thoughts:
-```
-opAdd
-opSub
-opMul
-opDiv
-opMod
-opPow
-opSll
-opSrl
-opAddEq
-opSubEq
-opMulEq
-opDivEq
-opModEq
-opPowEq
-opSllEq
-opSrlEq
-opEq
-opLt
-opGt
-opLte
-opGte
-opBrack
-```
+Add color support to print class
 
 ```
 IO/InputFileStream.c
